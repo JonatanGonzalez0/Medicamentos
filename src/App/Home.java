@@ -1,7 +1,10 @@
 package App;
 
 import com.toedter.calendar.JDateChooser;
+import java.awt.Color;
 import java.awt.Desktop;
+import java.awt.Font;
+import java.awt.GradientPaint;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.ByteArrayOutputStream;
@@ -59,6 +62,16 @@ import org.apache.poi.xssf.usermodel.XSSFPicture;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.jfree.chart.ChartUtilities;
+import org.jfree.chart.axis.CategoryAxis;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.labels.ItemLabelAnchor;
+import org.jfree.chart.labels.ItemLabelPosition;
+import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
+import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.chart.title.LegendTitle;
+import org.jfree.chart.title.TextTitle;
+import org.jfree.ui.TextAnchor;
 
 public class Home extends javax.swing.JFrame {
 
@@ -450,7 +463,8 @@ public class Home extends javax.swing.JFrame {
 
         //estilo de la cabecera
         XSSFCellStyle style = workbook.createCellStyle();
-        style.setFillForegroundColor(IndexedColors.CORNFLOWER_BLUE.getIndex());
+        //color menta fondo
+        style.setFillForegroundColor(IndexedColors.LIGHT_GREEN.getIndex());
         style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         style.setAlignment(HorizontalAlignment.CENTER);
         style.setBorderBottom(BorderStyle.THIN);
@@ -529,17 +543,52 @@ public class Home extends javax.swing.JFrame {
                 for (int j = 0; j < cantColumnas; j++) {
                     sheet.autoSizeColumn(j);
                 }
-                
+
                 //create bar chart
                 DefaultCategoryDataset dataset = new DefaultCategoryDataset();
                 for (int j = 1; j < index; j++) {
                     dataset.setValue(sheet.getRow(j).getCell(1).getNumericCellValue(), sheet.getRow(j).getCell(0).getStringCellValue(), categoria);
                 }
-                JFreeChart jchart = ChartFactory.createBarChart(categoria, "Medicamentos", "Cantidad", dataset, PlotOrientation.VERTICAL, true, true, false);
+                
+                /*JFreeChart jchart = ChartFactory.createBarChart("Registro de "+categoria + " " + mes + "/" + anio, "Medicamentos", "Cantidad", dataset, PlotOrientation.VERTICAL, true, true, false);
+                // background color white
+                jchart.setBackgroundPaint(Color.white);
+
+                //get a reference to the plot for further customisation...
+                CategoryPlot plot = (CategoryPlot) jchart.getPlot();
+                //gray style
+                plot.setBackgroundPaint(Color.lightGray);
+                plot.setDomainGridlinePaint(Color.white);
+                plot.setRangeGridlinePaint(Color.white);
+
+                //font of the legend
+                LegendTitle legend = jchart.getLegend();
+                legend.setItemFont(new Font("Arial", Font.PLAIN, 12));
+
+                //font of the title
+                TextTitle title = jchart.getTitle();
+                title.setFont(new Font("Arial", Font.PLAIN, 16));
+
+                //font of the axis
+                CategoryAxis domainAxis = plot.getDomainAxis();
+                domainAxis.setLabelFont(new Font("Arial", Font.PLAIN, 12));
+                domainAxis.setTickLabelFont(new Font("Arial", Font.PLAIN, 12));
+                ValueAxis rangeAxis = plot.getRangeAxis();
+                rangeAxis.setLabelFont(new Font("Arial", Font.PLAIN, 12));
+                rangeAxis.setTickLabelFont(new Font("Arial", Font.PLAIN, 12));
+
+                //set the range axis to display integers only...
+                rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+                //disable bar outlines...
+                BarRenderer renderer = (BarRenderer) plot.getRenderer();
+                renderer.setDrawBarOutline(false);
+                renderer.setMaximumBarWidth(0.15);
+                renderer.setBaseItemLabelGenerator(new StandardCategoryItemLabelGenerator());
+                renderer.setBaseItemLabelsVisible(true);
 
                 // Write the chart image to the output stream
                 ByteArrayOutputStream chart_out = new ByteArrayOutputStream();
-                ChartUtilities.writeChartAsPNG(chart_out, jchart, 500, 300);
+                ChartUtilities.writeChartAsPNG(chart_out, jchart, 600, 400);
                 int my_picture_id = workbook.addPicture(chart_out.toByteArray(), Workbook.PICTURE_TYPE_PNG);
                 chart_out.close();
                 // Create the drawing patriarch.  This is the top level container for all shapes including cell comments.
@@ -550,8 +599,7 @@ public class Home extends javax.swing.JFrame {
                 my_anchor.setRow1(5);
                 XSSFPicture  my_picture = drawing2.createPicture(my_anchor, my_picture_id);
                 // Call resize method, which resizes the image
-                my_picture.resize();
-
+                my_picture.resize();*/
 
 
             } catch (SQLException ex) {
