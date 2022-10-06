@@ -4,6 +4,7 @@ import com.toedter.calendar.JDateChooser;
 import java.awt.Desktop;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,6 +20,7 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -29,10 +31,12 @@ import javax.swing.JFileChooser;
 import javax.swing.table.DefaultTableModel;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.ClientAnchor;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xddf.usermodel.chart.AxisCrosses;
 import org.apache.poi.xddf.usermodel.chart.AxisPosition;
@@ -51,8 +55,10 @@ import org.apache.poi.xssf.usermodel.XSSFChart;
 import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
 import org.apache.poi.xssf.usermodel.XSSFDrawing;
 import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFPicture;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.jfree.chart.ChartUtilities;
 
 public class Home extends javax.swing.JFrame {
 
@@ -523,34 +529,14 @@ public class Home extends javax.swing.JFrame {
                 for (int j = 0; j < cantColumnas; j++) {
                     sheet.autoSizeColumn(j);
                 }
-
-                //crear grafico barras where
-                // Create a drawing canvas on the worksheet
-                XSSFDrawing drawing = sheet.createDrawingPatriarch();
-                // Create an anchor that is attached to the worksheet
-                XSSFClientAnchor anchor = drawing.createAnchor(0, 0, 0, 0, 0, 5, 10, 15);
-                // Create the bar chart
-                XSSFChart chart = drawing.createChart(anchor);
-                //axis x = nombre and axis y = cantidad
-                XDDFChartLegend legend = chart.getOrAddLegend();
-                legend.setPosition(LegendPosition.TOP_RIGHT);
-                XDDFCategoryAxis bottomAxis = chart.createCategoryAxis(AxisPosition.BOTTOM);
-                XDDFValueAxis leftAxis = chart.createValueAxis(AxisPosition.LEFT);
-                leftAxis.setCrosses(AxisCrosses.AUTO_ZERO);
-                XDDFBarChartData data = (XDDFBarChartData) chart.createData(ChartTypes.BAR, bottomAxis, leftAxis);
-                // Set the data
-                XDDFDataSource<String> xs = XDDFDataSourcesFactory.fromStringCellRange(sheet, new CellRangeAddress(1, index - 1, 0, 0));
-                XDDFNumericalDataSource<Double> ys = XDDFDataSourcesFactory.fromNumericCellRange(sheet, new CellRangeAddress(1, index - 1, 1, 1));
-                XDDFBarChartData.Series series = (XDDFBarChartData.Series) data.addSeries(xs, ys);
-                series.setTitle(categoria, null);
-                chart.plot(data);
-
-                /*DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-                while (rs.next()) {
-                    dataset.setValue(rs.getInt("cantidad"), rs.getString("nombre"), rs.getString("nombre"));
+                
+                //create bar chart
+                DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+                for (int j = 1; j < index; j++) {
+                    dataset.setValue(sheet.getRow(j).getCell(1).getNumericCellValue(), sheet.getRow(j).getCell(0).getStringCellValue(), categoria);
                 }
-                // Create the chart object
-                JFreeChart jchart = ChartFactory.createBarChart("Cantidad de unidades registradas por medicamento", "Medicamento", "Cantidad de unidades", dataset, PlotOrientation.VERTICAL, true, true, false);
+                JFreeChart jchart = ChartFactory.createBarChart(categoria, "Medicamentos", "Cantidad", dataset, PlotOrientation.VERTICAL, true, true, false);
+
                 // Write the chart image to the output stream
                 ByteArrayOutputStream chart_out = new ByteArrayOutputStream();
                 ChartUtilities.writeChartAsPNG(chart_out, jchart, 500, 300);
@@ -566,9 +552,11 @@ public class Home extends javax.swing.JFrame {
                 // Call resize method, which resizes the image
                 my_picture.resize();
 
-                */
+
 
             } catch (SQLException ex) {
+                Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
                 Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
