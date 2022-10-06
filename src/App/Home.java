@@ -19,9 +19,12 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import java.io.FileOutputStream;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.table.DefaultTableModel;
 import org.apache.poi.ss.usermodel.BorderStyle;
@@ -51,7 +54,6 @@ import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-
 public class Home extends javax.swing.JFrame {
 
     public Home() {
@@ -59,7 +61,6 @@ public class Home extends javax.swing.JFrame {
         cargarMedicamentos();
     }
 
-  
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -77,7 +78,6 @@ public class Home extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jcantidadRegistro = new javax.swing.JTextField();
         JBusqueda = new javax.swing.JTextField();
-        jLabel8 = new javax.swing.JLabel();
         jButtonVerBaseDatosMedicamentos = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
         jCalendar1 = new com.toedter.calendar.JCalendar();
@@ -128,13 +128,12 @@ public class Home extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         jLabel7.setText("Cantidad");
 
+        JBusqueda.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         JBusqueda.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 JBusquedaKeyReleased(evt);
             }
         });
-
-        jLabel8.setText("Seleccione el medicamento");
 
         jButtonVerBaseDatosMedicamentos.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         jButtonVerBaseDatosMedicamentos.setText("Ver Base Datos Medicamentos");
@@ -158,22 +157,6 @@ public class Home extends javax.swing.JFrame {
         JpaneFormLayout.setHorizontalGroup(
             JpaneFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JpaneFormLayout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addGroup(JpaneFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel8)
-                    .addComponent(jLabel5))
-                .addGap(52, 52, 52)
-                .addGroup(JpaneFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(JBusqueda)
-                    .addComponent(jcomboMedicamentos, 0, 323, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButtonVerBaseDatosMedicamentos, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35))
-            .addGroup(JpaneFormLayout.createSequentialGroup()
-                .addGap(43, 762, Short.MAX_VALUE)
-                .addComponent(jLabel9)
-                .addGap(83, 83, 83))
-            .addGroup(JpaneFormLayout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addGroup(JpaneFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(JpaneFormLayout.createSequentialGroup()
@@ -182,63 +165,74 @@ public class Home extends javax.swing.JFrame {
                                 .addGap(34, 34, 34)
                                 .addComponent(jcantidadRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel7))
-                        .addGap(0, 852, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(JpaneFormLayout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(JpaneFormLayout.createSequentialGroup()
                         .addGroup(JpaneFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(JpaneFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel4)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JpaneFormLayout.createSequentialGroup()
+                                    .addGap(26, 26, 26)
+                                    .addComponent(jCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(JpaneFormLayout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(JpaneFormLayout.createSequentialGroup()
-                                .addGroup(JpaneFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(JpaneFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel4)
-                                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JpaneFormLayout.createSequentialGroup()
-                                            .addGap(26, 26, 26)
-                                            .addComponent(jCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(JpaneFormLayout.createSequentialGroup()
-                                        .addGap(26, 26, 26)
-                                        .addComponent(jNombreMedicamento, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jCalendar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap())))
+                                .addGap(26, 26, 26)
+                                .addComponent(jNombreMedicamento, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JpaneFormLayout.createSequentialGroup()
                 .addGap(176, 176, 176)
                 .addComponent(jButtonRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JpaneFormLayout.createSequentialGroup()
+                .addGap(64, 64, 64)
+                .addComponent(jLabel5)
+                .addGap(52, 52, 52)
+                .addGroup(JpaneFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(JpaneFormLayout.createSequentialGroup()
+                        .addComponent(jcomboMedicamentos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(234, 234, 234))
+                    .addGroup(JpaneFormLayout.createSequentialGroup()
+                        .addComponent(JBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 93, Short.MAX_VALUE)))
+                .addGroup(JpaneFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel9)
+                    .addComponent(jCalendar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonVerBaseDatosMedicamentos, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(173, 173, 173))
         );
         JpaneFormLayout.setVerticalGroup(
             JpaneFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JpaneFormLayout.createSequentialGroup()
-                .addGroup(JpaneFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(JpaneFormLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(JBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButtonVerBaseDatosMedicamentos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(17, 17, 17)
-                .addGroup(JpaneFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jcomboMedicamentos, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8))
                 .addGroup(JpaneFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(JpaneFormLayout.createSequentialGroup()
-                        .addGap(140, 140, 140)
-                        .addComponent(jLabel9)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jCalendar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 132, Short.MAX_VALUE))
-                    .addGroup(JpaneFormLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(JpaneFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(JpaneFormLayout.createSequentialGroup()
+                                .addGroup(JpaneFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel5)
+                                    .addComponent(JBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addComponent(jcomboMedicamentos, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(JpaneFormLayout.createSequentialGroup()
+                                .addGap(14, 14, 14)
+                                .addComponent(jButtonVerBaseDatosMedicamentos, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
                         .addComponent(jLabel6)
-                        .addGap(0, 0, 0)
+                        .addGap(18, 18, 18)
                         .addComponent(jLabel4)
-                        .addGap(27, 27, 27)
+                        .addGap(18, 18, 18)
                         .addComponent(jNombreMedicamento, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(40, 40, 40)
                         .addComponent(jLabel3)
-                        .addGap(39, 39, 39)
-                        .addComponent(jCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(99, 99, 99)))
+                        .addGap(29, 29, 29)
+                        .addComponent(jCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(JpaneFormLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jCalendar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
                 .addComponent(jLabel7)
                 .addGap(18, 18, 18)
                 .addComponent(jcantidadRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -280,7 +274,7 @@ public class Home extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(JpaneForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(113, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
@@ -291,8 +285,7 @@ public class Home extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(JpaneForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(JpaneForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -303,22 +296,20 @@ public class Home extends javax.swing.JFrame {
         // TODO add your handling code here:
         String nombreMedicamento = "";
         try {
-             nombreMedicamento = jcomboMedicamentos.getSelectedItem().toString();
+            nombreMedicamento = jcomboMedicamentos.getSelectedItem().toString();
         } catch (Exception e) {
         }
-        
-        
+
         if (nombreMedicamento.equals("Seleccione un medicamento")) {
             jNombreMedicamento.setText("");
-        }
-        else if(nombreMedicamento.equals("No existe, click para crearlo")) {
+        } else if (nombreMedicamento.equals("No existe, click para crearlo")) {
             //crear ventana formulario
             FormRegistro formRegistro = new FormRegistro();
             formRegistro.JtextFieldNombre.setText(JBusqueda.getText());
 
             //obtener todas las categorias distintas de la base de datos mysql
             try {
-                Connection con =conexion.getConexion();
+                Connection con = conexion.getConexion();
                 Statement st = con.createStatement();
                 ResultSet rs = st.executeQuery("SELECT DISTINCT categoria FROM medicamentos;");
                 while (rs.next()) {
@@ -326,7 +317,7 @@ public class Home extends javax.swing.JFrame {
                 }
                 formRegistro.jComboBoxCategoria.addItem("click para crear una nueva categoria");
             } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, ex);
+                JOptionPane.showMessageDialog(null, ex);
             }
             formRegistro.setVisible(true);
 
@@ -338,8 +329,7 @@ public class Home extends javax.swing.JFrame {
                 }
             });
 
-        }
-        else {
+        } else {
             jNombreMedicamento.setText(nombreMedicamento);
 
             //obeter categoria del medicamento desde la base de datos
@@ -357,26 +347,31 @@ public class Home extends javax.swing.JFrame {
                 con.close();
             } catch (Exception ex) {
                 System.out.println("Error al obtener la categoria del medicamento");
-                
+
             }
         }
 
     }//GEN-LAST:event_jcomboMedicamentosActionPerformed
 
     private void jButtonRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRegistrarActionPerformed
-        // TODO add your handling code here:
 
         String nombreMedicamento = jNombreMedicamento.getText();
         String cantidad = jcantidadRegistro.getText();
 
-       //obtener fecha del jcalendar y enviar a sql
+        //validar que cantidad sea un numero
+        try {
+            Integer.parseInt(cantidad);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "La cantidad debe ser un numero");
+            return;
+        }
+
+        //obtener fecha del jcalendar y enviar a sql
         Date fecha = jCalendar1.getDate();
         long d = fecha.getTime();
         java.sql.Date fechaSql = new java.sql.Date(d);
 
-
-
-        String  categoria = "";
+        String categoria = "";
         categoria = jCategoria.getText();
 
         if (nombreMedicamento.equals("") || cantidad.equals("")) {
@@ -392,17 +387,19 @@ public class Home extends javax.swing.JFrame {
                 jNombreMedicamento.setText("");
                 jcantidadRegistro.setText("");
                 jcomboMedicamentos.setSelectedIndex(0);
-              
+
                 con.close();
             } catch (Exception ex) {
                 System.out.println("Error al registrar el medicamento");
             }
         }
+        JBusqueda.setText("");
+        jCategoria.setText("");
     }//GEN-LAST:event_jButtonRegistrarActionPerformed
 
     private void JBusquedaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_JBusquedaKeyReleased
 
-        buscarMedicamento();        
+        buscarMedicamento();
     }//GEN-LAST:event_JBusquedaKeyReleased
 
     private void JmenuReporteMensualMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JmenuReporteMensualMouseClicked
@@ -434,180 +431,148 @@ public class Home extends javax.swing.JFrame {
         }
 
         //hacer reporte por cada categoria
-
-
-
-
-        for (int i = 0 ;i < contador;i++){
-            String categoria = categorias.get(i);
-            String sql = "SELECT nombre, sum(cantidad) as cantidad FROM registro WHERE MONTH(fecha) = '" + mes + "' AND YEAR(fecha) = '" + anio + "' AND categoria = '"+categoria+"' GROUP BY nombre;";
-
+        Connection con = conexion.getConexion();
+        Statement st = null;
+        try {
+            st = con.createStatement();
+        } catch (SQLException ex) {
+            Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+        //crear archivo excel
+        XSSFWorkbook workbook = new XSSFWorkbook();
 
+        //estilo de la cabecera
+        XSSFCellStyle style = workbook.createCellStyle();
+        style.setFillForegroundColor(IndexedColors.CORNFLOWER_BLUE.getIndex());
+        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        style.setAlignment(HorizontalAlignment.CENTER);
+        style.setBorderBottom(BorderStyle.THIN);
+        style.setBorderLeft(BorderStyle.THIN);
+        style.setBorderRight(BorderStyle.THIN);
+        style.setBorderTop(BorderStyle.THIN);
+        style.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+        style.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+        style.setRightBorderColor(IndexedColors.BLACK.getIndex());
+        style.setTopBorderColor(IndexedColors.BLACK.getIndex());
 
-        //datos Mes seleccionado No Generico
-        String sql = "SELECT nombre, sum(cantidad) as cantidad FROM registro WHERE MONTH(fecha) = '" + mes + "' AND YEAR(fecha) = '" + anio + "' AND categoria = 'No Genérico' GROUP BY nombre;";
+        //font de la cabecera
+        XSSFFont font = workbook.createFont();
+        font.setBold(true);
+        font.setFontHeightInPoints((short) 16);
+        //arial
+        font.setFontName("Arial");
+        font.setColor(IndexedColors.BLACK.getIndex());
+        style.setFont(font);
+
+        //estilo de las celdas
+        XSSFCellStyle style2 = workbook.createCellStyle();
+        style2.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+        style2.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        //alignment center
+        style2.setAlignment(HorizontalAlignment.CENTER);
+        style2.setBorderBottom(BorderStyle.THIN);
+        style2.setBorderLeft(BorderStyle.THIN);
+        style2.setBorderRight(BorderStyle.THIN);
+        style2.setBorderTop(BorderStyle.THIN);
+        style2.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+        style2.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+        style2.setRightBorderColor(IndexedColors.BLACK.getIndex());
+        style2.setTopBorderColor(IndexedColors.BLACK.getIndex());
+        //font de los datos
+        XSSFFont fontData = workbook.createFont();
+        fontData.setFontHeightInPoints((short) 12);
+        //arial
+        fontData.setFontName("Arial");
+        fontData.setColor(IndexedColors.BLACK.getIndex());
+        style2.setFont(fontData);
+
+        Object[] headers = {"Medicamento", "Cantidad de unidades registradas"};
+
+        for (int i = 0; i < contador; i++) {
+            int cantColumnas = headers.length;
+            String categoria = categorias.get(i);
+            String sql = "SELECT nombre, sum(cantidad) as cantidad FROM registro WHERE MONTH(fecha) = '" + mes + "' AND YEAR(fecha) = '" + anio + "' AND categoria = '" + categoria + "' GROUP BY nombre;";
+            try {
+                ResultSet rs = st.executeQuery(sql);
+                XSSFSheet sheet = workbook.createSheet(categoria);
+
+                Row row = sheet.createRow(0);
+
+                for (int j = 0; j < cantColumnas; j++) {
+                    Cell cell = row.createCell(j);
+                    cell.setCellValue(headers[j].toString());
+                    cell.setCellStyle(style);
+                }
+
+                //datos
+                int index = 1;
+                while (rs.next()) {
+                    row = sheet.createRow(index);
+                    Cell nombre = row.createCell(0);
+                    nombre.setCellValue(rs.getString("nombre"));
+                    nombre.setCellStyle(style2);
+
+                    Cell cantidad = row.createCell(1);
+                    cantidad.setCellValue(rs.getInt("cantidad"));
+                    cantidad.setCellStyle(style2);
+                    index++;
+                }
+
+                //autosize a las columnas
+                for (int j = 0; j < cantColumnas; j++) {
+                    sheet.autoSizeColumn(j);
+                }
+
+                //crear grafico barras where
+                // Create a drawing canvas on the worksheet
+                XSSFDrawing drawing = sheet.createDrawingPatriarch();
+                // Create an anchor that is attached to the worksheet
+                XSSFClientAnchor anchor = drawing.createAnchor(0, 0, 0, 0, 0, 5, 10, 15);
+                // Create the bar chart
+                XSSFChart chart = drawing.createChart(anchor);
+                //axis x = nombre and axis y = cantidad
+                XDDFChartLegend legend = chart.getOrAddLegend();
+                legend.setPosition(LegendPosition.TOP_RIGHT);
+                XDDFCategoryAxis bottomAxis = chart.createCategoryAxis(AxisPosition.BOTTOM);
+                XDDFValueAxis leftAxis = chart.createValueAxis(AxisPosition.LEFT);
+                leftAxis.setCrosses(AxisCrosses.AUTO_ZERO);
+                XDDFBarChartData data = (XDDFBarChartData) chart.createData(ChartTypes.BAR, bottomAxis, leftAxis);
+                // Set the data
+                XDDFDataSource<String> xs = XDDFDataSourcesFactory.fromStringCellRange(sheet, new CellRangeAddress(1, index - 1, 0, 0));
+                XDDFNumericalDataSource<Double> ys = XDDFDataSourcesFactory.fromNumericCellRange(sheet, new CellRangeAddress(1, index - 1, 1, 1));
+                XDDFBarChartData.Series series = (XDDFBarChartData.Series) data.addSeries(xs, ys);
+                series.setTitle(categoria, null);
+                chart.plot(data);
+
+                /*DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+                while (rs.next()) {
+                    dataset.setValue(rs.getInt("cantidad"), rs.getString("nombre"), rs.getString("nombre"));
+                }
+                // Create the chart object
+                JFreeChart jchart = ChartFactory.createBarChart("Cantidad de unidades registradas por medicamento", "Medicamento", "Cantidad de unidades", dataset, PlotOrientation.VERTICAL, true, true, false);
+                // Write the chart image to the output stream
+                ByteArrayOutputStream chart_out = new ByteArrayOutputStream();
+                ChartUtilities.writeChartAsPNG(chart_out, jchart, 500, 300);
+                int my_picture_id = workbook.addPicture(chart_out.toByteArray(), Workbook.PICTURE_TYPE_PNG);
+                chart_out.close();
+                // Create the drawing patriarch.  This is the top level container for all shapes including cell comments.
+                XSSFDrawing drawing2 = sheet.createDrawingPatriarch();
+                //add a picture shape
+                ClientAnchor my_anchor = new XSSFClientAnchor();
+                my_anchor.setCol1(0);
+                my_anchor.setRow1(5);
+                XSSFPicture  my_picture = drawing2.createPicture(my_anchor, my_picture_id);
+                // Call resize method, which resizes the image
+                my_picture.resize();
+
+                */
+
+            } catch (SQLException ex) {
+                Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         try {
-            Connection con = conexion.getConexion();
-            Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery(sql);
-
-            //crear archivo excel
-            XSSFWorkbook workbook = new XSSFWorkbook();
-            XSSFSheet sheet = workbook.createSheet("Medicamentos No Genericos");
-
-            //estilo de la cabecera
-            XSSFCellStyle style = workbook.createCellStyle();
-            style.setFillForegroundColor(IndexedColors.CORNFLOWER_BLUE.getIndex());
-            style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            style.setAlignment(HorizontalAlignment.CENTER);
-            style.setBorderBottom(BorderStyle.THIN);
-            style.setBorderLeft(BorderStyle.THIN);
-            style.setBorderRight(BorderStyle.THIN);
-            style.setBorderTop(BorderStyle.THIN);
-            style.setBottomBorderColor(IndexedColors.BLACK.getIndex());
-            style.setLeftBorderColor(IndexedColors.BLACK.getIndex());
-            style.setRightBorderColor(IndexedColors.BLACK.getIndex());
-            style.setTopBorderColor(IndexedColors.BLACK.getIndex());
-
-            //font de la cabecera
-            XSSFFont font = workbook.createFont();
-            font.setBold(true);
-            font.setFontHeightInPoints((short) 16);
-            //arial
-            font.setFontName("Arial");
-            font.setColor(IndexedColors.BLACK.getIndex());
-            style.setFont(font);
-            
-            //estilo de las celdas
-            XSSFCellStyle style2 = workbook.createCellStyle();
-            style2.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
-            style2.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            //alignment center
-            style2.setAlignment(HorizontalAlignment.CENTER);
-            style2.setBorderBottom(BorderStyle.THIN);
-            style2.setBorderLeft(BorderStyle.THIN);
-            style2.setBorderRight(BorderStyle.THIN);
-            style2.setBorderTop(BorderStyle.THIN);
-            style2.setBottomBorderColor(IndexedColors.BLACK.getIndex());
-            style2.setLeftBorderColor(IndexedColors.BLACK.getIndex());
-            style2.setRightBorderColor(IndexedColors.BLACK.getIndex());
-            style2.setTopBorderColor(IndexedColors.BLACK.getIndex());
-            //font de los datos
-            XSSFFont fontData = workbook.createFont();
-            fontData.setFontHeightInPoints((short) 12);
-            //arial
-            fontData.setFontName("Arial");
-            fontData.setColor(IndexedColors.BLACK.getIndex());
-            style2.setFont(fontData);
-
-
-            //headers nombre,cantidad
-            Object[] headers = {"Medicamento", "Cantidad de unidades registradas"};
-            Row row = sheet.createRow(0);
-            for (int i = 0; i < headers.length; i++) {
-                Cell cell = row.createCell(i);
-                cell.setCellValue((String) headers[i]);
-                cell.setCellStyle(style);
-            }
-
-            //datos
-            int index = 1;
-            while (rs.next()) {
-                row = sheet.createRow(index);
-                Cell nombre = row.createCell(0);
-                nombre.setCellValue(rs.getString("nombre"));
-                nombre.setCellStyle(style2);
-
-                Cell cantidad = row.createCell(1);
-                cantidad.setCellValue(rs.getInt("cantidad"));
-                cantidad.setCellStyle(style2);
-                index++;
-            }
-
-            //autosize a las columnas
-            for (int i = 0; i < headers.length; i++) {
-                sheet.autoSizeColumn(i);
-            }
-            
-            // Create vertical bar chart
-            XSSFDrawing drawing = sheet.createDrawingPatriarch();
-            XSSFClientAnchor anchor = drawing.createAnchor(0, 0, 0, 0, 0, 5, 10, 15);
-            XSSFChart chart = drawing.createChart(anchor);
-            XDDFChartLegend legend = chart.getOrAddLegend();
-            legend.setPosition(LegendPosition.TOP_RIGHT);
-            XDDFCategoryAxis bottomAxis = chart.createCategoryAxis(AxisPosition.BOTTOM);
-            XDDFValueAxis leftAxis = chart.createValueAxis(AxisPosition.LEFT);
-            leftAxis.setCrosses(AxisCrosses.AUTO_ZERO);
-            XDDFBarChartData data = (XDDFBarChartData) chart.createData(ChartTypes.BAR, bottomAxis, leftAxis);
-            XDDFDataSource<String> xs = XDDFDataSourcesFactory.fromStringCellRange(sheet, new CellRangeAddress(1, index - 1, 0, 0));
-            XDDFNumericalDataSource<Double> ys = XDDFDataSourcesFactory.fromNumericCellRange(sheet, new CellRangeAddress(1, index - 1, 1, 1));
-            XDDFChartData.Series series = data.addSeries(xs, ys);
-            series.setTitle("Medicamentos No Genericos", null);
-            chart.plot(data);
-
-            //nueva hoja para los medicamentos genericos
-            XSSFSheet sheet2 = workbook.createSheet("Medicamentos Genéricos");
-
-            Row row2 = sheet2.createRow(0);
-            for (int i = 0; i < headers.length; i++) {
-                Cell cell = row2.createCell(i);
-                cell.setCellValue((String) headers[i]);
-                cell.setCellStyle(style);
-            }
-            int index2 = 1;
-
-            //datos Mes seleccionado Generico
-            String sql_Generico = "SELECT nombre, sum(cantidad) as cantidad FROM registro WHERE MONTH(fecha) = '" + mes + "' AND YEAR(fecha) = '" + anio + "' AND categoria = 'Genérico' GROUP BY nombre;";
-            rs = st.executeQuery(sql_Generico);
-            while (rs.next()) {
-                row = sheet2.createRow(index2);
-                Cell nombre = row.createCell(0);
-                nombre.setCellValue(rs.getString("nombre"));
-                nombre.setCellStyle(style2);
-
-                Cell cantidad = row.createCell(1);
-                cantidad.setCellValue(rs.getInt("cantidad"));
-                cantidad.setCellStyle(style2);
-                index++;
-            }
-            //autosize a las columnas
-            for (int i = 0; i < headers.length; i++) {
-                sheet2.autoSizeColumn(i);
-            }
-
-            //nueva hoja para los medicamentos normales
-            XSSFSheet sheet3 = workbook.createSheet("Medicamentos Normales");
-
-            Row row3 = sheet3.createRow(0);
-            for (int i = 0; i < headers.length; i++) {
-                Cell cell = row3.createCell(i);
-                cell.setCellValue((String) headers[i]);
-                cell.setCellStyle(style);
-            }
-            int index3 = 1;
-            //datos Mes seleccionado Normal
-            String sql_Normal = "SELECT nombre, sum(cantidad) as cantidad FROM registro WHERE MONTH(fecha) = '" + mes + "' AND YEAR(fecha) = '" + anio + "' AND categoria = 'Normal' GROUP BY nombre;";
-            rs = st.executeQuery(sql_Normal);
-            while (rs.next()) {
-                row = sheet3.createRow(index3);
-                Cell nombre = row.createCell(0);
-                nombre.setCellValue(rs.getString("nombre"));
-                nombre.setCellStyle(style2);
-
-                Cell cantidad = row.createCell(1);
-                cantidad.setCellValue(rs.getInt("cantidad"));
-                cantidad.setCellStyle(style2);
-                index++;
-            }
-            //autosize a las columnas
-            for (int i = 0; i < headers.length; i++) {
-                sheet3.autoSizeColumn(i);
-            }
-
-            //crear fuente de datos
-
             //guardar archivo solictar ruta
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setDialogTitle("Guardar reporte mensual");
@@ -616,19 +581,24 @@ public class Home extends javax.swing.JFrame {
             if (userSelection == JFileChooser.APPROVE_OPTION) {
                 File fileToSave = fileChooser.getSelectedFile();
                 String ruta = fileToSave.getAbsolutePath();
-                FileOutputStream fileOut = new FileOutputStream(ruta + "/ReporteMensual_" + String.valueOf(mes) +"-" + String.valueOf(anio) + ".xlsx");
+                FileOutputStream fileOut = new FileOutputStream(ruta + "/ReporteMensual_" + String.valueOf(mes) + "-" + String.valueOf(anio) + ".xlsx");
                 workbook.write(fileOut);
                 fileOut.close();
 
                 try {
-                    Desktop.getDesktop().open(new File(ruta + "/ReporteMensual_" + String.valueOf(mes) +"-" + String.valueOf(anio) + ".xlsx"));
+                    Desktop.getDesktop().open(new File(ruta + "/ReporteMensual_" + String.valueOf(mes) + "-" + String.valueOf(anio) + ".xlsx"));
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, ex);
-                 }
+                }
             }
 
-            con.close();
-            /*DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        try {
+
+            /*
+            DefaultCategoryDataset dataset = new DefaultCategoryDataset();
             while (rs.next()) {
                 dataset.setValue(rs.getInt("cantidad"), rs.getString("nombre"), rs.getString("nombre"));
             }
@@ -650,7 +620,7 @@ public class Home extends javax.swing.JFrame {
         //nueva ventana para mostrar la base de datos de medicamentos
         BaseDatosMedicamentos ventana_base = new BaseDatosMedicamentos();
         //obtener datos de la tabla
-        DefaultTableModel modelo = (DefaultTableModel) ventana_base.JTableBaseDatos.getModel(); 
+        DefaultTableModel modelo = (DefaultTableModel) ventana_base.JTableBaseDatos.getModel();
         //limpiar tabla
         modelo.setRowCount(0);
         //obtener datos de la base de datos
@@ -665,7 +635,7 @@ public class Home extends javax.swing.JFrame {
                 fila[2] = rs.getString("categoria");
                 modelo.addRow(fila);
             }
-            
+
             //cargar categorias unicas a JFilterCategory
             ResultSet rs2 = st.executeQuery("SELECT DISTINCT categoria FROM medicamentos;");
             while (rs2.next()) {
@@ -685,8 +655,7 @@ public class Home extends javax.swing.JFrame {
                 cargarMedicamentos();
             }
         });
-        
-        
+
 
     }//GEN-LAST:event_jButtonVerBaseDatosMedicamentosActionPerformed
 
@@ -695,11 +664,11 @@ public class Home extends javax.swing.JFrame {
         //limpiar jcomboMedicamentos
         jcomboMedicamentos.removeAllItems();
         cargarMedicamentos();
-        
+
         JBusqueda.setText("");
     }//GEN-LAST:event_JmenuActualizarMouseClicked
 
-    private void cargarMedicamentos(){
+    private void cargarMedicamentos() {
         //agregar nombres de medicamentos desde la base de datos
         try {
             Connection cn = conexion.getConexion();
@@ -707,7 +676,7 @@ public class Home extends javax.swing.JFrame {
             ResultSet rs = pst.executeQuery();
 
             jcomboMedicamentos.addItem("Seleccione un medicamento");
-            while(rs.next()){
+            while (rs.next()) {
                 jcomboMedicamentos.addItem(rs.getString("nombre"));
             }
             cn.close();
@@ -717,59 +686,57 @@ public class Home extends javax.swing.JFrame {
         }
     }
 
-    private void buscarMedicamento(){
+    private void buscarMedicamento() {
         //buscar palabras parecidas a la que se escribe en el campo de busqueda
-           String buscar = JBusqueda.getText();
-           if (buscar.equals("")) {
-               //remover todos items desde el segundo item
-               int i = jcomboMedicamentos.getItemCount();
-               while (i > 1) {
-                   jcomboMedicamentos.removeItemAt(i-1);
-                   i--;
-               }
-               cargarMedicamentos();
-           } else {
-              String sql = "SELECT nombre FROM medicamentos WHERE nombre LIKE '%"+buscar+"%'";
-                try {
-                    Connection cn = conexion.getConexion();
-                    Statement st = cn.createStatement();
-                    ResultSet rs = st.executeQuery(sql);
-                    if (rs.next()) {
-                        try {
-                            //remover todos items desde el segundo item
-                            int i = jcomboMedicamentos.getItemCount();
-                            while (i > 1) {
-                                jcomboMedicamentos.removeItemAt(i-1);
-                                i--;
-                            }
-                        } catch (Exception e) {
-                            System.out.println("Error al limpiar el combobox");
-                        }
-                        do {
-                            jcomboMedicamentos.addItem(rs.getString("nombre"));
-                        } while (rs.next());
-                    } else {
+        String buscar = JBusqueda.getText();
+        if (buscar.equals("")) {
+            //remover todos items desde el segundo item
+            int i = jcomboMedicamentos.getItemCount();
+            while (i > 1) {
+                jcomboMedicamentos.removeItemAt(i - 1);
+                i--;
+            }
+            cargarMedicamentos();
+        } else {
+            String sql = "SELECT nombre FROM medicamentos WHERE nombre LIKE '%" + buscar + "%'";
+            try {
+                Connection cn = conexion.getConexion();
+                Statement st = cn.createStatement();
+                ResultSet rs = st.executeQuery(sql);
+                if (rs.next()) {
+                    try {
                         //remover todos items desde el segundo item
                         int i = jcomboMedicamentos.getItemCount();
                         while (i > 1) {
-                            jcomboMedicamentos.removeItemAt(i-1);
+                            jcomboMedicamentos.removeItemAt(i - 1);
                             i--;
                         }
-                        jcomboMedicamentos.addItem("No existe, click para crearlo");
+                    } catch (Exception e) {
+                        System.out.println("Error al limpiar el combobox");
                     }
-                    cn.close();
+                    do {
+                        jcomboMedicamentos.addItem(rs.getString("nombre"));
+                    } while (rs.next());
+                } else {
+                    //remover todos items desde el segundo item
+                    int i = jcomboMedicamentos.getItemCount();
+                    while (i > 1) {
+                        jcomboMedicamentos.removeItemAt(i - 1);
+                        i--;
+                    }
+                    jcomboMedicamentos.addItem("No existe, click para crearlo");
                 }
-                catch (Exception e) {
-                }
-           }
+                cn.close();
+            } catch (Exception e) {
+            }
+        }
     }
-    
-    
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        
+
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -800,7 +767,7 @@ public class Home extends javax.swing.JFrame {
             }
         });
     }
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField JBusqueda;
@@ -819,7 +786,6 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar2;
@@ -828,4 +794,3 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jcomboMedicamentos;
     // End of variables declaration//GEN-END:variables
 }
-
