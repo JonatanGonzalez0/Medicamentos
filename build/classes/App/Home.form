@@ -42,6 +42,14 @@
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="JmenuReporteMensualMouseClicked"/>
               </Events>
             </Menu>
+            <Menu class="javax.swing.JMenu" name="JverTablaRegistros">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Ver tabla de registros"/>
+              </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="JverTablaRegistrosMouseClicked"/>
+              </Events>
+            </Menu>
           </SubComponents>
         </Menu>
       </SubComponents>

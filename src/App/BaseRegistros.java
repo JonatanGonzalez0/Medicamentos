@@ -6,11 +6,16 @@ import java.sql.Connection;
 import javax.swing.table.DefaultTableModel;
 import java.sql.Statement;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-public class BaseDatosMedicamentos extends javax.swing.JFrame {
 
-    public BaseDatosMedicamentos() {
+public class BaseRegistros extends javax.swing.JFrame {
+
+    public BaseRegistros() {
         initComponents();
+        mostrarDatos();
+        actualizarCategorias();
     }
 
     /**
@@ -23,39 +28,40 @@ public class BaseDatosMedicamentos extends javax.swing.JFrame {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
-        jLabel1 = new javax.swing.JLabel();
+        JlabelTitle = new javax.swing.JLabel();
         JscrollTablaBase = new javax.swing.JScrollPane();
         JTableBaseDatos = new javax.swing.JTable();
-        jPanel1 = new javax.swing.JPanel();
-        JbuttonEliminar = new javax.swing.JButton();
-        JbuttonEditar = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        JlabelID = new javax.swing.JLabel();
-        txtFieldCategoriaForm = new javax.swing.JTextField();
-        txtFielNombreForm = new javax.swing.JTextField();
         JFilterCategory = new javax.swing.JComboBox<>();
-        jLabel5 = new javax.swing.JLabel();
+        Jlabel_filter = new javax.swing.JLabel();
+        JbuttonEliminar = new javax.swing.JButton();
+        JlabelID = new javax.swing.JLabel();
+        JlabelFecha = new javax.swing.JLabel();
+        JlabelData = new javax.swing.JLabel();
+        Jlabel_filter1 = new javax.swing.JLabel();
+        Jlabel_filter2 = new javax.swing.JLabel();
+        Jlabel_filter3 = new javax.swing.JLabel();
+        jDateChooserEnd = new com.toedter.calendar.JDateChooser();
+        jDateChooserinit = new com.toedter.calendar.JDateChooser();
+        jButtonAplicarFiltro = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jLabel1.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
-        jLabel1.setText("BASE DATOS MEDICAMENTOS ");
+        JlabelTitle.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
+        JlabelTitle.setText("BASE DE REGISTROS");
 
         JTableBaseDatos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null}
+                {null, null, null, null, null}
             },
             new String [] {
-                "ID", "Nombre", "Categoria"
+                "ID", "Fecha", "Nombre", "Categoria", "Cantidad"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, true, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -76,10 +82,19 @@ public class BaseDatosMedicamentos extends javax.swing.JFrame {
             JTableBaseDatos.getColumnModel().getColumn(0).setMinWidth(50);
             JTableBaseDatos.getColumnModel().getColumn(0).setPreferredWidth(100);
             JTableBaseDatos.getColumnModel().getColumn(0).setMaxWidth(100);
-            JTableBaseDatos.getColumnModel().getColumn(2).setMinWidth(150);
-            JTableBaseDatos.getColumnModel().getColumn(2).setPreferredWidth(300);
-            JTableBaseDatos.getColumnModel().getColumn(2).setMaxWidth(300);
+            JTableBaseDatos.getColumnModel().getColumn(4).setMinWidth(50);
+            JTableBaseDatos.getColumnModel().getColumn(4).setPreferredWidth(150);
+            JTableBaseDatos.getColumnModel().getColumn(4).setMaxWidth(150);
         }
+
+        JFilterCategory.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                JFilterCategoryItemStateChanged(evt);
+            }
+        });
+
+        Jlabel_filter.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        Jlabel_filter.setText("Filtrar por categoria");
 
         JbuttonEliminar.setText("Eliminar");
         JbuttonEliminar.addActionListener(new java.awt.event.ActionListener() {
@@ -88,117 +103,118 @@ public class BaseDatosMedicamentos extends javax.swing.JFrame {
             }
         });
 
-        JbuttonEditar.setText("Editar");
-        JbuttonEditar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JbuttonEditarActionPerformed(evt);
+        JlabelID.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+
+        JlabelFecha.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        JlabelFecha.setText("Fecha registro");
+
+        JlabelData.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        JlabelData.setText("Nombre Medicamento");
+
+        Jlabel_filter1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        Jlabel_filter1.setText("Filtrar por fecha");
+
+        Jlabel_filter2.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        Jlabel_filter2.setText("A");
+
+        Jlabel_filter3.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+
+        jDateChooserinit.setToolTipText("Seleccione la fecha de inicio");
+
+        jButtonAplicarFiltro.setText("Aplicar");
+        jButtonAplicarFiltro.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButtonAplicarFiltroMouseClicked(evt);
             }
         });
-
-        jLabel2.setText("Nombre");
-
-        jLabel3.setText("Categoria");
-
-        jLabel4.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        jLabel4.setText("Id");
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(41, 41, 41)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(JlabelID)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 451, Short.MAX_VALUE)
-                        .addComponent(jLabel3)
-                        .addGap(304, 304, 304))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(JbuttonEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(85, 85, 85)
-                        .addComponent(JbuttonEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(31, 567, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(txtFielNombreForm, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtFieldCategoriaForm, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(56, 56, 56))))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(JlabelID))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3))
-                .addGap(34, 34, 34)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtFielNombreForm, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtFieldCategoriaForm, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(47, 47, 47)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(JbuttonEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(JbuttonEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(62, Short.MAX_VALUE))
-        );
-
-        JFilterCategory.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todas" }));
-        JFilterCategory.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                JFilterCategoryItemStateChanged(evt);
-            }
-        });
-
-        jLabel5.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        jLabel5.setText("Filtrar por categoria");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(52, 52, 52)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(53, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(153, 153, 153)
+                        .addComponent(JlabelFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(298, 298, 298))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(JscrollTablaBase, javax.swing.GroupLayout.PREFERRED_SIZE, 805, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(92, 92, 92))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(119, 119, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(JFilterCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(141, 141, 141))))
+                            .addComponent(JscrollTablaBase, javax.swing.GroupLayout.PREFERRED_SIZE, 805, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jDateChooserinit, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(Jlabel_filter2, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(215, 215, 215)
+                                        .addComponent(Jlabel_filter3, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jDateChooserEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jButtonAplicarFiltro))))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(84, 84, 84)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(JlabelTitle)
+                                .addGap(289, 289, 289))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(JlabelID, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(33, 33, 33)
+                                .addComponent(JlabelData, javax.swing.GroupLayout.PREFERRED_SIZE, 630, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(JbuttonEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(Jlabel_filter1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(JFilterCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(Jlabel_filter, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(102, 102, 102)))))
+                .addGap(92, 92, 92))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(JlabelTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(Jlabel_filter))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(73, 73, 73)
+                        .addComponent(Jlabel_filter1)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(JFilterCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButtonAplicarFiltro))
+                        .addGap(8, 8, 8)
+                        .addComponent(Jlabel_filter3))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(jDateChooserinit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jDateChooserEnd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(Jlabel_filter2)))
+                .addGap(18, 18, Short.MAX_VALUE)
+                .addComponent(JscrollTablaBase, javax.swing.GroupLayout.PREFERRED_SIZE, 666, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(JFilterCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(JscrollTablaBase, javax.swing.GroupLayout.PREFERRED_SIZE, 495, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(JlabelFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(JlabelData, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(JbuttonEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(35, 35, 35))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(JlabelID, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(47, 47, 47))))
         );
 
         pack();
@@ -211,37 +227,17 @@ public class BaseDatosMedicamentos extends javax.swing.JFrame {
 
         if (fila > -1) {
             JlabelID.setText(JTableBaseDatos.getValueAt(fila, 0).toString());
-            txtFielNombreForm.setText(JTableBaseDatos.getValueAt(fila, 1).toString());
-            String categoria = JTableBaseDatos.getValueAt(fila, 2).toString();
 
-           txtFieldCategoriaForm.setText(categoria);
+            //fecha
+            JlabelFecha.setText("Fecha :"+JTableBaseDatos.getValueAt(fila, 1).toString());
+            //nombre categoria cantidad
+            String nombre = JTableBaseDatos.getValueAt(fila, 2).toString();
+            String categoria = JTableBaseDatos.getValueAt(fila, 3).toString();
+            String cantidad = JTableBaseDatos.getValueAt(fila, 4).toString();
+            JlabelData.setText("Nombre : "+nombre+" Categoria : "+categoria+" Cantidad : "+cantidad);
         }
 
     }//GEN-LAST:event_JTableBaseDatosMouseClicked
-
-    private void JbuttonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JbuttonEditarActionPerformed
-        // TODO add your handling code here:
-        if (txtFielNombreForm == null || txtFielNombreForm.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Debe ingresar un nombre");
-        } else {
-            String categoria = "";
-            categoria = txtFieldCategoriaForm.getText();
-            int id = Integer.parseInt(JlabelID.getText());
-            String nombre = txtFielNombreForm.getText();
-            String sql = "UPDATE medicamentos SET nombre = '" + nombre + "', categoria = '" + categoria + "' WHERE id = " + id;
-            try {
-                Connection con = conexion.getConexion();
-                PreparedStatement ps = con.prepareStatement(sql);
-                ps.executeUpdate();
-                JOptionPane.showMessageDialog(null, "Medicamento actualizado");
-                limpiar();
-                mostrarDatos();
-                con.close();
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(null, ex);
-            }
-        }
-    }//GEN-LAST:event_JbuttonEditarActionPerformed
 
     private void JbuttonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JbuttonEliminarActionPerformed
         // TODO add your handling code here:
@@ -250,14 +246,15 @@ public class BaseDatosMedicamentos extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Debe seleccionar una fila");
         } else {
             int id = Integer.parseInt(JlabelID.getText());
-            String sql = "DELETE FROM medicamentos WHERE id = " + id;
+            String sql = "DELETE FROM registro WHERE id = " + id;
             try {
                 Connection con = conexion.getConexion();
                 PreparedStatement ps = con.prepareStatement(sql);
                 ps.executeUpdate();
-                JOptionPane.showMessageDialog(null, "Medicamento eliminado");
+                JOptionPane.showMessageDialog(null, "Registro eliminado");
                 limpiar();
                 mostrarDatos();
+                //actualizarCategorias();
                 con.close();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, ex);
@@ -273,7 +270,7 @@ public class BaseDatosMedicamentos extends javax.swing.JFrame {
         if (categoria.equals("Todas")) {
             mostrarDatos();
         } else {
-            String sql = "SELECT * FROM medicamentos WHERE categoria = '" + categoria + "'";
+            String sql = "SELECT * FROM registro WHERE categoria = '" + categoria + "'";
             DefaultTableModel modelo = (DefaultTableModel) JTableBaseDatos.getModel();
             //limpiar tabla
             modelo.setRowCount(0);
@@ -283,10 +280,18 @@ public class BaseDatosMedicamentos extends javax.swing.JFrame {
                 Statement st = con.createStatement();
                 ResultSet rs = st.executeQuery(sql);
                 while (rs.next()) {
-                    Object[] fila = new Object[3];
+                    Object[] fila = new Object[5];
                     fila[0] = rs.getInt("id");
-                    fila[1] = rs.getString("nombre");
-                    fila[2] = rs.getString("categoria");
+                    
+                    //date fecha to string
+                    Date fecha = rs.getDate("fecha");
+                    SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+                    String fechaString = formato.format(fecha);
+                    fila[1] = fechaString;
+
+                    fila[2] = rs.getString("nombre");
+                    fila[3] = rs.getString("categoria");
+                    fila[4] = rs.getInt("cantidad");
                     modelo.addRow(fila);
                 }
                 con.close();
@@ -295,6 +300,96 @@ public class BaseDatosMedicamentos extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_JFilterCategoryItemStateChanged
+
+    private void jButtonAplicarFiltroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAplicarFiltroMouseClicked
+        // TODO add your handling code here:
+        String fechaInicio = "";
+        String fechaFin = "";
+        java.sql.Date fechaInicioSql = null;
+        java.sql.Date fechaFinSql = null;
+        //si jdatechooser esta vacio
+        if (jDateChooserinit.getDate() != null && jDateChooserEnd.getDate()!=null ){
+            
+            fechaInicio = jDateChooserinit.getDate().toString();
+            fechaFin = jDateChooserEnd.getDate().toString();
+
+            Date fechaInit = jDateChooserinit.getDate();
+            long d = fechaInit.getTime();
+            fechaInicioSql = new java.sql.Date(d);
+
+            Date fechaEnd = jDateChooserEnd.getDate();
+            long d2 = fechaEnd.getTime();
+            fechaFinSql = new java.sql.Date(d2);
+        }
+        //si alguna de las dos fechas esta vacio
+        if (fechaInicio.equals("") || fechaFin.equals("")) {
+            mostrarDatos();
+            return;
+        }
+        //if categoria is all
+        if (JFilterCategory.getSelectedItem().toString().equals("Todas")) {
+            String sql = "SELECT * FROM registro WHERE fecha BETWEEN '" + fechaInicioSql + "' AND '" + fechaFinSql + "';";
+            DefaultTableModel modelo = (DefaultTableModel) JTableBaseDatos.getModel();
+            //limpiar tabla
+            modelo.setRowCount(0);
+            //obtener datos de la base de datos
+            try {
+                Connection con = conexion.getConexion();
+                Statement st = con.createStatement();
+                ResultSet rs = st.executeQuery(sql);
+                while (rs.next()) {
+                    Object[] fila = new Object[5];
+                    fila[0] = rs.getInt("id");
+
+                    //date fecha to string
+                    Date fecha = rs.getDate("fecha");
+                    SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+                    String fechaString = formato.format(fecha);
+                    fila[1] = fechaString;
+
+                    fila[2] = rs.getString("nombre");
+                    fila[3] = rs.getString("categoria");
+                    fila[4] = rs.getInt("cantidad");
+                    modelo.addRow(fila);
+                }
+                con.close();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, ex);
+            }
+        } else {
+            String categoria = JFilterCategory.getSelectedItem().toString();
+            String sql = "SELECT * FROM registro WHERE fecha BETWEEN '" + fechaInicio + "' AND '" + fechaFin + "' AND categoria = '" + categoria + "';";
+            DefaultTableModel modelo = (DefaultTableModel) JTableBaseDatos.getModel();
+            //limpiar tabla
+            modelo.setRowCount(0);
+            //obtener datos de la base de datos
+            try {
+                Connection con = conexion.getConexion();
+                Statement st = con.createStatement();
+                ResultSet rs = st.executeQuery(sql);
+                while (rs.next()) {
+                    Object[] fila = new Object[5];
+                    fila[0] = rs.getInt("id");
+
+                    //date fecha to string
+                    Date fecha = rs.getDate("fecha");
+                    SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+                    String fechaString = formato.format(fecha);
+                    fila[1] = fechaString;
+
+                    fila[2] = rs.getString("nombre");
+                    fila[3] = rs.getString("categoria");
+                    fila[4] = rs.getInt("cantidad");
+                    modelo.addRow(fila);
+                }
+                con.close();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, ex);
+            }
+        }
+
+
+    }//GEN-LAST:event_jButtonAplicarFiltroMouseClicked
 
     /**
      * @param args the command line arguments
@@ -313,20 +408,21 @@ public class BaseDatosMedicamentos extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(BaseDatosMedicamentos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BaseRegistros.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(BaseDatosMedicamentos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BaseRegistros.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(BaseDatosMedicamentos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BaseRegistros.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(BaseDatosMedicamentos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BaseRegistros.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new BaseDatosMedicamentos().setVisible(true);
+                new BaseRegistros().setVisible(true);
             }
         });
     }
@@ -334,26 +430,26 @@ public class BaseDatosMedicamentos extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JComboBox<String> JFilterCategory;
     public javax.swing.JTable JTableBaseDatos;
-    private javax.swing.JButton JbuttonEditar;
     private javax.swing.JButton JbuttonEliminar;
+    private javax.swing.JLabel JlabelData;
+    private javax.swing.JLabel JlabelFecha;
     private javax.swing.JLabel JlabelID;
+    private javax.swing.JLabel JlabelTitle;
+    private javax.swing.JLabel Jlabel_filter;
+    private javax.swing.JLabel Jlabel_filter1;
+    private javax.swing.JLabel Jlabel_filter2;
+    private javax.swing.JLabel Jlabel_filter3;
     public javax.swing.JScrollPane JscrollTablaBase;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField txtFielNombreForm;
-    private javax.swing.JTextField txtFieldCategoriaForm;
+    private javax.swing.JButton jButtonAplicarFiltro;
+    private com.toedter.calendar.JDateChooser jDateChooserEnd;
+    private com.toedter.calendar.JDateChooser jDateChooserinit;
     // End of variables declaration//GEN-END:variables
 
     private void limpiar() {
         JlabelID.setText("");
-        txtFielNombreForm.setText("");
-        //desmarcar los botones radio
-        buttonGroup1.clearSelection();
+        JlabelFecha.setText("");
+        JlabelData.setText("");
     }
 
     private void mostrarDatos() {
@@ -364,17 +460,49 @@ public class BaseDatosMedicamentos extends javax.swing.JFrame {
         try {
             Connection con = conexion.getConexion();
             Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery("SELECT * FROM medicamentos");
+            ResultSet rs = st.executeQuery("SELECT * FROM registro");
             while (rs.next()) {
-                Object[] fila = new Object[3];
+                Object[] fila = new Object[5];
                 fila[0] = rs.getInt("id");
-                fila[1] = rs.getString("nombre");
-                fila[2] = rs.getString("categoria");
+                //date fecha to string
+                Date fecha = rs.getDate("fecha");
+                SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+                String fechaString = formato.format(fecha);
+                fila[1] = fechaString;
+                fila[2] = rs.getString("nombre");
+                fila[3] = rs.getString("categoria");
+                fila[4] = rs.getInt("cantidad");
                 modelo.addRow(fila);
             }
+           
             con.close();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex);
         }
+    }
+    
+    private void actualizarCategorias(){
+        //si combo solo tiene Todas, agregar categorias
+        try {
+            Connection con = conexion.getConexion();
+            Statement st = con.createStatement();
+            if (JFilterCategory.getItemCount() == 0) {
+                ResultSet rs = st.executeQuery("SELECT DISTINCT categoria FROM registro");
+                JFilterCategory.addItem("Todas");
+                while (rs.next()) {
+                    JFilterCategory.addItem(rs.getString("categoria"));
+                }
+            }else if(JFilterCategory.getItemCount() >1){
+                JFilterCategory.removeAllItems();
+                ResultSet rs = st.executeQuery("SELECT DISTINCT categoria FROM registro");
+                JFilterCategory.addItem("Todas");
+                while (rs.next()) {
+                    JFilterCategory.addItem(rs.getString("categoria"));
+                }
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+
     }
 }

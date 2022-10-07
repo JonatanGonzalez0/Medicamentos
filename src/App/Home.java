@@ -112,6 +112,7 @@ public class Home extends javax.swing.JFrame {
         JmenuSalir = new javax.swing.JMenu();
         JmenuReporte = new javax.swing.JMenu();
         JmenuReporteMensual = new javax.swing.JMenu();
+        JverTablaRegistros = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -303,6 +304,14 @@ public class Home extends javax.swing.JFrame {
             }
         });
         JmenuReporte.add(JmenuReporteMensual);
+
+        JverTablaRegistros.setText("Ver tabla de registros");
+        JverTablaRegistros.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                JverTablaRegistrosMouseClicked(evt);
+            }
+        });
+        JmenuReporte.add(JverTablaRegistros);
 
         jMenuBar2.add(JmenuReporte);
 
@@ -889,6 +898,21 @@ public class Home extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_JmenuSalirMouseClicked
 
+    private void JverTablaRegistrosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JverTablaRegistrosMouseClicked
+        
+        BaseRegistros baseReg = new BaseRegistros();
+        baseReg.setVisible(true);
+
+        //cuando se cierre actualizar
+        baseReg.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                cargarMedicamentos();
+            }
+        });
+
+    }//GEN-LAST:event_JverTablaRegistrosMouseClicked
+
     private void cargarMedicamentos() {
         //agregar nombres de medicamentos desde la base de datos
         jcomboMedicamentos.removeAllItems();
@@ -998,6 +1022,7 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JMenu JmenuReporteMensual;
     private javax.swing.JMenu JmenuSalir;
     private javax.swing.JPanel JpaneForm;
+    private javax.swing.JMenu JverTablaRegistros;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton jButtonRegistrar;
     private javax.swing.JButton jButtonVerBaseDatosMedicamentos;
