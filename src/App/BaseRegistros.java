@@ -8,6 +8,8 @@ import java.sql.Statement;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.swing.JLabel;
+import javax.swing.table.DefaultTableCellRenderer;
 
 
 public class BaseRegistros extends javax.swing.JFrame {
@@ -47,6 +49,7 @@ public class BaseRegistros extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         JlabelTitle.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
+        JlabelTitle.setForeground(new java.awt.Color(0, 153, 153));
         JlabelTitle.setText("BASE DE REGISTROS");
 
         JTableBaseDatos.setModel(new javax.swing.table.DefaultTableModel(
@@ -86,6 +89,40 @@ public class BaseRegistros extends javax.swing.JFrame {
             JTableBaseDatos.getColumnModel().getColumn(4).setPreferredWidth(150);
             JTableBaseDatos.getColumnModel().getColumn(4).setMaxWidth(150);
         }
+        //style table
+        JTableBaseDatos.getTableHeader().setFont(new java.awt.Font("Arial Black", 1, 14));
+        JTableBaseDatos.getTableHeader().setForeground(new java.awt.Color(0, 153, 153));
+        JTableBaseDatos.getTableHeader().setOpaque(false);
+        JTableBaseDatos.getTableHeader().setBackground(new java.awt.Color(255, 255, 255));
+        JTableBaseDatos.getTableHeader().setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 153, 153)));
+        JTableBaseDatos.setRowHeight(25);
+
+        JTableBaseDatos.setFont(new java.awt.Font("Arial", 0, 14));
+        JTableBaseDatos.setForeground(new java.awt.Color(51, 51, 51));
+        JTableBaseDatos.setSelectionBackground(new java.awt.Color(0, 153, 153));
+        JTableBaseDatos.setSelectionForeground(new java.awt.Color(255, 255, 255));
+        JTableBaseDatos.setGridColor(new java.awt.Color(0, 153, 153));
+        JTableBaseDatos.setShowVerticalLines(false);
+        JTableBaseDatos.setShowHorizontalLines(false);
+        JTableBaseDatos.setShowGrid(true);
+
+        //center header table
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+        JTableBaseDatos.getColumnModel().getColumn(0).setCellRenderer( centerRenderer );
+        JTableBaseDatos.getColumnModel().getColumn(1).setCellRenderer( centerRenderer );
+        JTableBaseDatos.getColumnModel().getColumn(2).setCellRenderer( centerRenderer );
+        JTableBaseDatos.getColumnModel().getColumn(3).setCellRenderer( centerRenderer );
+        JTableBaseDatos.getColumnModel().getColumn(4).setCellRenderer( centerRenderer );
+        //center table data
+
+        DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
+        leftRenderer.setHorizontalAlignment( JLabel.LEFT );
+        JTableBaseDatos.getColumnModel().getColumn(0).setCellRenderer( centerRenderer );
+        JTableBaseDatos.getColumnModel().getColumn(1).setCellRenderer( centerRenderer );
+        JTableBaseDatos.getColumnModel().getColumn(2).setCellRenderer( leftRenderer );
+        JTableBaseDatos.getColumnModel().getColumn(3).setCellRenderer( leftRenderer );
+        JTableBaseDatos.getColumnModel().getColumn(4).setCellRenderer( centerRenderer );
 
         JFilterCategory.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -96,6 +133,9 @@ public class BaseRegistros extends javax.swing.JFrame {
         Jlabel_filter.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         Jlabel_filter.setText("Filtrar por categoria");
 
+        JbuttonEliminar.setBackground(new java.awt.Color(255, 102, 102));
+        JbuttonEliminar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        JbuttonEliminar.setForeground(new java.awt.Color(255, 255, 255));
         JbuttonEliminar.setText("Eliminar");
         JbuttonEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -104,11 +144,14 @@ public class BaseRegistros extends javax.swing.JFrame {
         });
 
         JlabelID.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        JlabelID.setForeground(new java.awt.Color(0, 153, 153));
 
         JlabelFecha.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        JlabelFecha.setForeground(new java.awt.Color(0, 153, 153));
         JlabelFecha.setText("Fecha registro");
 
         JlabelData.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        JlabelData.setForeground(new java.awt.Color(0, 153, 153));
         JlabelData.setText("Nombre Medicamento");
 
         Jlabel_filter1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -121,6 +164,9 @@ public class BaseRegistros extends javax.swing.JFrame {
 
         jDateChooserinit.setToolTipText("Seleccione la fecha de inicio");
 
+        jButtonAplicarFiltro.setBackground(new java.awt.Color(0, 102, 153));
+        jButtonAplicarFiltro.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButtonAplicarFiltro.setForeground(new java.awt.Color(255, 255, 255));
         jButtonAplicarFiltro.setText("Aplicar");
         jButtonAplicarFiltro.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -150,11 +196,11 @@ public class BaseRegistros extends javax.swing.JFrame {
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(215, 215, 215)
                                         .addComponent(Jlabel_filter3, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(jDateChooserEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
-                                        .addComponent(jButtonAplicarFiltro))))))
+                                        .addComponent(jButtonAplicarFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(84, 84, 84)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -190,10 +236,10 @@ public class BaseRegistros extends javax.swing.JFrame {
                         .addComponent(Jlabel_filter1)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(JFilterCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButtonAplicarFiltro))
-                        .addGap(8, 8, 8)
+                            .addComponent(jButtonAplicarFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Jlabel_filter3))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(2, 2, 2)
@@ -229,7 +275,7 @@ public class BaseRegistros extends javax.swing.JFrame {
             JlabelID.setText(JTableBaseDatos.getValueAt(fila, 0).toString());
 
             //fecha
-            JlabelFecha.setText("Fecha :"+JTableBaseDatos.getValueAt(fila, 1).toString());
+            JlabelFecha.setText("Fecha : "+JTableBaseDatos.getValueAt(fila, 1).toString());
             //nombre categoria cantidad
             String nombre = JTableBaseDatos.getValueAt(fila, 2).toString();
             String categoria = JTableBaseDatos.getValueAt(fila, 3).toString();

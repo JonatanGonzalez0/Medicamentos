@@ -47,11 +47,11 @@
                                       <EmptySpace min="-2" pref="215" max="-2" attributes="0"/>
                                       <Component id="Jlabel_filter3" min="-2" pref="36" max="-2" attributes="0"/>
                                   </Group>
-                                  <Group type="102" alignment="0" attributes="0">
+                                  <Group type="102" alignment="1" attributes="0">
                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                       <Component id="jDateChooserEnd" min="-2" pref="136" max="-2" attributes="0"/>
-                                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Component id="jButtonAplicarFiltro" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                                      <Component id="jButtonAplicarFiltro" min="-2" pref="85" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -104,11 +104,11 @@
               </Group>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="JFilterCategory" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jButtonAplicarFiltro" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="JFilterCategory" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButtonAplicarFiltro" min="-2" pref="24" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="Jlabel_filter3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
@@ -148,6 +148,9 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Arial Black" size="24" style="1"/>
         </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="99" green="99" red="0" type="rgb"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="BASE DE REGISTROS"/>
       </Properties>
     </Component>
@@ -169,7 +172,7 @@
                 <Column editable="true" title="Cantidad" type="java.lang.Integer"/>
               </Table>
             </Property>
-            <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
+            <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor" postCode="//style table&#xa;        JTableBaseDatos.getTableHeader().setFont(new java.awt.Font(&quot;Arial Black&quot;, 1, 14));&#xa;        JTableBaseDatos.getTableHeader().setForeground(new java.awt.Color(0, 153, 153));&#xa;        JTableBaseDatos.getTableHeader().setOpaque(false);&#xa;        JTableBaseDatos.getTableHeader().setBackground(new java.awt.Color(255, 255, 255));&#xa;        JTableBaseDatos.getTableHeader().setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 153, 153)));&#xa;        JTableBaseDatos.setRowHeight(25);&#xa;&#xa;        JTableBaseDatos.setFont(new java.awt.Font(&quot;Arial&quot;, 0, 14));&#xa;        JTableBaseDatos.setForeground(new java.awt.Color(51, 51, 51));&#xa;        JTableBaseDatos.setSelectionBackground(new java.awt.Color(0, 153, 153));&#xa;        JTableBaseDatos.setSelectionForeground(new java.awt.Color(255, 255, 255));&#xa;        JTableBaseDatos.setGridColor(new java.awt.Color(0, 153, 153));&#xa;        JTableBaseDatos.setShowVerticalLines(false);&#xa;        JTableBaseDatos.setShowHorizontalLines(false);&#xa;        JTableBaseDatos.setShowGrid(true);&#xa;&#xa;        //center header table&#xa;        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();&#xa;        centerRenderer.setHorizontalAlignment( JLabel.CENTER );&#xa;        JTableBaseDatos.getColumnModel().getColumn(0).setCellRenderer( centerRenderer );&#xa;        JTableBaseDatos.getColumnModel().getColumn(1).setCellRenderer( centerRenderer );&#xa;        JTableBaseDatos.getColumnModel().getColumn(2).setCellRenderer( centerRenderer );&#xa;        JTableBaseDatos.getColumnModel().getColumn(3).setCellRenderer( centerRenderer );&#xa;        JTableBaseDatos.getColumnModel().getColumn(4).setCellRenderer( centerRenderer );&#xa;        //center table data&#xa;&#xa;        DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();&#xa;        leftRenderer.setHorizontalAlignment( JLabel.LEFT );&#xa;        JTableBaseDatos.getColumnModel().getColumn(0).setCellRenderer( centerRenderer );&#xa;        JTableBaseDatos.getColumnModel().getColumn(1).setCellRenderer( centerRenderer );&#xa;        JTableBaseDatos.getColumnModel().getColumn(2).setCellRenderer( leftRenderer );&#xa;        JTableBaseDatos.getColumnModel().getColumn(3).setCellRenderer( leftRenderer );&#xa;        JTableBaseDatos.getColumnModel().getColumn(4).setCellRenderer( centerRenderer );">
               <TableColumnModel selectionModel="0">
                 <Column maxWidth="100" minWidth="50" prefWidth="100" resizable="true">
                   <Title/>
@@ -235,6 +238,15 @@
     </Component>
     <Component class="javax.swing.JButton" name="JbuttonEliminar">
       <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="66" green="66" red="ff" type="rgb"/>
+        </Property>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Segoe UI" size="18" style="1"/>
+        </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Eliminar"/>
       </Properties>
       <Events>
@@ -246,12 +258,18 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="14" style="1"/>
         </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="99" green="99" red="0" type="rgb"/>
+        </Property>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="JlabelFecha">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="14" style="1"/>
+        </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="99" green="99" red="0" type="rgb"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Fecha registro"/>
       </Properties>
@@ -260,6 +278,9 @@
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="14" style="1"/>
+        </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="99" green="99" red="0" type="rgb"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Nombre Medicamento"/>
       </Properties>
@@ -296,6 +317,15 @@
     </Component>
     <Component class="javax.swing.JButton" name="jButtonAplicarFiltro">
       <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="99" green="66" red="0" type="rgb"/>
+        </Property>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Segoe UI" size="14" style="1"/>
+        </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Aplicar"/>
       </Properties>
       <Events>

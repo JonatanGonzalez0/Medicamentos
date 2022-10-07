@@ -30,7 +30,7 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
               <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="30" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="32767" attributes="0"/>
@@ -59,7 +59,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jLabel1" min="-2" pref="64" max="-2" attributes="0"/>
-                      <EmptySpace pref="17" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
                       <EmptySpace max="32767" attributes="0"/>
@@ -105,7 +105,7 @@
                 <Column editable="false" title="Categoria" type="java.lang.String"/>
               </Table>
             </Property>
-            <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
+            <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor" postCode="//style table&#xa;        JTableBaseDatos.getTableHeader().setFont(new java.awt.Font(&quot;Arial Black&quot;, 1, 14));&#xa;        JTableBaseDatos.getTableHeader().setForeground(new java.awt.Color(0, 153, 153));&#xa;        JTableBaseDatos.getTableHeader().setOpaque(false);&#xa;        JTableBaseDatos.getTableHeader().setBackground(new java.awt.Color(255, 255, 255));&#xa;        JTableBaseDatos.getTableHeader().setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 153, 153)));&#xa;        JTableBaseDatos.setRowHeight(25);&#xa;&#xa;        JTableBaseDatos.setFont(new java.awt.Font(&quot;Arial&quot;, 0, 14));&#xa;        JTableBaseDatos.setForeground(new java.awt.Color(51, 51, 51));&#xa;        JTableBaseDatos.setSelectionBackground(new java.awt.Color(0, 153, 153));&#xa;        JTableBaseDatos.setSelectionForeground(new java.awt.Color(255, 255, 255));&#xa;        JTableBaseDatos.setGridColor(new java.awt.Color(0, 153, 153));&#xa;        JTableBaseDatos.setShowVerticalLines(false);&#xa;        JTableBaseDatos.setShowHorizontalLines(false);&#xa;        JTableBaseDatos.setShowGrid(true);&#xa;&#xa;        //center header table&#xa;        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();&#xa;        centerRenderer.setHorizontalAlignment( JLabel.CENTER );&#xa;        JTableBaseDatos.getColumnModel().getColumn(0).setCellRenderer( centerRenderer );&#xa;        JTableBaseDatos.getColumnModel().getColumn(1).setCellRenderer( centerRenderer );&#xa;        JTableBaseDatos.getColumnModel().getColumn(2).setCellRenderer( centerRenderer );&#xa;&#xa;        //center table data&#xa;&#xa;        DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();&#xa;        leftRenderer.setHorizontalAlignment( JLabel.LEFT );&#xa;        JTableBaseDatos.getColumnModel().getColumn(0).setCellRenderer( centerRenderer );&#xa;        JTableBaseDatos.getColumnModel().getColumn(1).setCellRenderer( leftRenderer );&#xa;        JTableBaseDatos.getColumnModel().getColumn(2).setCellRenderer( leftRenderer );">
               <TableColumnModel selectionModel="0">
                 <Column maxWidth="100" minWidth="50" prefWidth="100" resizable="true">
                   <Title/>
@@ -138,6 +138,11 @@
       </SubComponents>
     </Container>
     <Container class="javax.swing.JPanel" name="jPanel1">
+      <Properties>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="99" green="99" red="0" type="rgb"/>
+        </Property>
+      </Properties>
 
       <Layout>
         <DimensionLayout dim="0">
@@ -158,16 +163,21 @@
                           <EmptySpace min="-2" pref="304" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="JbuttonEditar" min="-2" pref="100" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="85" max="-2" attributes="0"/>
-                          <Component id="JbuttonEliminar" min="-2" pref="102" max="-2" attributes="0"/>
-                          <EmptySpace min="31" pref="590" max="32767" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="txtFielNombreForm" min="-2" pref="334" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Component id="JbuttonEditar" min="-2" pref="100" max="-2" attributes="0"/>
+                              <Component id="txtFielNombreForm" min="-2" pref="334" max="-2" attributes="0"/>
+                          </Group>
                           <EmptySpace max="32767" attributes="0"/>
-                          <Component id="txtFieldCategoriaForm" min="-2" pref="334" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Component id="txtFieldCategoriaForm" min="-2" pref="334" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Component id="JbuttonEliminar" min="-2" pref="102" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="288" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
                       </Group>
                   </Group>
               </Group>
@@ -191,12 +201,12 @@
                       <Component id="txtFielNombreForm" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
                       <Component id="txtFieldCategoriaForm" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="JbuttonEditar" min="-2" pref="47" max="-2" attributes="0"/>
-                      <Component id="JbuttonEliminar" min="-2" pref="50" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="JbuttonEditar" alignment="3" min="-2" pref="47" max="-2" attributes="0"/>
+                      <Component id="JbuttonEliminar" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="62" max="32767" attributes="0"/>
+                  <EmptySpace pref="65" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -233,7 +243,7 @@
         <Component class="javax.swing.JLabel" name="jLabel2">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Segoe UI" size="14" style="1"/>
+              <Font name="Segoe UI" size="18" style="1"/>
             </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="33" green="33" red="33" type="rgb"/>
@@ -244,7 +254,7 @@
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Segoe UI" size="14" style="1"/>
+              <Font name="Segoe UI" size="18" style="1"/>
             </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="33" green="33" red="33" type="rgb"/>
@@ -255,7 +265,7 @@
         <Component class="javax.swing.JLabel" name="jLabel4">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Segoe UI" size="14" style="1"/>
+              <Font name="Segoe UI" size="18" style="1"/>
             </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="33" green="33" red="33" type="rgb"/>
@@ -266,7 +276,7 @@
         <Component class="javax.swing.JLabel" name="JlabelID">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Segoe UI" size="14" style="1"/>
+              <Font name="Segoe UI" size="18" style="1"/>
             </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="33" green="33" red="33" type="rgb"/>
@@ -274,13 +284,38 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtFieldCategoriaForm">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="99" green="99" red="0" type="rgb"/>
+            </Property>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="18" style="1"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+            </Property>
+          </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtFielNombreForm">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="99" green="99" red="0" type="rgb"/>
+            </Property>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="18" style="1"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+            </Property>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>
     <Component class="javax.swing.JComboBox" name="JFilterCategory">
       <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Arial" size="14" style="0"/>
+        </Property>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="1">
             <StringItem index="0" value="Todas"/>

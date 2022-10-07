@@ -6,6 +6,8 @@ import java.sql.Connection;
 import javax.swing.table.DefaultTableModel;
 import java.sql.Statement;
 import java.sql.ResultSet;
+import javax.swing.JLabel;
+import javax.swing.table.DefaultTableCellRenderer;
 
 public class BaseDatosMedicamentos extends javax.swing.JFrame {
 
@@ -81,6 +83,39 @@ public class BaseDatosMedicamentos extends javax.swing.JFrame {
             JTableBaseDatos.getColumnModel().getColumn(2).setPreferredWidth(300);
             JTableBaseDatos.getColumnModel().getColumn(2).setMaxWidth(300);
         }
+        //style table
+        JTableBaseDatos.getTableHeader().setFont(new java.awt.Font("Arial Black", 1, 14));
+        JTableBaseDatos.getTableHeader().setForeground(new java.awt.Color(0, 153, 153));
+        JTableBaseDatos.getTableHeader().setOpaque(false);
+        JTableBaseDatos.getTableHeader().setBackground(new java.awt.Color(255, 255, 255));
+        JTableBaseDatos.getTableHeader().setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 153, 153)));
+        JTableBaseDatos.setRowHeight(25);
+
+        JTableBaseDatos.setFont(new java.awt.Font("Arial", 0, 14));
+        JTableBaseDatos.setForeground(new java.awt.Color(51, 51, 51));
+        JTableBaseDatos.setSelectionBackground(new java.awt.Color(0, 153, 153));
+        JTableBaseDatos.setSelectionForeground(new java.awt.Color(255, 255, 255));
+        JTableBaseDatos.setGridColor(new java.awt.Color(0, 153, 153));
+        JTableBaseDatos.setShowVerticalLines(false);
+        JTableBaseDatos.setShowHorizontalLines(false);
+        JTableBaseDatos.setShowGrid(true);
+
+        //center header table
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+        JTableBaseDatos.getColumnModel().getColumn(0).setCellRenderer( centerRenderer );
+        JTableBaseDatos.getColumnModel().getColumn(1).setCellRenderer( centerRenderer );
+        JTableBaseDatos.getColumnModel().getColumn(2).setCellRenderer( centerRenderer );
+
+        //center table data
+
+        DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
+        leftRenderer.setHorizontalAlignment( JLabel.LEFT );
+        JTableBaseDatos.getColumnModel().getColumn(0).setCellRenderer( centerRenderer );
+        JTableBaseDatos.getColumnModel().getColumn(1).setCellRenderer( leftRenderer );
+        JTableBaseDatos.getColumnModel().getColumn(2).setCellRenderer( leftRenderer );
+
+        jPanel1.setForeground(new java.awt.Color(0, 153, 153));
 
         JbuttonEliminar.setBackground(new java.awt.Color(255, 102, 102));
         JbuttonEliminar.setForeground(new java.awt.Color(255, 255, 255));
@@ -100,20 +135,28 @@ public class BaseDatosMedicamentos extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(51, 51, 51));
         jLabel2.setText("Nombre");
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(51, 51, 51));
         jLabel3.setText("Categoria");
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(51, 51, 51));
         jLabel4.setText("Id");
 
-        JlabelID.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        JlabelID.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         JlabelID.setForeground(new java.awt.Color(51, 51, 51));
+
+        txtFieldCategoriaForm.setBackground(new java.awt.Color(0, 153, 153));
+        txtFieldCategoriaForm.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        txtFieldCategoriaForm.setForeground(new java.awt.Color(255, 255, 255));
+
+        txtFielNombreForm.setBackground(new java.awt.Color(0, 153, 153));
+        txtFielNombreForm.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        txtFielNombreForm.setForeground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -133,15 +176,17 @@ public class BaseDatosMedicamentos extends javax.swing.JFrame {
                         .addComponent(jLabel3)
                         .addGap(304, 304, 304))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(JbuttonEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(85, 85, 85)
-                        .addComponent(JbuttonEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(31, 590, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(txtFielNombreForm, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(JbuttonEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtFielNombreForm, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtFieldCategoriaForm, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(56, 56, 56))))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(txtFieldCategoriaForm, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(56, 56, 56))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(JbuttonEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(288, 288, 288))))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -158,13 +203,14 @@ public class BaseDatosMedicamentos extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtFielNombreForm, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtFieldCategoriaForm, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(47, 47, 47)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(45, 45, 45)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(JbuttonEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(JbuttonEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(62, Short.MAX_VALUE))
+                .addContainerGap(65, Short.MAX_VALUE))
         );
 
+        JFilterCategory.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         JFilterCategory.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todas" }));
         JFilterCategory.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -183,7 +229,7 @@ public class BaseDatosMedicamentos extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(52, 52, 52)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -205,7 +251,7 @@ public class BaseDatosMedicamentos extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel5)
@@ -231,7 +277,7 @@ public class BaseDatosMedicamentos extends javax.swing.JFrame {
             txtFielNombreForm.setText(JTableBaseDatos.getValueAt(fila, 1).toString());
             String categoria = JTableBaseDatos.getValueAt(fila, 2).toString();
 
-           txtFieldCategoriaForm.setText(categoria);
+            txtFieldCategoriaForm.setText(categoria);
         }
 
     }//GEN-LAST:event_JTableBaseDatosMouseClicked
@@ -289,6 +335,7 @@ public class BaseDatosMedicamentos extends javax.swing.JFrame {
         String categoria = JFilterCategory.getSelectedItem().toString();
         if (categoria.equals("Todas")) {
             mostrarDatos();
+            
         } else {
             String sql = "SELECT * FROM medicamentos WHERE categoria = '" + categoria + "'";
             DefaultTableModel modelo = (DefaultTableModel) JTableBaseDatos.getModel();
@@ -369,8 +416,7 @@ public class BaseDatosMedicamentos extends javax.swing.JFrame {
     private void limpiar() {
         JlabelID.setText("");
         txtFielNombreForm.setText("");
-        //desmarcar los botones radio
-        buttonGroup1.clearSelection();
+        
     }
 
     private void mostrarDatos() {
@@ -389,15 +435,25 @@ public class BaseDatosMedicamentos extends javax.swing.JFrame {
                 fila[2] = rs.getString("categoria");
                 modelo.addRow(fila);
             }
-            
-            //si combo solo tiene Todas, agregar categorias
+
+            con.close();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+    }
+
+    private void cargarCategorias() {
+        //si combo solo tiene Todas, agregar categorias
+        try {
+            Connection con = conexion.getConexion();
+            Statement st = con.createStatement();
             if (JFilterCategory.getItemCount() == 1) {
                 //obtener categorias de la base de datos
                 ResultSet rs2 = st.executeQuery("SELECT DISTINCT categoria FROM medicamentos");
                 while (rs2.next()) {
                     JFilterCategory.addItem(rs2.getString("categoria"));
                 }
-            }else if(JFilterCategory.getItemCount() > 1){
+            } else if (JFilterCategory.getItemCount() > 1) {
                 //si hay mas de una categoria, limpiar combo
                 JFilterCategory.removeAllItems();
                 JFilterCategory.addItem("Todas");
@@ -407,7 +463,6 @@ public class BaseDatosMedicamentos extends javax.swing.JFrame {
                     JFilterCategory.addItem(rs2.getString("categoria"));
                 }
             }
-            con.close();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex);
         }
