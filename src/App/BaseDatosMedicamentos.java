@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.sql.ResultSet;
 import javax.swing.JLabel;
 import javax.swing.table.DefaultTableCellRenderer;
+import java.awt.Toolkit;
 
 public class BaseDatosMedicamentos extends javax.swing.JFrame {
 
@@ -24,7 +25,6 @@ public class BaseDatosMedicamentos extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        buttonGroup1 = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
         JscrollTablaBase = new javax.swing.JScrollPane();
         JTableBaseDatos = new javax.swing.JTable();
@@ -41,6 +41,8 @@ public class BaseDatosMedicamentos extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Base de Datos");
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/IconMediClass.png")));
 
         jLabel1.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 153, 153));
@@ -402,7 +404,6 @@ public class BaseDatosMedicamentos extends javax.swing.JFrame {
     private javax.swing.JButton JbuttonEliminar;
     private javax.swing.JLabel JlabelID;
     public javax.swing.JScrollPane JscrollTablaBase;
-    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

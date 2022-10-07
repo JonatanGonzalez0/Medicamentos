@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JLabel;
 import javax.swing.table.DefaultTableCellRenderer;
-
+import java.awt.Toolkit;
 
 public class BaseRegistros extends javax.swing.JFrame {
 
@@ -29,7 +29,6 @@ public class BaseRegistros extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        buttonGroup1 = new javax.swing.ButtonGroup();
         JlabelTitle = new javax.swing.JLabel();
         JscrollTablaBase = new javax.swing.JScrollPane();
         JTableBaseDatos = new javax.swing.JTable();
@@ -47,6 +46,8 @@ public class BaseRegistros extends javax.swing.JFrame {
         jButtonAplicarFiltro = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Base de Registros");
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/IconMediClass.png")));
 
         JlabelTitle.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
         JlabelTitle.setForeground(new java.awt.Color(0, 153, 153));
@@ -275,12 +276,12 @@ public class BaseRegistros extends javax.swing.JFrame {
             JlabelID.setText(JTableBaseDatos.getValueAt(fila, 0).toString());
 
             //fecha
-            JlabelFecha.setText("Fecha : "+JTableBaseDatos.getValueAt(fila, 1).toString());
+            JlabelFecha.setText("Fecha : " + JTableBaseDatos.getValueAt(fila, 1).toString());
             //nombre categoria cantidad
             String nombre = JTableBaseDatos.getValueAt(fila, 2).toString();
             String categoria = JTableBaseDatos.getValueAt(fila, 3).toString();
             String cantidad = JTableBaseDatos.getValueAt(fila, 4).toString();
-            JlabelData.setText("Nombre : "+nombre+" Categoria : "+categoria+" Cantidad : "+cantidad);
+            JlabelData.setText("Nombre : " + nombre + " Categoria : " + categoria + " Cantidad : " + cantidad);
         }
 
     }//GEN-LAST:event_JTableBaseDatosMouseClicked
@@ -316,7 +317,23 @@ public class BaseRegistros extends javax.swing.JFrame {
         if (categoria.equals("Todas")) {
             mostrarDatos();
         } else {
-            String sql = "SELECT * FROM registro WHERE categoria = '" + categoria + "'";
+            String sql = "";
+            if (jDateChooserinit.getDate() != null && jDateChooserEnd.getDate() != null) {
+                String fechaInicio = jDateChooserinit.getDate().toString();
+                String fechaFin = jDateChooserEnd.getDate().toString();
+
+                Date fechaInit = jDateChooserinit.getDate();
+                long d = fechaInit.getTime();
+                java.sql.Date fechaInicioSql = new java.sql.Date(d);
+
+                Date fechaEnd = jDateChooserEnd.getDate();
+                long d2 = fechaEnd.getTime();
+                java.sql.Date fechaFinSql = new java.sql.Date(d2);
+                sql =  "SELECT * FROM registro WHERE categoria = '" + categoria + "' AND fecha BETWEEN '" + fechaInicioSql + "' AND '" + fechaFinSql + "'";
+            } else {
+                sql = "SELECT * FROM registro WHERE categoria = '" + categoria + "'";
+            }
+
             DefaultTableModel modelo = (DefaultTableModel) JTableBaseDatos.getModel();
             //limpiar tabla
             modelo.setRowCount(0);
@@ -328,7 +345,7 @@ public class BaseRegistros extends javax.swing.JFrame {
                 while (rs.next()) {
                     Object[] fila = new Object[5];
                     fila[0] = rs.getInt("id");
-                    
+
                     //date fecha to string
                     Date fecha = rs.getDate("fecha");
                     SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
@@ -353,9 +370,9 @@ public class BaseRegistros extends javax.swing.JFrame {
         String fechaFin = "";
         java.sql.Date fechaInicioSql = null;
         java.sql.Date fechaFinSql = null;
-        //si jdatechooser esta vacio
-        if (jDateChooserinit.getDate() != null && jDateChooserEnd.getDate()!=null ){
-            
+        //si jdatechooser no esta vacio
+        if (jDateChooserinit.getDate() != null && jDateChooserEnd.getDate() != null) {
+
             fechaInicio = jDateChooserinit.getDate().toString();
             fechaFin = jDateChooserEnd.getDate().toString();
 
@@ -486,7 +503,6 @@ public class BaseRegistros extends javax.swing.JFrame {
     private javax.swing.JLabel Jlabel_filter2;
     private javax.swing.JLabel Jlabel_filter3;
     public javax.swing.JScrollPane JscrollTablaBase;
-    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton jButtonAplicarFiltro;
     private com.toedter.calendar.JDateChooser jDateChooserEnd;
     private com.toedter.calendar.JDateChooser jDateChooserinit;
@@ -506,7 +522,22 @@ public class BaseRegistros extends javax.swing.JFrame {
         try {
             Connection con = conexion.getConexion();
             Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery("SELECT * FROM registro");
+            String sql = "";
+
+            if (jDateChooserinit.getDate() != null && jDateChooserEnd.getDate() != null) {
+                Date fechaInit = jDateChooserinit.getDate();
+                long d = fechaInit.getTime();
+                java.sql.Date fechaInicioSql = new java.sql.Date(d);
+
+                Date fechaEnd = jDateChooserEnd.getDate();
+                long d2 = fechaEnd.getTime();
+                java.sql.Date fechaFinSql = new java.sql.Date(d2);
+                sql = "SELECT * FROM registro WHERE fecha BETWEEN '" + fechaInicioSql + "' AND '" + fechaFinSql + "'";
+            }else {
+                sql = "SELECT * FROM registro";
+            }
+
+            ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
                 Object[] fila = new Object[5];
                 fila[0] = rs.getInt("id");
@@ -520,14 +551,14 @@ public class BaseRegistros extends javax.swing.JFrame {
                 fila[4] = rs.getInt("cantidad");
                 modelo.addRow(fila);
             }
-           
+
             con.close();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex);
         }
     }
-    
-    private void actualizarCategorias(){
+
+    private void actualizarCategorias() {
         //si combo solo tiene Todas, agregar categorias
         try {
             Connection con = conexion.getConexion();
@@ -538,7 +569,7 @@ public class BaseRegistros extends javax.swing.JFrame {
                 while (rs.next()) {
                     JFilterCategory.addItem(rs.getString("categoria"));
                 }
-            }else if(JFilterCategory.getItemCount() >1){
+            } else if (JFilterCategory.getItemCount() > 1) {
                 JFilterCategory.removeAllItems();
                 ResultSet rs = st.executeQuery("SELECT DISTINCT categoria FROM registro");
                 JFilterCategory.addItem("Todas");
