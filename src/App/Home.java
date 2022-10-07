@@ -90,7 +90,6 @@ public class Home extends javax.swing.JFrame {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
-        jLabel1 = new javax.swing.JLabel();
         JpaneForm = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jcomboMedicamentos = new javax.swing.JComboBox<>();
@@ -106,7 +105,8 @@ public class Home extends javax.swing.JFrame {
         jButtonRegistrar = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
         jCalendar1 = new com.toedter.calendar.JCalendar();
-        jMenuBar2 = new javax.swing.JMenuBar();
+        jLabel1 = new javax.swing.JLabel();
+        BarraSuperior = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
         JmenuActualizar = new javax.swing.JMenu();
         JmenuSalir = new javax.swing.JMenu();
@@ -116,10 +116,7 @@ public class Home extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-
-        jLabel1.setFont(new java.awt.Font("Century Gothic", 1, 24)); // NOI18N
-        jLabel1.setForeground(java.awt.SystemColor.textHighlight);
-        jLabel1.setText("CLASIFICACION MEDICAMENTOS");
+        setPreferredSize(new java.awt.Dimension(1000, 800));
 
         jLabel5.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(51, 102, 255));
@@ -133,8 +130,9 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
-        JBusqueda.setBackground(new java.awt.Color(240, 240, 240));
+        JBusqueda.setBackground(new java.awt.Color(0, 102, 204));
         JBusqueda.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        JBusqueda.setForeground(new java.awt.Color(255, 255, 255));
         JBusqueda.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 JBusquedaKeyReleased(evt);
@@ -151,11 +149,11 @@ public class Home extends javax.swing.JFrame {
         });
 
         jLabel4.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
-        jLabel4.setForeground(java.awt.SystemColor.textHighlight);
+        jLabel4.setForeground(new java.awt.Color(51, 51, 51));
         jLabel4.setText("MEDICAMENTO");
 
         jLabel3.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
-        jLabel3.setForeground(java.awt.SystemColor.textHighlight);
+        jLabel3.setForeground(new java.awt.Color(51, 51, 51));
         jLabel3.setText("CATEGORIA");
 
         jcantidadRegistro.setBackground(new java.awt.Color(240, 240, 240));
@@ -167,7 +165,7 @@ public class Home extends javax.swing.JFrame {
         jNombreMedicamento.setEnabled(false);
 
         jLabel6.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(51, 102, 255));
+        jLabel6.setForeground(new java.awt.Color(0, 0, 0));
         jLabel6.setText("Clasificar ingreso");
 
         jLabel7.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
@@ -190,71 +188,72 @@ public class Home extends javax.swing.JFrame {
 
         jCalendar1.setForeground(new java.awt.Color(153, 153, 153));
 
+        jLabel1.setFont(new java.awt.Font("Century Gothic", 1, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 153, 153));
+        jLabel1.setText("CLASIFICACION MEDICAMENTOS");
+
         javax.swing.GroupLayout JpaneFormLayout = new javax.swing.GroupLayout(JpaneForm);
         JpaneForm.setLayout(JpaneFormLayout);
         JpaneFormLayout.setHorizontalGroup(
             JpaneFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JpaneFormLayout.createSequentialGroup()
                 .addGap(36, 36, 36)
-                .addGroup(JpaneFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(JpaneFormLayout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(JpaneFormLayout.createSequentialGroup()
-                        .addComponent(jLabel7)
-                        .addContainerGap())
-                    .addGroup(JpaneFormLayout.createSequentialGroup()
-                        .addGroup(JpaneFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(JpaneFormLayout.createSequentialGroup()
-                                .addGap(24, 24, 24)
-                                .addGroup(JpaneFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(JpaneFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, JpaneFormLayout.createSequentialGroup()
+                        .addGroup(JpaneFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, JpaneFormLayout.createSequentialGroup()
+                                .addGap(53, 53, 53)
+                                .addComponent(jcantidadRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(99, 99, 99)
+                                .addComponent(jButtonRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, JpaneFormLayout.createSequentialGroup()
+                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addGroup(JpaneFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jcomboMedicamentos, 0, 379, Short.MAX_VALUE)
-                                    .addComponent(JBusqueda)))
+                                    .addComponent(jcomboMedicamentos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(JBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(76, 76, 76)
+                                .addComponent(jButtonVerBaseDatosMedicamentos)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(JpaneFormLayout.createSequentialGroup()
+                        .addGroup(JpaneFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addGroup(JpaneFormLayout.createSequentialGroup()
+                                .addGap(24, 24, 24)
+                                .addComponent(jLabel6))
                             .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(JpaneFormLayout.createSequentialGroup()
                                 .addGap(54, 54, 54)
                                 .addGroup(JpaneFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jNombreMedicamento, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 140, Short.MAX_VALUE)
                         .addGroup(JpaneFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JpaneFormLayout.createSequentialGroup()
-                                .addGroup(JpaneFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel9)
-                                    .addComponent(jCalendar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(144, 144, 144))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JpaneFormLayout.createSequentialGroup()
-                                .addComponent(jButtonVerBaseDatosMedicamentos)
-                                .addGap(45, 45, 45))))))
+                            .addComponent(jCalendar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel9))
+                        .addGap(244, 244, 244))))
             .addGroup(JpaneFormLayout.createSequentialGroup()
-                .addGap(89, 89, 89)
-                .addComponent(jcantidadRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(99, 99, 99)
-                .addComponent(jButtonRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(328, 328, 328)
+                .addComponent(jLabel1)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         JpaneFormLayout.setVerticalGroup(
             JpaneFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JpaneFormLayout.createSequentialGroup()
-                .addGroup(JpaneFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(JpaneFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(JBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(JpaneFormLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jButtonVerBaseDatosMedicamentos, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(19, 19, 19)
-                .addComponent(jcomboMedicamentos, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(56, 56, 56)
                 .addGroup(JpaneFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel9))
-                .addGroup(JpaneFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(JBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonVerBaseDatosMedicamentos, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
+                .addComponent(jcomboMedicamentos, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(69, 69, 69)
+                .addGroup(JpaneFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(JpaneFormLayout.createSequentialGroup()
+                        .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel4)
                         .addGap(18, 18, 18)
@@ -264,7 +263,8 @@ public class Home extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(JpaneFormLayout.createSequentialGroup()
-                        .addGap(41, 41, 41)
+                        .addComponent(jLabel9)
+                        .addGap(18, 18, 18)
                         .addComponent(jCalendar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel7)
@@ -272,7 +272,7 @@ public class Home extends javax.swing.JFrame {
                 .addGroup(JpaneFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jcantidadRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(98, 98, 98))
+                .addContainerGap(154, Short.MAX_VALUE))
         );
 
         jMenu3.setText("Archivo");
@@ -293,7 +293,7 @@ public class Home extends javax.swing.JFrame {
         });
         jMenu3.add(JmenuSalir);
 
-        jMenuBar2.add(jMenu3);
+        BarraSuperior.add(jMenu3);
 
         JmenuReporte.setText("Reportes");
 
@@ -313,30 +313,24 @@ public class Home extends javax.swing.JFrame {
         });
         JmenuReporte.add(JverTablaRegistros);
 
-        jMenuBar2.add(JmenuReporte);
+        BarraSuperior.add(JmenuReporte);
 
-        setJMenuBar(jMenuBar2);
+        setJMenuBar(BarraSuperior);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 476, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(306, 306, 306))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(50, 50, 50)
-                .addComponent(JpaneForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(JpaneForm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(JpaneForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(JpaneForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -892,6 +886,7 @@ public class Home extends javax.swing.JFrame {
 
         cargarMedicamentos();
         JBusqueda.setText("");
+        JOptionPane.showMessageDialog(null, "Medicamentos actualizados");
     }//GEN-LAST:event_JmenuActualizarMouseClicked
 
     private void JmenuSalirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JmenuSalirMouseClicked
@@ -1016,6 +1011,7 @@ public class Home extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuBar BarraSuperior;
     private javax.swing.JTextField JBusqueda;
     private javax.swing.JMenu JmenuActualizar;
     private javax.swing.JMenu JmenuReporte;
@@ -1036,7 +1032,6 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JTextField jNombreMedicamento;
     private javax.swing.JTextField jcantidadRegistro;
     private javax.swing.JComboBox<String> jcomboMedicamentos;

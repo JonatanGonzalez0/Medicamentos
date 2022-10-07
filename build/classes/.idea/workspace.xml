@@ -5,13 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1351be3a-484f-416e-863c-4fd83f675322" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/App/BaseRegistros.form" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/App/BaseRegistros.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../build.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../build.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../build/built-jar.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../build/built-jar.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../build/classes/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../build/classes/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../build/classes/App/Home$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/../build/classes/App/Home$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../build/classes/App/Home$10.class" beforeDir="false" afterPath="$PROJECT_DIR$/../build/classes/App/Home$10.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../build/classes/App/Home$11.class" beforeDir="false" afterPath="$PROJECT_DIR$/../build/classes/App/Home$11.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../build/classes/App/Home$12.class" beforeDir="false" afterPath="$PROJECT_DIR$/../build/classes/App/Home$12.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../build/classes/App/Home$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/../build/classes/App/Home$2.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../build/classes/App/Home$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/../build/classes/App/Home$3.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../build/classes/App/Home$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/../build/classes/App/Home$4.class" afterDir="false" />
@@ -22,12 +19,7 @@
       <change beforePath="$PROJECT_DIR$/../build/classes/App/Home$9.class" beforeDir="false" afterPath="$PROJECT_DIR$/../build/classes/App/Home$9.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../build/classes/App/Home.class" beforeDir="false" afterPath="$PROJECT_DIR$/../build/classes/App/Home.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../build/classes/App/Home.form" beforeDir="false" afterPath="$PROJECT_DIR$/../build/classes/App/Home.form" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbproject/private/private.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../nbproject/private/private.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbproject/private/private.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../nbproject/private/private.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbproject/project.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../nbproject/project.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/BaseDatosMedicamentos.form" beforeDir="false" afterPath="$PROJECT_DIR$/App/BaseDatosMedicamentos.form" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/BaseDatosMedicamentos.java" beforeDir="false" afterPath="$PROJECT_DIR$/App/BaseDatosMedicamentos.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/Home.form" beforeDir="false" afterPath="$PROJECT_DIR$/App/Home.form" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/Home.java" beforeDir="false" afterPath="$PROJECT_DIR$/App/Home.java" afterDir="false" />
     </list>
@@ -73,7 +65,8 @@
       <workItem from="1664994054967" duration="22284000" />
       <workItem from="1665069290488" duration="14251000" />
       <workItem from="1665085585743" duration="4506000" />
-      <workItem from="1665093605827" duration="16142000" />
+      <workItem from="1665093605827" duration="16501000" />
+      <workItem from="1665151902293" duration="21000" />
     </task>
     <servers />
   </component>
