@@ -1,5 +1,6 @@
 package App;
 
+import java.awt.Image;
 import javax.swing.JOptionPane;
 import java.sql.PreparedStatement;
 import java.sql.Connection;
@@ -9,11 +10,18 @@ import java.sql.ResultSet;
 import javax.swing.JLabel;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.Toolkit;
+import javax.swing.ImageIcon;
 
 public class BaseDatosMedicamentos extends javax.swing.JFrame {
 
     public BaseDatosMedicamentos() {
         initComponents();
+        //jlabel background
+        Image background = new ImageIcon(this.getClass().getResource("/images/background3.jpg")).getImage();
+
+        //bound get frame size
+        JLabelBackground.setIcon(new ImageIcon(background));
+        JLabelBackground.setBounds(0, 0, 910, 768);
     }
 
     /**
@@ -28,7 +36,8 @@ public class BaseDatosMedicamentos extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         JscrollTablaBase = new javax.swing.JScrollPane();
         JTableBaseDatos = new javax.swing.JTable();
-        jPanel1 = new javax.swing.JPanel();
+        JFilterCategory = new javax.swing.JComboBox<>();
+        jLabel5 = new javax.swing.JLabel();
         JbuttonEliminar = new javax.swing.JButton();
         JbuttonEditar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
@@ -37,16 +46,19 @@ public class BaseDatosMedicamentos extends javax.swing.JFrame {
         JlabelID = new javax.swing.JLabel();
         txtFieldCategoriaForm = new javax.swing.JTextField();
         txtFielNombreForm = new javax.swing.JTextField();
-        JFilterCategory = new javax.swing.JComboBox<>();
-        jLabel5 = new javax.swing.JLabel();
+        JLabelBackground = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Base de Datos");
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/IconMediClass.png")));
+        setPreferredSize(new java.awt.Dimension(910, 768));
+        setResizable(false);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 153, 153));
         jLabel1.setText("BASE DATOS MEDICAMENTOS ");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(274, 6, -1, 64));
 
         JTableBaseDatos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -117,7 +129,22 @@ public class BaseDatosMedicamentos extends javax.swing.JFrame {
         JTableBaseDatos.getColumnModel().getColumn(1).setCellRenderer( leftRenderer );
         JTableBaseDatos.getColumnModel().getColumn(2).setCellRenderer( leftRenderer );
 
-        jPanel1.setForeground(new java.awt.Color(0, 153, 153));
+        getContentPane().add(JscrollTablaBase, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 120, 805, 460));
+
+        JFilterCategory.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        JFilterCategory.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todas" }));
+        JFilterCategory.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                JFilterCategoryItemStateChanged(evt);
+            }
+        });
+        getContentPane().add(JFilterCategory, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 80, 191, 30));
+
+        jLabel5.setBackground(new java.awt.Color(51, 51, 51));
+        jLabel5.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel5.setText("Filtrar por categoria");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 60, 190, -1));
 
         JbuttonEliminar.setBackground(new java.awt.Color(255, 102, 102));
         JbuttonEliminar.setForeground(new java.awt.Color(255, 255, 255));
@@ -127,6 +154,7 @@ public class BaseDatosMedicamentos extends javax.swing.JFrame {
                 JbuttonEliminarActionPerformed(evt);
             }
         });
+        getContentPane().add(JbuttonEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 690, 102, 38));
 
         JbuttonEditar.setBackground(new java.awt.Color(51, 51, 255));
         JbuttonEditar.setForeground(new java.awt.Color(255, 255, 255));
@@ -136,135 +164,37 @@ public class BaseDatosMedicamentos extends javax.swing.JFrame {
                 JbuttonEditarActionPerformed(evt);
             }
         });
+        getContentPane().add(JbuttonEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 690, 106, 38));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel2.setForeground(java.awt.SystemColor.textHighlight);
         jLabel2.setText("Nombre");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 600, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel3.setForeground(java.awt.SystemColor.textHighlight);
         jLabel3.setText("Categoria");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 600, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel4.setForeground(java.awt.SystemColor.textHighlight);
         jLabel4.setText("Id");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 630, 23, -1));
 
         JlabelID.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         JlabelID.setForeground(new java.awt.Color(51, 51, 51));
+        getContentPane().add(JlabelID, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 600, -1, -1));
 
         txtFieldCategoriaForm.setBackground(new java.awt.Color(0, 153, 153));
         txtFieldCategoriaForm.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         txtFieldCategoriaForm.setForeground(new java.awt.Color(255, 255, 255));
+        getContentPane().add(txtFieldCategoriaForm, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 630, 334, -1));
 
         txtFielNombreForm.setBackground(new java.awt.Color(0, 153, 153));
         txtFielNombreForm.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         txtFielNombreForm.setForeground(new java.awt.Color(255, 255, 255));
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(41, 41, 41)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(JlabelID)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 451, Short.MAX_VALUE)
-                        .addComponent(jLabel3)
-                        .addGap(304, 304, 304))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(JbuttonEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtFielNombreForm, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(txtFieldCategoriaForm, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(56, 56, 56))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(JbuttonEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(288, 288, 288))))))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(JlabelID))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3))
-                .addGap(34, 34, 34)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtFielNombreForm, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtFieldCategoriaForm, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(45, 45, 45)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(JbuttonEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(JbuttonEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(65, Short.MAX_VALUE))
-        );
-
-        JFilterCategory.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        JFilterCategory.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todas" }));
-        JFilterCategory.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                JFilterCategoryItemStateChanged(evt);
-            }
-        });
-
-        jLabel5.setBackground(new java.awt.Color(51, 51, 51));
-        jLabel5.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        jLabel5.setText("Filtrar por categoria");
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(52, 52, 52)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(JFilterCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel1)
-                            .addGap(298, 298, 298))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addComponent(JscrollTablaBase, javax.swing.GroupLayout.PREFERRED_SIZE, 805, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(92, 92, 92)))))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel5)
-                        .addGap(10, 10, 10)))
-                .addComponent(JFilterCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(13, 13, 13)
-                .addComponent(JscrollTablaBase, javax.swing.GroupLayout.PREFERRED_SIZE, 495, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36))
-        );
+        getContentPane().add(txtFielNombreForm, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 630, 334, -1));
+        getContentPane().add(JLabelBackground, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 910, 768));
 
         pack();
         setLocationRelativeTo(null);
@@ -399,6 +329,7 @@ public class BaseDatosMedicamentos extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JComboBox<String> JFilterCategory;
+    private javax.swing.JLabel JLabelBackground;
     public javax.swing.JTable JTableBaseDatos;
     private javax.swing.JButton JbuttonEditar;
     private javax.swing.JButton JbuttonEliminar;
@@ -409,7 +340,6 @@ public class BaseDatosMedicamentos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField txtFielNombreForm;
     private javax.swing.JTextField txtFieldCategoriaForm;
     // End of variables declaration//GEN-END:variables

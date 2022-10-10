@@ -1,15 +1,29 @@
 package App;
 
 
+import java.awt.Image;
 import java.awt.Toolkit;
 import javax.swing.JOptionPane;
 import java.sql.PreparedStatement;
 import java.sql.Connection;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 public class FormRegistro extends javax.swing.JFrame {
 
     public FormRegistro() {
         initComponents();
+
+        //jlabel background
+        Image background = new ImageIcon(this.getClass().getResource("/images/background3.jpg")).getImage();
+
+        JLabelBackground.setIcon(new ImageIcon(background));
+
+        //bound get frame size
+        JLabelBackground.setBounds(0, 0, 641, 768);
+
+
+        
     }
 
 
@@ -17,6 +31,7 @@ public class FormRegistro extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         JtextFieldNombre = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
@@ -25,26 +40,35 @@ public class FormRegistro extends javax.swing.JFrame {
         jComboBoxCategoria = new javax.swing.JComboBox<>();
         JTextCrearCategoria = new javax.swing.JTextField();
         JlabelNuevaCat = new javax.swing.JLabel();
+        JLabelBackground = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Formulario Registro Medicamento");
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/IconMediClass.png")));
+        setResizable(false);
+
+        jPanel1.setOpaque(false);
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 153, 153));
+        jLabel1.setForeground(java.awt.SystemColor.textHighlight);
         jLabel1.setText("Formulario Registro Medicamento ");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, -1, 64));
 
         JtextFieldNombre.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jPanel1.add(JtextFieldNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(14, 204, 440, 34));
 
         jLabel4.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         jLabel4.setForeground(java.awt.SystemColor.textHighlight);
         jLabel4.setText("Nombre");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(14, 154, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         jLabel5.setForeground(java.awt.SystemColor.textHighlight);
         jLabel5.setText("Seleccione la categoria");
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(14, 303, -1, -1));
 
-        JbuttonRegistrarMedicamento.setBackground(new java.awt.Color(9, 60, 41));
+        JbuttonRegistrarMedicamento.setBackground(java.awt.SystemColor.textHighlight);
         JbuttonRegistrarMedicamento.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         JbuttonRegistrarMedicamento.setForeground(new java.awt.Color(255, 255, 255));
         JbuttonRegistrarMedicamento.setText("Registrar Medicamento");
@@ -53,6 +77,7 @@ public class FormRegistro extends javax.swing.JFrame {
                 JbuttonRegistrarMedicamentoActionPerformed(evt);
             }
         });
+        jPanel1.add(JbuttonRegistrarMedicamento, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 600, -1, 51));
 
         jComboBoxCategoria.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jComboBoxCategoria.addItemListener(new java.awt.event.ItemListener() {
@@ -60,58 +85,32 @@ public class FormRegistro extends javax.swing.JFrame {
                 jComboBoxCategoriaItemStateChanged(evt);
             }
         });
+        jPanel1.add(jComboBoxCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 380, 331, 38));
 
         JTextCrearCategoria.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         JTextCrearCategoria.setEnabled(false);
+        jPanel1.add(JTextCrearCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 500, 331, 36));
 
         JlabelNuevaCat.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jPanel1.add(JlabelNuevaCat, new org.netbeans.lib.awtextra.AbsoluteConstraints(111, 475, 129, 23));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(JTextCrearCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBoxCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(JlabelNuevaCat, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(151, 151, 151))
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(62, 62, 62)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(JtextFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel4)
-                                .addComponent(jLabel1)
-                                .addComponent(jLabel5))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(202, 202, 202)
-                        .addComponent(JbuttonRegistrarMedicamento)))
-                .addContainerGap(101, Short.MAX_VALUE))
+                .addGap(79, 79, 79)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(1, 1, 1)
+                .addComponent(JLabelBackground, javax.swing.GroupLayout.PREFERRED_SIZE, 640, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
-                .addComponent(jLabel4)
-                .addGap(18, 18, 18)
-                .addComponent(JtextFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
-                .addComponent(jLabel5)
-                .addGap(28, 28, 28)
-                .addComponent(jComboBoxCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(39, 39, 39)
-                .addComponent(JlabelNuevaCat, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(JTextCrearCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
-                .addComponent(JbuttonRegistrarMedicamento, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(57, Short.MAX_VALUE))
+                .addGap(26, 26, 26)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 738, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(JLabelBackground, javax.swing.GroupLayout.PREFERRED_SIZE, 770, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -151,7 +150,7 @@ public class FormRegistro extends javax.swing.JFrame {
     private void jComboBoxCategoriaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBoxCategoriaItemStateChanged
         // TODO add your handling code here:
         String categoria = jComboBoxCategoria.getSelectedItem().toString();
-        if (categoria.equals("click para crear una nueva categoria")) {
+        if (categoria.equals("Click para crear una nueva Categoria")) {
             JTextCrearCategoria.setEnabled(true);
             JTextCrearCategoria.setText("");
             JlabelNuevaCat.setVisible(true);
@@ -201,6 +200,7 @@ public class FormRegistro extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel JLabelBackground;
     public javax.swing.JTextField JTextCrearCategoria;
     private javax.swing.JButton JbuttonRegistrarMedicamento;
     private javax.swing.JLabel JlabelNuevaCat;
@@ -209,6 +209,7 @@ public class FormRegistro extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 
 
