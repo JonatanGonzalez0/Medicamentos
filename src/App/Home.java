@@ -1,36 +1,36 @@
 package App;
 
 import com.toedter.calendar.JDateChooser;
-import java.awt.Color;
-import java.awt.Desktop;
-import java.awt.Font;
-import java.awt.Image;
-import java.awt.Toolkit;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.geom.Ellipse2D;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 import java.sql.Statement;
-import java.util.Date;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.labels.*;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ImageIcon;
-import javax.swing.JFileChooser;
 import javax.swing.table.DefaultTableModel;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
@@ -51,29 +51,57 @@ import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.ValueAxis;
-import org.jfree.chart.labels.PieSectionLabelGenerator;
-import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
-import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.title.LegendTitle;
 import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.ui.TextAnchor;
+
+import java.util.Date;
 
 public class Home extends javax.swing.JFrame {
 
     public Home() {
         initComponents();
         cargarMedicamentos();
-        //colocar imagen logo en jlabel autoscala
-        ImageIcon icon = new ImageIcon(getClass().getResource("/images/logo.png"));
-        //jLabelLogo.setIcon(new ImageIcon(icon.getImage().getScaledInstance(jLabelLogo.getWidth(), jLabelLogo.getHeight(), 1)));
-
+        cargarDoctores();
+        cargarPacientes();
+        
+        // Crea un ImageIcon con la imagen de tu logotipo
+        
+        ImageIcon imageIcon = new ImageIcon(new ImageIcon(getClass().getResource("/images/IH-LOGO-2.png")).getImage().getScaledInstance(200, 200, Image.SCALE_DEFAULT));
+        jLabelLogo.setIcon(imageIcon);
+      
         //jpanel image background
         Image background = new ImageIcon(getClass().getResource("/images/background3.jpg")).getImage();
+
+        //aplicar transparencia al JLabel de fondo
+        JlabelBackground.setBackground(new Color(0, 0, 0, 128)); // Establece la opacidad del fondo (128 es semitransparente)
+        JlabelBackground.setOpaque(true); // Asegura que el JLabel sea opaco
+
         //jlabel image background
         JlabelBackground.setIcon(new ImageIcon(background.getScaledInstance(JlabelBackground.getWidth(), JlabelBackground.getHeight(), 1)));
+        
+        
+        // Crear el menú contextual
+        JPopupMenu popupMenu = new JPopupMenu();
+        JMenuItem deleteMenuItem = new JMenuItem("Eliminar Fila");
+        deleteMenuItem.addActionListener((ActionEvent e) -> {
+            int selectedRow = JTable_CarritoMedicamentos.getSelectedRow();
+            if (selectedRow != -1) {
+                DefaultTableModel model = (DefaultTableModel) JTable_CarritoMedicamentos.getModel();
+                model.removeRow(selectedRow);
+            }
+        });
+        popupMenu.add(deleteMenuItem);
+        // Asociar el menú contextual con el JTable
+        JTable_CarritoMedicamentos.setComponentPopupMenu(popupMenu);
+        JTable_CarritoMedicamentos.setRowHeight(30);
 
         comprobarCarpetaApp();
+        JBusqueda_doctor.requestFocus();
+        jNombreMedicamento.setVisible(false);
+        jCategoria.setVisible(false);
 
     }
 
@@ -82,20 +110,27 @@ public class Home extends javax.swing.JFrame {
     private void initComponents() {
 
         JpaneForm = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
-        jcomboMedicamentos = new javax.swing.JComboBox<>();
-        JBusqueda = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        jcombo_Medicamento = new javax.swing.JComboBox<>();
+        JBusqueda_Medicamento = new javax.swing.JTextField();
         jcantidadRegistro = new javax.swing.JTextField();
         jCategoria = new javax.swing.JTextField();
         jNombreMedicamento = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jButtonRegistrar = new javax.swing.JButton();
-        jLabel9 = new javax.swing.JLabel();
+        jButtonAgregarMedicamento = new javax.swing.JButton();
+        jLabelFecha = new javax.swing.JLabel();
         jCalendar1 = new com.toedter.calendar.JCalendar();
-        jLabel1 = new javax.swing.JLabel();
+        JBusqueda_Paciente = new javax.swing.JTextField();
+        jcombo_Paciente = new javax.swing.JComboBox<>();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        JTable_CarritoMedicamentos = new javax.swing.JTable();
+        jButtonRegistrar = new javax.swing.JButton();
+        jLabelLogo = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        JBusqueda_doctor = new javax.swing.JTextField();
+        jcombo_Doctor = new javax.swing.JComboBox<>();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
         JlabelBackground = new javax.swing.JLabel();
         BarraSuperior = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
@@ -103,6 +138,8 @@ public class Home extends javax.swing.JFrame {
         JmenuSalir = new javax.swing.JMenu();
         JmenuReporte = new javax.swing.JMenu();
         JmenuReporteMensual = new javax.swing.JMenu();
+        JmenuReporteDoctores = new javax.swing.JMenu();
+        JmenuReporteOcupacional = new javax.swing.JMenu();
         JverTablaRegistros = new javax.swing.JMenu();
         jMenu1 = new javax.swing.JMenu();
 
@@ -113,96 +150,209 @@ public class Home extends javax.swing.JFrame {
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        JpaneForm.setForeground(new java.awt.Color(51, 51, 51));
+        JpaneForm.setForeground(new java.awt.Color(204, 0, 0));
         JpaneForm.setOpaque(false);
         JpaneForm.setPreferredSize(new java.awt.Dimension(1366, 768));
         JpaneForm.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel5.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
-        jLabel5.setForeground(java.awt.SystemColor.textHighlight);
-        jLabel5.setText("BUSQUEDA");
-        JpaneForm.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, 158, 39));
-
-        jcomboMedicamentos.setBackground(new java.awt.Color(102, 153, 255));
-        jcomboMedicamentos.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jcomboMedicamentos.setForeground(new java.awt.Color(255, 255, 255));
-        jcomboMedicamentos.addActionListener(new java.awt.event.ActionListener() {
+        jcombo_Medicamento.setBackground(new java.awt.Color(102, 153, 255));
+        jcombo_Medicamento.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jcombo_Medicamento.setForeground(new java.awt.Color(255, 255, 255));
+        jcombo_Medicamento.setNextFocusableComponent(jcantidadRegistro);
+        jcombo_Medicamento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jcomboMedicamentosActionPerformed(evt);
+                jcombo_MedicamentoActionPerformed(evt);
             }
         });
-        JpaneForm.add(jcomboMedicamentos, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 210, 470, 36));
+        JpaneForm.add(jcombo_Medicamento, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 580, 460, 35));
 
-        JBusqueda.setBackground(new java.awt.Color(0, 153, 153));
-        JBusqueda.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        JBusqueda.setForeground(new java.awt.Color(255, 255, 255));
-        JBusqueda.addKeyListener(new java.awt.event.KeyAdapter() {
+        JBusqueda_Medicamento.setBackground(new java.awt.Color(0, 51, 153));
+        JBusqueda_Medicamento.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        JBusqueda_Medicamento.setForeground(new java.awt.Color(255, 255, 255));
+        JBusqueda_Medicamento.setNextFocusableComponent(jcantidadRegistro);
+        JBusqueda_Medicamento.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                JBusquedaKeyReleased(evt);
+                JBusqueda_MedicamentoKeyReleased(evt);
             }
         });
-        JpaneForm.add(JBusqueda, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 130, 470, 39));
+        JpaneForm.add(JBusqueda_Medicamento, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 530, 460, 35));
 
-        jLabel4.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
-        jLabel4.setForeground(java.awt.SystemColor.textHighlight);
-        jLabel4.setText("MEDICAMENTO");
-        JpaneForm.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 360, -1, -1));
-
-        jLabel3.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
-        jLabel3.setForeground(java.awt.SystemColor.textHighlight);
-        jLabel3.setText("CATEGORIA");
-        JpaneForm.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 360, 159, -1));
-
-        jcantidadRegistro.setBackground(new java.awt.Color(0, 153, 153));
+        jcantidadRegistro.setBackground(new java.awt.Color(0, 51, 153));
         jcantidadRegistro.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jcantidadRegistro.setForeground(new java.awt.Color(255, 255, 255));
-        jcantidadRegistro.setOpaque(true);
-        JpaneForm.add(jcantidadRegistro, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 510, 260, -1));
+        jcantidadRegistro.setNextFocusableComponent(jButtonAgregarMedicamento);
+        jcantidadRegistro.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jcantidadRegistroKeyReleased(evt);
+            }
+        });
+        JpaneForm.add(jcantidadRegistro, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 630, 140, 50));
 
         jCategoria.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jCategoria.setEnabled(false);
-        JpaneForm.add(jCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 400, 400, 43));
+        JpaneForm.add(jCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 690, 20, 43));
 
         jNombreMedicamento.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jNombreMedicamento.setEnabled(false);
-        JpaneForm.add(jNombreMedicamento, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 400, 400, 43));
+        JpaneForm.add(jNombreMedicamento, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 690, 30, 43));
 
         jLabel6.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(0, 0, 128));
-        jLabel6.setText("CLASIFICAR MEDICAMENTO ");
-        JpaneForm.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 310, -1, -1));
+        jLabel6.setText("RESUMEN MEDICAMENTOS");
+        JpaneForm.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 30, -1, -1));
 
+        jLabel7.setBackground(new java.awt.Color(255, 255, 255));
         jLabel7.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
-        jLabel7.setForeground(java.awt.SystemColor.textHighlight);
+        jLabel7.setForeground(new java.awt.Color(0, 0, 128));
         jLabel7.setText("CANTIDAD");
-        JpaneForm.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 470, -1, -1));
+        JpaneForm.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 630, 130, 40));
 
-        jButtonRegistrar.setBackground(java.awt.SystemColor.textHighlight);
+        jButtonAgregarMedicamento.setBackground(new java.awt.Color(0, 51, 102));
+        jButtonAgregarMedicamento.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        jButtonAgregarMedicamento.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonAgregarMedicamento.setText("Agregar");
+        jButtonAgregarMedicamento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAgregarMedicamentoActionPerformed(evt);
+            }
+        });
+        JpaneForm.add(jButtonAgregarMedicamento, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 630, 200, 50));
+
+        jLabelFecha.setBackground(new java.awt.Color(0, 51, 153));
+        jLabelFecha.setFont(new java.awt.Font("Unispace", 0, 18)); // NOI18N
+        jLabelFecha.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelFecha.setText("FECHA");
+        jLabelFecha.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+        jLabelFecha.setOpaque(true);
+        JpaneForm.add(jLabelFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 220, 220, 30));
+
+        jCalendar1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+        jCalendar1.setDecorationBordersVisible(true);
+        jCalendar1.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jCalendar1PropertyChange(evt);
+            }
+        });
+        JpaneForm.add(jCalendar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 10, 410, 190));
+
+        JBusqueda_Paciente.setBackground(new java.awt.Color(0, 51, 153));
+        JBusqueda_Paciente.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        JBusqueda_Paciente.setForeground(new java.awt.Color(255, 255, 255));
+        JBusqueda_Paciente.setNextFocusableComponent(JBusqueda_Medicamento);
+        JBusqueda_Paciente.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                JBusqueda_PacienteKeyReleased(evt);
+            }
+        });
+        JpaneForm.add(JBusqueda_Paciente, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 290, 460, 35));
+
+        jcombo_Paciente.setBackground(new java.awt.Color(102, 153, 255));
+        jcombo_Paciente.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jcombo_Paciente.setForeground(new java.awt.Color(255, 255, 255));
+        jcombo_Paciente.setNextFocusableComponent(jcantidadRegistro);
+        jcombo_Paciente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcombo_PacienteActionPerformed(evt);
+            }
+        });
+        JpaneForm.add(jcombo_Paciente, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 340, 460, 35));
+
+        jScrollPane1.setBackground(new java.awt.Color(102, 153, 255));
+
+        JTable_CarritoMedicamentos.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        JTable_CarritoMedicamentos.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        JTable_CarritoMedicamentos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Cantidad", "Nombre", "Categoria"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                true, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        JTable_CarritoMedicamentos.setGridColor(new java.awt.Color(102, 153, 255));
+        JTable_CarritoMedicamentos.setSelectionBackground(new java.awt.Color(51, 102, 255));
+        JTable_CarritoMedicamentos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        JTable_CarritoMedicamentos.setShowGrid(true);
+        jScrollPane1.setViewportView(JTable_CarritoMedicamentos);
+        if (JTable_CarritoMedicamentos.getColumnModel().getColumnCount() > 0) {
+            JTable_CarritoMedicamentos.getColumnModel().getColumn(1).setPreferredWidth(300);
+            JTable_CarritoMedicamentos.getColumnModel().getColumn(2).setPreferredWidth(150);
+        }
+
+        JpaneForm.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 90, 570, 540));
+
+        jButtonRegistrar.setBackground(new java.awt.Color(0, 51, 102));
         jButtonRegistrar.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         jButtonRegistrar.setForeground(new java.awt.Color(255, 255, 255));
-        jButtonRegistrar.setText("Clasificar");
+        jButtonRegistrar.setText("Registrar Medicamentos");
         jButtonRegistrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonRegistrarActionPerformed(evt);
             }
         });
-        JpaneForm.add(jButtonRegistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 500, 170, 60));
+        JpaneForm.add(jButtonRegistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 650, 380, 50));
 
-        jLabel9.setFont(new java.awt.Font("Dubai", 0, 36)); // NOI18N
-        jLabel9.setForeground(java.awt.SystemColor.textHighlight);
-        jLabel9.setText("Calendario");
-        JpaneForm.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(941, 70, 180, 40));
+        jLabelLogo.setBackground(new java.awt.Color(0, 0, 0));
+        jLabelLogo.setDisabledIcon(null);
+        jLabelLogo.setOpaque(true);
+        JpaneForm.add(jLabelLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 200, 200));
 
-        jCalendar1.setForeground(new java.awt.Color(0, 153, 153));
-        JpaneForm.add(jCalendar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 120, 380, 200));
+        jLabel10.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(0, 0, 128));
+        jLabel10.setText("Buscar Medicamento");
+        JpaneForm.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 530, 190, 39));
 
-        jLabel1.setFont(new java.awt.Font("Century Gothic", 1, 36)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 153, 153));
-        jLabel1.setText("CLASIFICACION MEDICAMENTOS");
-        JpaneForm.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(331, 6, -1, -1));
+        JBusqueda_doctor.setBackground(new java.awt.Color(0, 51, 153));
+        JBusqueda_doctor.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        JBusqueda_doctor.setForeground(new java.awt.Color(255, 255, 255));
+        JBusqueda_doctor.setNextFocusableComponent(JBusqueda_Paciente);
+        JBusqueda_doctor.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                JBusqueda_doctorKeyReleased(evt);
+            }
+        });
+        JpaneForm.add(JBusqueda_doctor, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 410, 460, 35));
 
-        getContentPane().add(JpaneForm, new org.netbeans.lib.awtextra.AbsoluteConstraints(73, 36, 1247, 680));
-        getContentPane().add(JlabelBackground, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1366, 768));
+        jcombo_Doctor.setBackground(new java.awt.Color(102, 153, 255));
+        jcombo_Doctor.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jcombo_Doctor.setForeground(new java.awt.Color(255, 255, 255));
+        jcombo_Doctor.setNextFocusableComponent(jcantidadRegistro);
+        jcombo_Doctor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcombo_DoctorActionPerformed(evt);
+            }
+        });
+        JpaneForm.add(jcombo_Doctor, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 460, 460, 35));
+
+        jLabel9.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(0, 0, 128));
+        jLabel9.setText("Buscar Dr. / Dra.");
+        JpaneForm.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 410, 160, 39));
+
+        jLabel11.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(0, 0, 128));
+        jLabel11.setText("Buscar Paciente");
+        JpaneForm.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 290, 160, 39));
+
+        getContentPane().add(JpaneForm, new org.netbeans.lib.awtextra.AbsoluteConstraints(3, 6, 1360, 740));
+
+        JlabelBackground.setOpaque(true);
+        getContentPane().add(JlabelBackground, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1366, 750));
 
         jMenu3.setText("Archivo");
 
@@ -226,13 +376,29 @@ public class Home extends javax.swing.JFrame {
 
         JmenuReporte.setText("Reportes");
 
-        JmenuReporteMensual.setText("Reporte Mensual");
+        JmenuReporteMensual.setText("Reporte Medicamentos");
         JmenuReporteMensual.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 JmenuReporteMensualMouseClicked(evt);
             }
         });
         JmenuReporte.add(JmenuReporteMensual);
+
+        JmenuReporteDoctores.setText("Reporte Pacientes atendidos por Doctores");
+        JmenuReporteDoctores.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                JmenuReporteDoctoresMouseClicked(evt);
+            }
+        });
+        JmenuReporte.add(JmenuReporteDoctores);
+
+        JmenuReporteOcupacional.setText("Reporte Porcentaje Ocupacional Camas");
+        JmenuReporteOcupacional.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                JmenuReporteOcupacionalMouseClicked(evt);
+            }
+        });
+        JmenuReporte.add(JmenuReporteOcupacional);
 
         JverTablaRegistros.setText("Ver tabla de registros");
         JverTablaRegistros.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -260,29 +426,66 @@ public class Home extends javax.swing.JFrame {
 
     private void JmenuReporteMensualMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JmenuReporteMensualMouseClicked
 
-        //mostrar date chooser para seleccionar el mes y año
-        JDateChooser dateChooser = new JDateChooser();
-        dateChooser.setDateFormatString("MM/yyyy");
-        dateChooser.setDate(new Date());
-        JOptionPane.showMessageDialog(null, dateChooser, "Seleccione el mes y año", JOptionPane.PLAIN_MESSAGE);
+        // Crear un panel con GridLayout para los selectores de fecha y las etiquetas
+        JPanel panel = new JPanel(new GridLayout(2, 2, 10, 10)); // 2 filas, 2 columnas, espaciado horizontal y vertical de 10
 
-        int mes = dateChooser.getCalendar().get(Calendar.MONTH) + 1;
-        int anio = dateChooser.getCalendar().get(Calendar.YEAR);
+        // Etiqueta "Fecha inicio"
+        JLabel startDateLabel = new JLabel("Fecha inicio:");
+        panel.add(startDateLabel);
 
-        //contar cuantas categorias hay
+        // Selector de fecha para la fecha de inicio
+        JDateChooser startDateChooser = new JDateChooser();
+        startDateChooser.setDateFormatString("MM/yyyy");
+        startDateChooser.setDate(new Date());
+        startDateChooser.setPreferredSize(new Dimension(150, 30)); // Ajustar el tamaño del selector de fecha
+        panel.add(startDateChooser);
+
+        // Etiqueta "Fecha fin"
+        JLabel endDateLabel = new JLabel("Fecha fin:");
+        panel.add(endDateLabel);
+
+        // Selector de fecha para la fecha de fin
+        JDateChooser endDateChooser = new JDateChooser();
+        endDateChooser.setDateFormatString("MM/yyyy");
+        endDateChooser.setDate(new Date());
+        endDateChooser.setPreferredSize(new Dimension(150, 30)); // Ajustar el tamaño del selector de fecha
+        panel.add(endDateChooser);
+
+        // Mostrar el panel con los selectores de fecha y las etiquetas
+        int option = JOptionPane.showOptionDialog(null, panel, "Seleccione el intervalo de fechas",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
+
+        //inicializar variables mes y anio inicio y fin
+        int mesInicio;
+        int anioInicio;
+        int mesFin;
+        int anioFin;
+        // Obtener las fechas seleccionadas si se presiona OK
+        if (option == JOptionPane.OK_OPTION) {
+            // Obtener el mes y el año de la fecha de inicio
+            mesInicio = startDateChooser.getCalendar().get(Calendar.MONTH) + 1;
+            anioInicio = startDateChooser.getCalendar().get(Calendar.YEAR);
+
+            // Obtener el mes y el año de la fecha de fin
+            mesFin = endDateChooser.getCalendar().get(Calendar.MONTH) + 1;
+            anioFin = endDateChooser.getCalendar().get(Calendar.YEAR);
+        }else{
+            return;
+        }
+
         //array para guardar las categorias
-        ArrayList<String> categorias = new ArrayList<String>();
+        ArrayList<String> categorias = new ArrayList<>();
         int contador = 0;
         try {
-            Connection con = conexion.getConexion();
-            Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery("SELECT DISTINCT categoria FROM medicamentos;");
-            while (rs.next()) {
-                categorias.add(rs.getString("categoria"));
-                contador++;
+            try (Connection con = conexion.getConexion()) {
+                Statement st = con.createStatement();
+                ResultSet rs = st.executeQuery("SELECT DISTINCT categoria FROM medicamentos ORDER BY categoria ASC");
+                while (rs.next()) {
+                    categorias.add(rs.getString("categoria"));
+                    contador++;
+                }
             }
-            con.close();
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             System.out.println("Error al contar las categorias");
         }
 
@@ -344,14 +547,32 @@ public class Home extends javax.swing.JFrame {
         fontData.setColor(IndexedColors.BLACK.getIndex());
         style2.setFont(fontData);
 
-        Object[] headers = {"Medicamento", "Cantidad de unidades registradas"};
+        Object[] headers = {"Medicamento", "Cantidad"};
 
         for (int i = 0; i < contador; i++) {
             int cantColumnas = headers.length;
             String categoria = categorias.get(i);
-            String sql = "SELECT nombre, sum(cantidad) as cantidad FROM registro WHERE MONTH(fecha) = '" + mes + "' AND YEAR(fecha) = '" + anio + "' AND categoria = '" + categoria + "' GROUP BY nombre;";
+
+            //query para obtener los datos entre las fechas seleccionadas
+
+            String sql = "SELECT nombre, SUM(cantidad) AS cantidad " +
+             "FROM registro " +
+             "WHERE (YEAR(fecha) >= '" + anioInicio + "' AND YEAR(fecha) <= '" + anioFin + "') " +
+             "AND (YEAR(fecha) > '" + anioInicio + "' OR (YEAR(fecha) = '" + anioInicio + "' AND MONTH(fecha) >= '" + mesInicio + "')) " +
+             "AND (YEAR(fecha) < '" + anioFin + "' OR (YEAR(fecha) = '" + anioFin + "' AND MONTH(fecha) <= '" + mesFin + "')) " +
+             "AND categoria = '" + categoria + "' " +
+             "GROUP BY nombre " +
+             "ORDER BY cantidad DESC;";
+
             try {
                 ResultSet rs = st.executeQuery(sql);
+                //si no hay ningun registro en esa categoria, no se crea el reporte
+                if (!rs.next()) {
+                    //System.out.println("No hay registros en la categoria " + categoria);
+                    // iterar nuevamente en el for
+                    continue;
+                }
+
                 XSSFSheet sheet = workbook.createSheet(categoria);
 
                 Row row = sheet.createRow(0);
@@ -364,7 +585,7 @@ public class Home extends javax.swing.JFrame {
 
                 //datos
                 int index = 1;
-                while (rs.next()) {
+                do {
                     row = sheet.createRow(index);
                     Cell nombre = row.createCell(0);
                     nombre.setCellValue(rs.getString("nombre"));
@@ -373,8 +594,10 @@ public class Home extends javax.swing.JFrame {
                     Cell cantidad = row.createCell(1);
                     cantidad.setCellValue(rs.getInt("cantidad"));
                     cantidad.setCellStyle(style2);
+
                     index++;
-                }
+                } while (rs.next());
+
 
                 //autosize a las columnas
                 for (int j = 0; j < cantColumnas; j++) {
@@ -386,8 +609,15 @@ public class Home extends javax.swing.JFrame {
                 for (int j = 1; j < index; j++) {
                     dataset.setValue(sheet.getRow(j).getCell(1).getNumericCellValue(), sheet.getRow(j).getCell(0).getStringCellValue(), categoria);
                 }
+                JFreeChart jchart = null;
+                //si el mes inicio y fin son iguales, se crea un reporte por mes
+                if(mesInicio == mesFin && anioInicio == anioFin){
+                    jchart = ChartFactory.createBarChart("Registro de " + categoria + " " + mesInicio + "/" + anioInicio, " Medicamentos", "Cantidad", dataset, PlotOrientation.VERTICAL, true, true, false);
 
-                JFreeChart jchart = ChartFactory.createBarChart("Registro de " + categoria + " " + mes + "/" + anio, "Medicamentos", "Cantidad", dataset, PlotOrientation.VERTICAL, true, true, false);
+                }else{
+                    jchart = ChartFactory.createBarChart("Registro de " + categoria + " " + mesInicio + "/" + anioInicio + " - " + mesFin + "/" + anioFin, " Medicamentos", "Cantidad", dataset, PlotOrientation.VERTICAL, true, true, false);
+                }
+
                 // background color white
                 jchart.setBackgroundPaint(Color.lightGray);
 
@@ -418,11 +648,12 @@ public class Home extends javax.swing.JFrame {
                 renderer.setBaseItemLabelGenerator(new StandardCategoryItemLabelGenerator());
                 renderer.setBaseItemLabelsVisible(true);
 
-                // Write the chart image to the output stream
-                ByteArrayOutputStream chart_out = new ByteArrayOutputStream();
-                ChartUtilities.writeChartAsPNG(chart_out, jchart, 600, 400);
-                int my_picture_id = workbook.addPicture(chart_out.toByteArray(), Workbook.PICTURE_TYPE_PNG);
-                chart_out.close();
+                int my_picture_id;
+                try ( // Write the chart image to the output stream
+                        ByteArrayOutputStream chart_out = new ByteArrayOutputStream()) {
+                    ChartUtilities.writeChartAsPNG(chart_out, jchart, 600, 400);
+                    my_picture_id = workbook.addPicture(chart_out.toByteArray(), Workbook.PICTURE_TYPE_PNG);
+                }
                 // Create the drawing patriarch.  This is the top level container for all shapes including cell comments.
                 XSSFDrawing drawing2 = sheet.createDrawingPatriarch();
                 //add a picture shape
@@ -438,8 +669,14 @@ public class Home extends javax.swing.JFrame {
                 for (int j = 1; j < index; j++) {
                     pieDataset.setValue(sheet.getRow(j).getCell(0).getStringCellValue(), sheet.getRow(j).getCell(1).getNumericCellValue());
                 }
+                JFreeChart pieChart = null;
+                if(mesInicio == mesFin && anioInicio == anioFin){
+                    pieChart = ChartFactory.createPieChart("Registro de " + categoria + " " + mesInicio + "/" + anioInicio, pieDataset, true, true, false);
 
-                JFreeChart pieChart = ChartFactory.createPieChart("Registro de " + categoria + " " + mes + "/" + anio, pieDataset, true, true, false);
+                }else{
+                    pieChart = ChartFactory.createPieChart("Registro de " + categoria + " " + mesInicio + "/" + anioInicio + " - " + mesFin + "/" + anioFin, pieDataset, true, true, false);
+                }
+
                 // background color gray
                 pieChart.setBackgroundPaint(Color.lightGray);
 
@@ -457,25 +694,24 @@ public class Home extends javax.swing.JFrame {
                 PieSectionLabelGenerator labelGenerator = new StandardPieSectionLabelGenerator("{0} = {1} ({2})", new DecimalFormat("0"), new DecimalFormat("0%"));
                 piePlot.setLabelGenerator(labelGenerator);
 
-                // Write the chart image to the output stream
-                ByteArrayOutputStream pieChart_out = new ByteArrayOutputStream();
-                ChartUtilities.writeChartAsPNG(pieChart_out, pieChart, 600, 400);
-                int my_pieChart_id = workbook.addPicture(pieChart_out.toByteArray(), Workbook.PICTURE_TYPE_PNG);
-                pieChart_out.close();
+                int my_pieChart_id;
+                try ( // Write the chart image to the output stream
+                        ByteArrayOutputStream pieChart_out = new ByteArrayOutputStream()) {
+                    ChartUtilities.writeChartAsPNG(pieChart_out, pieChart, 600, 400);
+                    my_pieChart_id = workbook.addPicture(pieChart_out.toByteArray(), Workbook.PICTURE_TYPE_PNG);
+                }
                 // Create the drawing patriarch.  This is the top level container for all shapes including cell comments.
                 XSSFDrawing drawing3 = sheet.createDrawingPatriarch();
                 //add a picture shape
                 ClientAnchor my_pieChart_anchor = new XSSFClientAnchor();
-                my_pieChart_anchor.setCol1(4);
+                my_pieChart_anchor.setCol1(8);
                 my_pieChart_anchor.setRow1(index + 2);
                 XSSFPicture my_pieChart = drawing3.createPicture(my_pieChart_anchor, my_pieChart_id);
                 // Call resize method, which resizes the image
                 my_pieChart.resize();
 
                 //crear otra hoja
-            } catch (SQLException ex) {
-                Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
+            } catch (SQLException | IOException ex) {
                 Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -493,18 +729,43 @@ public class Home extends javax.swing.JFrame {
         }
 
         try {
-            ResultSet rs = st.executeQuery("SELECT DISTINCT categoria, sum(cantidad) as cantidad FROM registro WHERE MONTH(fecha) = " + mes + " AND YEAR(fecha) = " + anio + " GROUP BY categoria");
+            String query = "SELECT DISTINCT categoria, SUM(cantidad) AS cantidad " +
+               "FROM registro " +
+                "WHERE (YEAR(fecha) >= '" + anioInicio + "' AND YEAR(fecha) <= '" + anioFin + "') " +
+                "AND (YEAR(fecha) > '" + anioInicio + "' OR (YEAR(fecha) = '" + anioInicio + "' AND MONTH(fecha) >= '" + mesInicio + "')) " +
+                "AND (YEAR(fecha) < '" + anioFin + "' OR (YEAR(fecha) = '" + anioFin + "' AND MONTH(fecha) <= '" + mesFin + "')) " +
+                "GROUP BY categoria" +
+                " ORDER BY cantidad DESC;";
+            ResultSet rs = st.executeQuery(query);
+
             int index = 1;
+            int contador_cantidades = 0;
             while (rs.next()) {
+                if (rs.getString("categoria").equals("null")) {
+                    continue;
+                }
+                if (rs.getString("categoria").equals("")) {
+                    continue;
+                }
+                if (rs.getString("categoria").equals(" ")) {
+                    continue;
+                }
+                if(rs.getInt("cantidad") == 0){
+                    continue;
+                }
+
                 row = sheetTodasCat.createRow(index);
                 Cell categoria = row.createCell(0);
+                System.out.println(rs.getString("categoria"));
                 categoria.setCellValue(rs.getString("categoria"));
                 categoria.setCellStyle(style2);
 
                 Cell cantidad = row.createCell(1);
                 cantidad.setCellValue(rs.getInt("cantidad"));
+                System.out.println(rs.getInt("cantidad"));
                 cantidad.setCellStyle(style2);
                 index++;
+                contador_cantidades = contador_cantidades + rs.getInt("cantidad");
             }
 
             //auto size columns
@@ -517,8 +778,13 @@ public class Home extends javax.swing.JFrame {
             for (int j = 1; j < index; j++) {
                 dataset.setValue(sheetTodasCat.getRow(j).getCell(1).getNumericCellValue(), sheetTodasCat.getRow(j).getCell(0).getStringCellValue(), "");
             }
+            JFreeChart jchart = null;
+            if (mesInicio == mesFin && anioInicio == anioFin) {
+                jchart = ChartFactory.createBarChart("Medicamentos por Categoria " + mesInicio + "/" + anioInicio, "Categorias", "Cantidad", dataset, PlotOrientation.VERTICAL, true, true, false);
+            }else{
+                jchart = ChartFactory.createBarChart("Medicamentos por Categoria " + mesInicio + "/" + anioInicio + " - " + mesFin + "/" + anioFin, "Categorias", "Cantidad", dataset, PlotOrientation.VERTICAL, true, true, false);
+            }
 
-            JFreeChart jchart = ChartFactory.createBarChart("Medicamentos por Categoria" + mes + "/" + anio, "Categorias", "Cantidad", dataset, PlotOrientation.VERTICAL, true, true, false);
             // background color white
             jchart.setBackgroundPaint(Color.lightGray);
 
@@ -549,11 +815,12 @@ public class Home extends javax.swing.JFrame {
             renderer.setBaseItemLabelGenerator(new StandardCategoryItemLabelGenerator());
             renderer.setBaseItemLabelsVisible(true);
 
-            // Write the chart image to the output stream
-            ByteArrayOutputStream chart_out = new ByteArrayOutputStream();
-            ChartUtilities.writeChartAsPNG(chart_out, jchart, 600, 400);
-            int my_picture_id = workbook.addPicture(chart_out.toByteArray(), Workbook.PICTURE_TYPE_PNG);
-            chart_out.close();
+            int my_picture_id;
+            try ( // Write the chart image to the output stream
+                    ByteArrayOutputStream chart_out = new ByteArrayOutputStream()) {
+                ChartUtilities.writeChartAsPNG(chart_out, jchart, 600, 400);
+                my_picture_id = workbook.addPicture(chart_out.toByteArray(), Workbook.PICTURE_TYPE_PNG);
+            }
             // Create the drawing patriarch.  This is the top level container for all shapes including cell comments.
             XSSFDrawing drawing2 = sheetTodasCat.createDrawingPatriarch();
             //add a picture shape
@@ -569,7 +836,13 @@ public class Home extends javax.swing.JFrame {
             for (int j = 1; j < index; j++) {
                 pieDataset.setValue(sheetTodasCat.getRow(j).getCell(0).getStringCellValue(), sheetTodasCat.getRow(j).getCell(1).getNumericCellValue());
             }
-            JFreeChart pieChart = ChartFactory.createPieChart("Medicamentos por Categoria " + mes + "/" + anio, pieDataset, true, true, false);
+
+            JFreeChart pieChart = null;
+            if (mesInicio == mesFin && anioInicio == anioFin) {
+                pieChart = ChartFactory.createPieChart("Medicamentos por Categoria " + mesInicio + "/" + anioInicio, pieDataset, true, true, false);
+            }else{
+                pieChart = ChartFactory.createPieChart("Medicamentos por Categoria " + mesInicio + "/" + anioInicio + " - " + mesFin + "/" + anioFin, pieDataset, true, true, false);
+            }
             // background color gray
             pieChart.setBackgroundPaint(Color.lightGray);
 
@@ -587,11 +860,12 @@ public class Home extends javax.swing.JFrame {
             PieSectionLabelGenerator labelGenerator = new StandardPieSectionLabelGenerator("{0} = {1} ({2})", new DecimalFormat("0"), new DecimalFormat("0%"));
             piePlot.setLabelGenerator(labelGenerator);
 
-            // Write the chart image to the output stream
-            ByteArrayOutputStream pieChart_out = new ByteArrayOutputStream();
-            ChartUtilities.writeChartAsPNG(pieChart_out, pieChart, 600, 400);
-            int my_pieChart_id = workbook.addPicture(pieChart_out.toByteArray(), Workbook.PICTURE_TYPE_PNG);
-            pieChart_out.close();
+            int my_pieChart_id;
+            try ( // Write the chart image to the output stream
+                    ByteArrayOutputStream pieChart_out = new ByteArrayOutputStream()) {
+                ChartUtilities.writeChartAsPNG(pieChart_out, pieChart, 600, 400);
+                my_pieChart_id = workbook.addPicture(pieChart_out.toByteArray(), Workbook.PICTURE_TYPE_PNG);
+            }
             // Create the drawing patriarch.  This is the top level container for all shapes including cell comments.
             XSSFDrawing drawing3 = sheetTodasCat.createDrawingPatriarch();
             //add a picture shape
@@ -602,7 +876,7 @@ public class Home extends javax.swing.JFrame {
             // Call resize method, which resizes the image
             my_pieChart.resize();
             con.close();
-        } catch (Exception e) {
+        } catch (IOException | SQLException e) {
             JOptionPane.showMessageDialog(null, e);
         }
         try {
@@ -614,18 +888,35 @@ public class Home extends javax.swing.JFrame {
             userDocuments = userDocuments.replace("\\", "/");
 
             String ruta = userDocuments + "/MediClass/Reportes";
+            // Definir el arreglo de nombres de los meses
+            String[] nombresMeses = {"ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"};
 
-            FileOutputStream fileOut = new FileOutputStream(ruta + "/ReporteMensualDel" + mes + "_" + anio + ".xlsx");
-            workbook.write(fileOut);
-            fileOut.close();
+            // Supongamos que mesInicio y mesFin son variables enteras que representan los meses (1 para enero, 2 para febrero, etc.)
+
+            // Convertir mesInicio a su nombre correspondiente
+            String nombreMesInicio = nombresMeses[mesInicio - 1];
+
+            // Convertir mesFin a su nombre correspondiente
+            String nombreMesFin = nombresMeses[mesFin - 1];
+
+            // Concatenar los nombres de los meses en la ruta
+            if (mesInicio == mesFin && anioInicio == anioFin) {
+                ruta = ruta + "/ReporteMensualDel_" + nombreMesInicio + "_" + anioInicio;
+            } else {
+                ruta = ruta + "/ReporteMensualDel_" + nombreMesInicio + "_" + anioInicio + "_a_" + nombreMesFin + "_" + anioFin;
+            }
+
+            try (FileOutputStream fileOut = new FileOutputStream(ruta + ".xlsx")) {
+                workbook.write(fileOut);
+            }
 
             try {
-                Desktop.getDesktop().open(new File(ruta + "/ReporteMensualDel" + mes + "_" + anio + ".xlsx"));
-            } catch (Exception ex) {
+                Desktop.getDesktop().open(new File(ruta + ".xlsx"));
+            } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, ex);
             }
 
-        } catch (Exception e) {
+        } catch (HeadlessException | IOException e) {
             JOptionPane.showMessageDialog(null, e);
         }
 
@@ -634,7 +925,9 @@ public class Home extends javax.swing.JFrame {
     private void JmenuActualizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JmenuActualizarMouseClicked
 
         cargarMedicamentos();
-        JBusqueda.setText("");
+        cargarDoctores();
+        cargarPacientes();
+        JBusqueda_Medicamento.setText("");
         JOptionPane.showMessageDialog(null, "Medicamentos actualizados");
     }//GEN-LAST:event_JmenuActualizarMouseClicked
 
@@ -652,6 +945,8 @@ public class Home extends javax.swing.JFrame {
             @Override
             public void windowClosed(WindowEvent e) {
                 cargarMedicamentos();
+                cargarDoctores();
+                cargarPacientes();
             }
         });
 
@@ -667,24 +962,24 @@ public class Home extends javax.swing.JFrame {
         modelo.setRowCount(0);
         //obtener datos de la base de datos
         try {
-            Connection con = conexion.getConexion();
-            Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery("SELECT * FROM medicamentos ORDER BY nombre ASC;");
-            while (rs.next()) {
-                Object[] fila = new Object[3];
-                fila[0] = rs.getInt("id");
-                fila[1] = rs.getString("nombre");
-                fila[2] = rs.getString("categoria");
-                modelo.addRow(fila);
+            try (Connection con = conexion.getConexion()) {
+                Statement st = con.createStatement();
+                ResultSet rs = st.executeQuery("SELECT * FROM medicamentos ORDER BY nombre ASC;");
+                while (rs.next()) {
+                    Object[] fila = new Object[3];
+                    fila[0] = rs.getInt("id");
+                    fila[1] = rs.getString("nombre");
+                    fila[2] = rs.getString("categoria");
+                    modelo.addRow(fila);
+                }
+                
+                //cargar categorias unicas a JFilterCategory
+                ResultSet rs2 = st.executeQuery("SELECT DISTINCT categoria FROM medicamentos;");
+                while (rs2.next()) {
+                    ventana_base.JFilterCategory.addItem(rs2.getString("categoria"));
+                }
             }
-
-            //cargar categorias unicas a JFilterCategory
-            ResultSet rs2 = st.executeQuery("SELECT DISTINCT categoria FROM medicamentos;");
-            while (rs2.next()) {
-                ventana_base.JFilterCategory.addItem(rs2.getString("categoria"));
-            }
-            con.close();
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex);
         }
 
@@ -695,65 +990,69 @@ public class Home extends javax.swing.JFrame {
             @Override
             public void windowClosed(WindowEvent e) {
                 cargarMedicamentos();
+                cargarDoctores();
+                cargarPacientes();
             }
         });
     }//GEN-LAST:event_jMenu1MouseClicked
 
-    private void jButtonRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRegistrarActionPerformed
+    private void jButtonAgregarMedicamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregarMedicamentoActionPerformed
 
-        String nombreMedicamento = jNombreMedicamento.getText();
+        String nombreMedicamento = jcombo_Medicamento.getSelectedItem().toString();
         String cantidad = jcantidadRegistro.getText();
 
-        //validar que cantidad sea un numero
-        try {
-            Integer.parseInt(cantidad);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "La cantidad debe ser un numero");
+        if (nombreMedicamento.equals("") || cantidad.equals("")) {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar un medicamento y una cantidad");
             return;
         }
 
-        //obtener fecha del jcalendar y enviar a sql
-        Date fecha = jCalendar1.getDate();
-        long d = fecha.getTime();
-        java.sql.Date fechaSql = new java.sql.Date(d);
-
-        String categoria = "";
+        //validar que cantidad sea un numero
+        try {
+            //si cantidad tiene / hacer split y dividir 2 decimales
+            if (cantidad.contains("/")) {
+                String[] cantidadSplit = cantidad.split("/");
+                int numerador = Integer.parseInt(cantidadSplit[0]);
+                int denominador = Integer.parseInt(cantidadSplit[1]);
+                double cantidadDouble = (double) numerador / denominador;
+                cantidad = String.format("%.2f", cantidadDouble);
+            }else {
+                //validar que cantidad sea un numero 2 decimales
+                double cantidadDouble = Double.parseDouble(cantidad);
+                cantidad = String.format("%.2f", cantidadDouble);
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "La cantidad debe ser un numero");
+            return;
+        }
+        String categoria;
         categoria = jCategoria.getText();
 
-        if (nombreMedicamento.equals("") || cantidad.equals("")) {
-            JOptionPane.showMessageDialog(null, "Debe llenar todos los campos");
-        } else {
-            try {
-                Connection con = conexion.getConexion();
-                Statement st = con.createStatement();
-                String sql = "INSERT INTO registro (nombre, categoria, cantidad, fecha) VALUES ('" + nombreMedicamento + "', '" + categoria + "', '" + cantidad + "', '" + fechaSql + "')";
-                st.executeUpdate(sql);
-
-                JOptionPane.showMessageDialog(null, "Registro exitoso");
-                jNombreMedicamento.setText("");
-                jcantidadRegistro.setText("");
-                jcomboMedicamentos.setSelectedIndex(0);
-
-                con.close();
-            } catch (Exception ex) {
-                System.out.println("Error al registrar el medicamento");
-            }
+        //agregar al la tabla JTable_CarritoMedicamentos el medicamento
+        try{
+            DefaultTableModel modelo = (DefaultTableModel) JTable_CarritoMedicamentos.getModel();
+            Object[] nuevaFila = {cantidad, nombreMedicamento, categoria};
+            modelo.addRow(nuevaFila);
+        }catch (Exception e){
+            System.out.println("Error al insertar en tabla "+e);
         }
-        JBusqueda.setText("");
-        jCategoria.setText("");
-    }//GEN-LAST:event_jButtonRegistrarActionPerformed
 
-    private void JBusquedaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_JBusquedaKeyReleased
+        JBusqueda_Medicamento.setText("");
+        jcantidadRegistro.setText("");
+        JBusqueda_Medicamento.requestFocus();
 
+        //cargar datos
+        cargarMedicamentos();
+    }//GEN-LAST:event_jButtonAgregarMedicamentoActionPerformed
+
+    private void JBusqueda_MedicamentoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_JBusqueda_MedicamentoKeyReleased
         buscarMedicamento();
-    }//GEN-LAST:event_JBusquedaKeyReleased
+    }//GEN-LAST:event_JBusqueda_MedicamentoKeyReleased
 
-    private void jcomboMedicamentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcomboMedicamentosActionPerformed
-        // TODO add your handling code here:
-        // TODO add your handling code here:
+    private void jcombo_MedicamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcombo_MedicamentoActionPerformed
+
         String nombreMedicamento = "";
         try {
-            nombreMedicamento = jcomboMedicamentos.getSelectedItem().toString();
+            nombreMedicamento = jcombo_Medicamento.getSelectedItem().toString();
         } catch (Exception e) {
         }
 
@@ -763,7 +1062,7 @@ public class Home extends javax.swing.JFrame {
             case "Click para crearlo" -> {
                 //crear ventana formulario
                 FormRegistro formRegistro = new FormRegistro();
-                formRegistro.JtextFieldNombre.setText(JBusqueda.getText());
+                formRegistro.JtextFieldNombre.setText(JBusqueda_Medicamento.getText());
                 //obtener todas las categorias distintas de la base de datos mysql
                 try {
                     Connection con = conexion.getConexion();
@@ -808,60 +1107,799 @@ public class Home extends javax.swing.JFrame {
                 }
             }
         }
-    }//GEN-LAST:event_jcomboMedicamentosActionPerformed
+    }//GEN-LAST:event_jcombo_MedicamentoActionPerformed
 
-    private void cargarMedicamentos() {
-        //agregar nombres de medicamentos desde la base de datos
-        jcomboMedicamentos.removeAllItems();
+    private void jcantidadRegistroKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jcantidadRegistroKeyReleased
+
+        //cuando se precione enter jbuttonRegistrar.doClick();
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            jButtonAgregarMedicamento.doClick();
+        }
+
+    }//GEN-LAST:event_jcantidadRegistroKeyReleased
+
+    private void JBusqueda_PacienteKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_JBusqueda_PacienteKeyReleased
+        // TODO add your handling code here:
+        buscarPaciente();
+    }//GEN-LAST:event_JBusqueda_PacienteKeyReleased
+
+    private void jcombo_PacienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcombo_PacienteActionPerformed
+        // TODO add your handling code here:
+        String nombrePaciente = "";
         try {
-            Connection cn = conexion.getConexion();
-            PreparedStatement pst = cn.prepareStatement("select nombre from medicamentos order by nombre");
-            ResultSet rs = pst.executeQuery();
-
-            //jcomboMedicamentos.addItem("Seleccione un medicamento");
-            while (rs.next()) {
-                jcomboMedicamentos.addItem(rs.getString("nombre"));
-            }
-            cn.close();
-
-        } catch (Exception e) {
-
+            nombrePaciente = jcombo_Paciente.getSelectedItem().toString();
+        }catch (Exception e){
         }
-    }
+        try {
 
-    private void buscarMedicamento() {
-        //buscar palabras parecidas a la que se escribe en el campo de busqueda
-        String buscar = JBusqueda.getText();
-        if (buscar.equals("")) {
-            cargarMedicamentos();
-        } else {
-            String sql = "SELECT nombre FROM medicamentos WHERE nombre LIKE '%" + buscar + "%'";
-            try {
-                Connection cn = conexion.getConexion();
-                Statement st = cn.createStatement();
-                ResultSet rs = st.executeQuery(sql);
-                if (rs.next()) {
-                    try {
-                        //remover todos items desde el segundo item
-                        jcomboMedicamentos.removeAllItems();
-                    } catch (Exception e) {
-                        System.out.println("Error al limpiar el combobox");
+            if (nombrePaciente.equals("Click para crearlo")) {
+                //crear ventana formulario
+                FormRegistroPaciente formPaciente = new FormRegistroPaciente();
+                formPaciente.JtextFieldNombre.setText(JBusqueda_Paciente.getText());
+                formPaciente.setVisible(true);
+
+                //cuando cierre ventana formulario cargarMedicamentos()
+                formPaciente.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        cargarPacientes();
                     }
-                    do {
-                        jcomboMedicamentos.addItem(rs.getString("nombre"));
-                    } while (rs.next());
-                } else {
-                    jcomboMedicamentos.removeAllItems();
-                    jcomboMedicamentos.addItem("!No existe, Crealo!");
-                    jcomboMedicamentos.addItem("Click para crearlo");
-                }
-                cn.close();
-            } catch (Exception e) {
+                });
             }
+        } catch (Exception e) {
+            System.out.println("Error al obtener el nombre del paciente" + e);
+//            JOptionPane.showMessageDialog(null, "Error al obtener el nombre del doctor");
         }
-    }
+    }//GEN-LAST:event_jcombo_PacienteActionPerformed
 
-    /**
+    private void jButtonRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRegistrarActionPerformed
+        // TODO add your handling code here:
+        //obtener fecha del jcalendar y enviar a sql
+        Date fecha = jCalendar1.getDate();
+        long d = fecha.getTime();
+        java.sql.Date fechaSql = new java.sql.Date(d);
+
+        //obtener doctor
+        String doctor = jcombo_Doctor.getSelectedItem().toString();
+        if (doctor.equals("")) {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar un doctor");
+            return;
+        }
+        //obtener paciente
+        String paciente = jcombo_Paciente.getSelectedItem().toString();
+        if (paciente.equals("")) {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar un paciente");
+            return;
+        }
+
+        //obtener medicamentos
+        int filas = JTable_CarritoMedicamentos.getRowCount();
+        if (filas == 0) {
+            JOptionPane.showMessageDialog(null, "Debe agregar al menos un medicamento");
+            return;
+        }
+
+        //obtener datos de cantidad y nombre de medicamentos
+        DefaultTableModel modelo = (DefaultTableModel) JTable_CarritoMedicamentos.getModel();
+        try{
+            for (int row = 0; row <filas; row++) {
+                String cantidad = modelo.getValueAt(row, 0).toString();
+                String nombreMedicamento = modelo.getValueAt(row, 1).toString();
+                String categoria = modelo.getValueAt(row, 2).toString();
+
+                //validar que cantidad sea un numero
+                try {
+                    //si cantidad tiene / hacer split y dividir 2 decimales
+                    if (cantidad.contains("/")) {
+                        String[] cantidadSplit = cantidad.split("/");
+                        int numerador = Integer.parseInt(cantidadSplit[0]);
+                        int denominador = Integer.parseInt(cantidadSplit[1]);
+                        double cantidadDouble = (double) numerador / denominador;
+                        cantidad = String.format("%.2f", cantidadDouble);
+                    }else {
+                        //validar que cantidad sea un numero 2 decimales
+                        double cantidadDouble = Double.parseDouble(cantidad);
+                        cantidad = String.format("%.2f", cantidadDouble);
+                    }
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "La cantidad debe ser un numero");
+                    return;
+                }
+
+                //Foreing key id_doctor y id_paciente
+                int id_doctor = 0;
+                int id_paciente = 0;
+
+                //obtener id_doctor
+                try {
+                    try (Connection con = conexion.getConexion()) {
+                        Statement st = con.createStatement();
+                        String comand = "SELECT id_doctor AS id_doctor, id_paciente AS id_paciente FROM doctores d JOIN pacientes p ON d.nombre = '" + doctor + "' AND p.nombre = '" + paciente + "';";
+                        ResultSet rs = st.executeQuery(comand);
+                        while (rs.next()) {
+                            id_doctor = rs.getInt("id_doctor");
+                            id_paciente = rs.getInt("id_paciente");
+                        }
+                    }
+                } catch (SQLException e) {
+                    System.out.println("Error al obtener id_doctor " + e);
+                }
+
+                //guardar registro , donde foreing key id_doctor y id_paciente
+                try {
+                    try (Connection con = conexion.getConexion()) {
+                        Statement st = con.createStatement();
+                        String cmd = "INSERT INTO registro (fecha, nombre, categoria, cantidad, id_doctor, id_paciente) VALUES ('" + fechaSql + "', '" + nombreMedicamento + "', '" + categoria + "', '" + cantidad + "', '" + id_doctor + "', '" + id_paciente + "');";
+                        st.executeUpdate(cmd);
+                    }
+                } catch (SQLException e) {
+                    System.out.println("Error al registrar el medicamento " + e);
+                    return;
+                }
+
+
+            }
+        }catch (HeadlessException e){
+            System.out.println("Error al obtener datos de la tabla "+e);
+            return;
+        }
+        //mostrar joption pane solo por 0.5 segundos registro exitoso
+        JOptionPane pane = new JOptionPane("Registro exitoso", JOptionPane.INFORMATION_MESSAGE);
+        JDialog dialog = pane.createDialog("Registro exitoso");
+        dialog.setModal(false);
+        dialog.setVisible(true);
+        new Timer(500, (ActionEvent e) -> {
+            dialog.setVisible(false);
+        }).start();
+
+        //limpiar campos
+        jNombreMedicamento.setText("");
+        JBusqueda_doctor.setText("");
+        JBusqueda_Paciente.setText("");
+        jcantidadRegistro.setText("");
+
+
+        //limpiar tabla
+        modelo.setRowCount(0);
+        JTable_CarritoMedicamentos.setModel(modelo);
+        JBusqueda_doctor.requestFocus();
+
+    }//GEN-LAST:event_jButtonRegistrarActionPerformed
+
+    private void JBusqueda_doctorKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_JBusqueda_doctorKeyReleased
+        // TODO add your handling code here:
+        buscarDoctor();
+    }//GEN-LAST:event_JBusqueda_doctorKeyReleased
+
+    private void jcombo_DoctorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcombo_DoctorActionPerformed
+        // TODO add your handling code here:
+        String nombreDoctor = "";
+        try{
+            nombreDoctor = jcombo_Doctor.getSelectedItem().toString();
+        } catch (Exception e) {
+        }
+        try {
+            if (nombreDoctor.equals("Click para crearlo")) {
+                //crear ventana formulario
+                FormRegistroDoctor formDoctor = new FormRegistroDoctor();
+                formDoctor.JtextFieldNombre.setText(JBusqueda_doctor.getText());
+                formDoctor.setVisible(true);
+                //cuando cierre ventana formulario cargarMedicamentos()
+                formDoctor.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        cargarDoctores();
+                    }
+                });
+            }
+        } catch (Exception e) {
+            
+            System.out.println("Error al obtener el nombre del doctor" + e);
+        }
+    }//GEN-LAST:event_jcombo_DoctorActionPerformed
+
+    private void jCalendar1PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jCalendar1PropertyChange
+        // TODO add your handling code here:
+
+        try {
+            String fecha= "FECHA : " + (new SimpleDateFormat("dd/MM/yyyy").format(jCalendar1.getDate()));
+            jLabelFecha.setText(fecha);
+        } catch (Exception e) {
+            System.out.println("Error al obtener la fecha");
+        }
+    }//GEN-LAST:event_jCalendar1PropertyChange
+
+    private void JmenuReporteDoctoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JmenuReporteDoctoresMouseClicked
+        // Crear un panel con GridLayout para los selectores de fecha y las etiquetas
+        JPanel panel = new JPanel(new GridLayout(2, 2, 10, 10)); // 2 filas, 2 columnas, espaciado horizontal y vertical de 10
+
+        // Etiqueta "Fecha inicio"
+        JLabel startDateLabel = new JLabel("Fecha inicio:");
+        panel.add(startDateLabel);
+
+        // Selector de fecha para la fecha de inicio
+        JDateChooser startDateChooser = new JDateChooser();
+        startDateChooser.setDateFormatString("MM/yyyy");
+        startDateChooser.setDate(new Date());
+        startDateChooser.setPreferredSize(new Dimension(150, 30)); // Ajustar el tamaño del selector de fecha
+        panel.add(startDateChooser);
+
+        // Etiqueta "Fecha fin"
+        JLabel endDateLabel = new JLabel("Fecha fin:");
+        panel.add(endDateLabel);
+
+        // Selector de fecha para la fecha de fin
+        JDateChooser endDateChooser = new JDateChooser();
+        endDateChooser.setDateFormatString("MM/yyyy");
+        endDateChooser.setDate(new Date());
+        endDateChooser.setPreferredSize(new Dimension(150, 30)); // Ajustar el tamaño del selector de fecha
+        panel.add(endDateChooser);
+
+        // Mostrar el panel con los selectores de fecha y las etiquetas
+        int option = JOptionPane.showOptionDialog(null, panel, "Seleccione el intervalo de fechas",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
+
+        //inicializar variables mes y anio inicio y fin
+        int mesInicio;
+        int anioInicio;
+        int mesFin;
+        int anioFin;
+        // Obtener las fechas seleccionadas si se presiona OK
+        if (option == JOptionPane.OK_OPTION) {
+            // Obtener el mes y el año de la fecha de inicio
+            mesInicio = startDateChooser.getCalendar().get(Calendar.MONTH) + 1;
+            anioInicio = startDateChooser.getCalendar().get(Calendar.YEAR);
+
+            // Obtener el mes y el año de la fecha de fin
+            mesFin = endDateChooser.getCalendar().get(Calendar.MONTH) + 1;
+            anioFin = endDateChooser.getCalendar().get(Calendar.YEAR);
+        }else{
+            return;
+        }
+        
+        try{
+            String sqlComand =  "SELECT d.nombre AS NombreDoctor, " +
+                    "COUNT(DISTINCT r.id_paciente) AS PacientesAtendidos " +
+                    "FROM doctores d " +
+                    "LEFT JOIN registro r ON d.id_doctor = r.id_doctor " +
+                    "WHERE (YEAR(fecha) >= '" + anioInicio + "' AND YEAR(fecha) <= '" + anioFin + "') " +
+                    "AND (YEAR(fecha) > '" + anioInicio + "' OR (YEAR(fecha) = '" + anioInicio + "' AND MONTH(fecha) >= '" + mesInicio + "')) " +
+                    "AND (YEAR(fecha) < '" + anioFin + "' OR (YEAR(fecha) = '" + anioFin + "' AND MONTH(fecha) <= '" + mesFin + "')) " +
+                    "GROUP BY d.id_doctor, d.nombre;";
+            ArrayList<String> nombreDoctores;
+            ArrayList<Integer> pacientesAtendidos;
+            try (Connection con = conexion.getConexion()) {
+                Statement st = con.createStatement();
+                ResultSet rs = st.executeQuery(sqlComand);
+                //extraer data de la base de datos nombre - cantidad de pacientes
+                nombreDoctores = new ArrayList<>();
+                pacientesAtendidos = new ArrayList<>();
+                while (rs.next()) {
+                    nombreDoctores.add(rs.getString("NombreDoctor"));
+                    pacientesAtendidos.add(rs.getInt("PacientesAtendidos"));
+                }
+            }
+            
+            //crear workbook
+            XSSFWorkbook workbook = new XSSFWorkbook();
+
+            //estilo de la cabecera
+            XSSFCellStyle style = workbook.createCellStyle();
+            //color menta fondo
+            style.setFillForegroundColor(IndexedColors.LIGHT_GREEN.getIndex());
+            style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            style.setAlignment(HorizontalAlignment.CENTER);
+            style.setBorderBottom(BorderStyle.THIN);
+            style.setBorderLeft(BorderStyle.THIN);
+            style.setBorderRight(BorderStyle.THIN);
+            style.setBorderTop(BorderStyle.THIN);
+            style.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+            style.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+            style.setRightBorderColor(IndexedColors.BLACK.getIndex());
+            style.setTopBorderColor(IndexedColors.BLACK.getIndex());
+
+            //font de la cabecera
+            XSSFFont font = workbook.createFont();
+            font.setBold(true);
+            font.setFontHeightInPoints((short) 16);
+            //arial
+            font.setFontName("Arial");
+            font.setColor(IndexedColors.BLACK.getIndex());
+            style.setFont(font);
+
+            //estilo de las celdas
+            XSSFCellStyle style2 = workbook.createCellStyle();
+            style2.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+            style2.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            //alignment center
+            style2.setAlignment(HorizontalAlignment.CENTER);
+            style2.setBorderBottom(BorderStyle.THIN);
+            style2.setBorderLeft(BorderStyle.THIN);
+            style2.setBorderRight(BorderStyle.THIN);
+            style2.setBorderTop(BorderStyle.THIN);
+            style2.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+            style2.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+            style2.setRightBorderColor(IndexedColors.BLACK.getIndex());
+            style2.setTopBorderColor(IndexedColors.BLACK.getIndex());
+            //font de los datos
+            XSSFFont fontData = workbook.createFont();
+            fontData.setFontHeightInPoints((short) 12);
+            //arial
+            fontData.setFontName("Arial");
+            fontData.setColor(IndexedColors.BLACK.getIndex());
+            style2.setFont(fontData);
+
+            Object[] headers = {"Nombre Dr. o Dra.", "Pacientes Atendidos"};
+            XSSFSheet sheet = workbook.createSheet("Reporte Pacientes Referidos");
+
+            //agregar headers
+            Row rowhead = sheet.createRow((short) 0);
+            for (int i = 0; i < headers.length; i++) {
+                Cell cell = rowhead.createCell(i);
+                cell.setCellValue(headers[i].toString());
+                cell.setCellStyle(style);
+            }
+
+            //agregar datos
+            int index = 1;
+            for (int i = 0; i < nombreDoctores.size(); i++) {
+                Row row = sheet.createRow((short) index);
+
+                Cell cell = row.createCell(0);
+                cell.setCellValue(nombreDoctores.get(i));
+                cell.setCellStyle(style2);
+
+                cell = row.createCell(1);
+                cell.setCellValue(pacientesAtendidos.get(i));
+                cell.setCellStyle(style2);
+                index++;
+            }
+
+            //autosize a las columnas
+            for (int j = 0; j < headers.length; j++) {
+                sheet.autoSizeColumn(j);
+            }
+
+            //create bar chart
+            DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+            for (int j = 1; j < index; j++) {
+                dataset.setValue(sheet.getRow(j).getCell(1).getNumericCellValue(), sheet.getRow(j).getCell(0).getStringCellValue(), "");
+            }
+            JFreeChart jchart = null;
+            //si el mes inicio y fin son iguales, se crea un reporte por mes
+            if(mesInicio == mesFin && anioInicio == anioFin){
+                jchart = ChartFactory.createBarChart("Pacientes referidos " + mesInicio + "/" + anioInicio, " Dr. o Dra.", "Pacientes Atendidos", dataset, PlotOrientation.VERTICAL, true, true, false);
+            }else{
+                jchart = ChartFactory.createBarChart("Pacientes referidos " + mesInicio + "/" + anioInicio + " - " + mesFin + "/" + anioFin, " Dr. o Dra.", "Pacientes Atendidos", dataset, PlotOrientation.VERTICAL, true, true, false);
+            }
+
+            // background color white
+            jchart.setBackgroundPaint(Color.lightGray);
+
+            //get a reference to the plot for further customisation...
+            CategoryPlot plot = (CategoryPlot) jchart.getPlot();
+            //gray style
+            plot.setBackgroundPaint(Color.lightGray);
+            plot.setDomainGridlinePaint(Color.white);
+            plot.setRangeGridlinePaint(Color.white);
+
+            //font of the legend
+            LegendTitle legend = jchart.getLegend();
+            legend.setItemFont(new Font("Arial", Font.PLAIN, 12));
+
+            //font of the axis
+            CategoryAxis domainAxis = plot.getDomainAxis();
+            domainAxis.setLabelFont(new Font("Arial", Font.PLAIN, 12));
+            domainAxis.setTickLabelFont(new Font("Arial", Font.PLAIN, 12));
+            ValueAxis rangeAxis = plot.getRangeAxis();
+            rangeAxis.setLabelFont(new Font("Arial", Font.PLAIN, 12));
+            rangeAxis.setTickLabelFont(new Font("Arial", Font.PLAIN, 12));
+
+            //set the range axis to display integers only...
+            rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+            //disable bar outlines...
+            BarRenderer renderer = (BarRenderer) plot.getRenderer();
+            renderer.setMaximumBarWidth(0.15);
+            renderer.setBaseItemLabelGenerator(new StandardCategoryItemLabelGenerator());
+            renderer.setBaseItemLabelsVisible(true);
+
+            int my_picture_id;
+            try ( // Write the chart image to the output stream
+                    ByteArrayOutputStream chart_out = new ByteArrayOutputStream()) {
+                ChartUtilities.writeChartAsPNG(chart_out, jchart, 600, 400);
+                my_picture_id = workbook.addPicture(chart_out.toByteArray(), Workbook.PICTURE_TYPE_PNG);
+            }
+            // Create the drawing patriarch.  This is the top level container for all shapes including cell comments.
+            XSSFDrawing drawing2 = sheet.createDrawingPatriarch();
+            //add a picture shape
+            ClientAnchor my_anchor = new XSSFClientAnchor();
+            my_anchor.setCol1(0);
+            my_anchor.setRow1(index + 2);
+            XSSFPicture my_picture = drawing2.createPicture(my_anchor, my_picture_id);
+            // Call resize method, which resizes the image
+            my_picture.resize();
+
+            //create a pie chart
+            DefaultPieDataset pieDataset = new DefaultPieDataset();
+            for (int j = 1; j < index; j++) {
+                pieDataset.setValue(sheet.getRow(j).getCell(0).getStringCellValue(), sheet.getRow(j).getCell(1).getNumericCellValue());
+            }
+            JFreeChart pieChart = null;
+            if(mesInicio == mesFin && anioInicio == anioFin){
+                pieChart = ChartFactory.createPieChart("Pacientes referidos " + mesInicio + "/" + anioInicio, pieDataset, true, true, false);
+
+            }else{
+                pieChart = ChartFactory.createPieChart("Pacientes referidos " + mesInicio + "/" + anioInicio + " - " + mesFin + "/" + anioFin, pieDataset, true, true, false);
+            }
+
+            // background color gray
+            pieChart.setBackgroundPaint(Color.lightGray);
+
+            //get a reference to the plot for further customisation...
+            PiePlot piePlot = (PiePlot) pieChart.getPlot();
+            //gray style
+            piePlot.setBackgroundPaint(Color.lightGray);
+            piePlot.setOutlinePaint(Color.white);
+            piePlot.setLabelFont(new Font("Arial", Font.PLAIN, 12));
+            piePlot.setNoDataMessage("No data available");
+            piePlot.setCircular(true);
+            piePlot.setLabelGap(0.02);
+
+            //pie renderer
+            PieSectionLabelGenerator labelGenerator = new StandardPieSectionLabelGenerator("{0} = {1} ({2})", new DecimalFormat("0"), new DecimalFormat("0%"));
+            piePlot.setLabelGenerator(labelGenerator);
+
+            int my_pieChart_id;
+            try ( // Write the chart image to the output stream
+                    ByteArrayOutputStream pieChart_out = new ByteArrayOutputStream()) {
+                ChartUtilities.writeChartAsPNG(pieChart_out, pieChart, 600, 400);
+                my_pieChart_id = workbook.addPicture(pieChart_out.toByteArray(), Workbook.PICTURE_TYPE_PNG);
+            }
+            // Create the drawing patriarch.  This is the top level container for all shapes including cell comments.
+            XSSFDrawing drawing3 = sheet.createDrawingPatriarch();
+            //add a picture shape
+            ClientAnchor my_pieChart_anchor = new XSSFClientAnchor();
+            my_pieChart_anchor.setCol1(8);
+            my_pieChart_anchor.setRow1(index + 2);
+            XSSFPicture my_pieChart = drawing3.createPicture(my_pieChart_anchor, my_pieChart_id);
+            // Call resize method, which resizes the image
+            my_pieChart.resize();
+
+            try {
+                //guardar archivo solictar ruta
+                //get document folder
+                String userDocuments = System.getProperty("user.home") + "/Documents";
+
+                //fix slashes
+                userDocuments = userDocuments.replace("\\", "/");
+
+                String ruta = userDocuments + "/MediClass/Reportes";
+                // Definir el arreglo de nombres de los meses
+                String[] nombresMeses = {"ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"};
+
+                // Supongamos que mesInicio y mesFin son variables enteras que representan los meses (1 para enero, 2 para febrero, etc.)
+
+                // Convertir mesInicio a su nombre correspondiente
+                String nombreMesInicio = nombresMeses[mesInicio - 1];
+
+                // Convertir mesFin a su nombre correspondiente
+                String nombreMesFin = nombresMeses[mesFin - 1];
+
+                // Concatenar los nombres de los meses en la ruta
+                if (mesInicio == mesFin && anioInicio == anioFin) {
+                    ruta = ruta + "/Rerporte_Pacientes_Referidos_" + nombreMesInicio + "_" + anioInicio;
+                } else {
+                    ruta = ruta + "/Rerporte_Pacientes_Referidos_" + nombreMesInicio + "_" + anioInicio + "_a_" + nombreMesFin + "_" + anioFin;
+                }
+
+                try (FileOutputStream fileOut = new FileOutputStream(ruta + ".xlsx")) {
+                    workbook.write(fileOut);
+                }
+
+                //cerrar workbook
+                workbook.close();
+                
+                try {
+                    Desktop.getDesktop().open(new File(ruta + ".xlsx"));
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(null, ex);
+                }
+
+            } catch (HeadlessException | IOException e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (IOException ex) {
+            Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
+
+    }//GEN-LAST:event_JmenuReporteDoctoresMouseClicked
+
+    private void JmenuReporteOcupacionalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JmenuReporteOcupacionalMouseClicked
+
+        // Crear un panel con GridLayout para los selectores de fecha y las etiquetas
+        JPanel panel = new JPanel(new GridLayout(2, 2, 10, 10)); // 2 filas, 2 columnas, espaciado horizontal y vertical de 10
+
+        // Etiqueta "Fecha inicio"
+        JLabel startDateLabel = new JLabel("Fecha inicio:");
+        panel.add(startDateLabel);
+
+        // Selector de fecha para la fecha de inicio
+        JDateChooser startDateChooser = new JDateChooser();
+        startDateChooser.setDateFormatString("MM/yyyy");
+        startDateChooser.setDate(new Date());
+        startDateChooser.setPreferredSize(new Dimension(150, 30)); // Ajustar el tamaño del selector de fecha
+        panel.add(startDateChooser);
+
+        // Etiqueta "Fecha fin"
+        JLabel endDateLabel = new JLabel("Fecha fin:");
+        panel.add(endDateLabel);
+
+        // Selector de fecha para la fecha de fin
+        JDateChooser endDateChooser = new JDateChooser();
+        endDateChooser.setDateFormatString("MM/yyyy");
+        endDateChooser.setDate(new Date());
+        endDateChooser.setPreferredSize(new Dimension(150, 30)); // Ajustar el tamaño del selector de fecha
+        panel.add(endDateChooser);
+
+        // Mostrar el panel con los selectores de fecha y las etiquetas
+        int option = JOptionPane.showOptionDialog(null, panel, "Seleccione el intervalo de fechas",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
+
+        //inicializar variables mes y anio inicio y fin
+        int mesInicio;
+        int anioInicio;
+        int mesFin;
+        int anioFin;
+        // Obtener las fechas seleccionadas si se presiona OK
+        if (option == JOptionPane.OK_OPTION) {
+            // Obtener el mes y el año de la fecha de inicio
+            mesInicio = startDateChooser.getCalendar().get(Calendar.MONTH) + 1;
+            anioInicio = startDateChooser.getCalendar().get(Calendar.YEAR);
+
+            // Obtener el mes y el año de la fecha de fin
+            mesFin = endDateChooser.getCalendar().get(Calendar.MONTH) + 1;
+            anioFin = endDateChooser.getCalendar().get(Calendar.YEAR);
+        }else{
+            return;
+        }
+
+        try {
+            String sqlComand = """
+    SELECT DAYOFMONTH(fecha) AS Dia,
+           (COUNT(DISTINCT id_paciente) / 17.0) * 100 AS PorcentajeOcupacion
+    FROM registro
+    WHERE (YEAR(fecha) >= '%s' AND YEAR(fecha) <= '%s')
+    AND (YEAR(fecha) > '%s' OR (YEAR(fecha) = '%s' AND MONTH(fecha) >= '%s'))
+    AND (YEAR(fecha) < '%s' OR (YEAR(fecha) = '%s' AND MONTH(fecha) <= '%s'))
+    GROUP BY Dia
+    ORDER BY Dia;
+    """.formatted(anioInicio, anioFin, anioInicio, anioInicio, mesInicio, anioFin, anioFin, mesFin);
+
+            ArrayList<String> dias;
+            ArrayList<Double> ocupaciones;
+            try (Connection con = conexion.getConexion()) {
+                Statement st = con.createStatement();
+                ResultSet rs = st.executeQuery(sqlComand);
+                //extraer data de la base de dia - porcentaje de ocupacion
+                dias = new ArrayList<>();
+                ocupaciones = new ArrayList<>();
+                while (rs.next()) {
+                    dias.add(rs.getString("Dia"));
+                    //redondear a 2 decimales
+                    Double porcentajeOcupacion = rs.getDouble("PorcentajeOcupacion");
+                    porcentajeOcupacion = Math.round(porcentajeOcupacion * 100.0) / 100.0;
+                    ocupaciones.add(porcentajeOcupacion);
+                }
+            }
+            //crear workbook
+            XSSFWorkbook workbook = new XSSFWorkbook();
+
+            //estilo de la cabecera
+            XSSFCellStyle style = workbook.createCellStyle();
+            //color menta fondo
+            style.setFillForegroundColor(IndexedColors.LIGHT_GREEN.getIndex());
+            style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            style.setAlignment(HorizontalAlignment.CENTER);
+            style.setBorderBottom(BorderStyle.THIN);
+            style.setBorderLeft(BorderStyle.THIN);
+            style.setBorderRight(BorderStyle.THIN);
+            style.setBorderTop(BorderStyle.THIN);
+            style.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+            style.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+            style.setRightBorderColor(IndexedColors.BLACK.getIndex());
+            style.setTopBorderColor(IndexedColors.BLACK.getIndex());
+
+            //font de la cabecera
+            XSSFFont font = workbook.createFont();
+            font.setBold(true);
+            font.setFontHeightInPoints((short) 16);
+            //arial
+            font.setFontName("Arial");
+            font.setColor(IndexedColors.BLACK.getIndex());
+            style.setFont(font);
+
+            //estilo de las celdas
+            XSSFCellStyle style2 = workbook.createCellStyle();
+            style2.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+            style2.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            //alignment center
+            style2.setAlignment(HorizontalAlignment.CENTER);
+            style2.setBorderBottom(BorderStyle.THIN);
+            style2.setBorderLeft(BorderStyle.THIN);
+            style2.setBorderRight(BorderStyle.THIN);
+            style2.setBorderTop(BorderStyle.THIN);
+            style2.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+            style2.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+            style2.setRightBorderColor(IndexedColors.BLACK.getIndex());
+            style2.setTopBorderColor(IndexedColors.BLACK.getIndex());
+            //font de los datos
+            XSSFFont fontData = workbook.createFont();
+            fontData.setFontHeightInPoints((short) 12);
+            //arial
+            fontData.setFontName("Arial");
+            fontData.setColor(IndexedColors.BLACK.getIndex());
+            style2.setFont(fontData);
+
+            Object[] headers = {"Dia", "Porcentaje Ocupacion"};
+            XSSFSheet sheet = workbook.createSheet("Reporte Porcentaje Ocupacional");
+
+            //agregar headers
+            Row rowhead = sheet.createRow((short) 0);
+            for (int i = 0; i < headers.length; i++) {
+                Cell cell = rowhead.createCell(i);
+                cell.setCellValue(headers[i].toString());
+                cell.setCellStyle(style);
+            }
+
+            //agregar datos
+            int index = 1;
+            for (int i = 0; i < dias.size(); i++) {
+                Row row = sheet.createRow((short) index);
+
+                Cell cell = row.createCell(0);
+                cell.setCellValue(dias.get(i));
+                cell.setCellStyle(style2);
+
+                cell = row.createCell(1);
+                cell.setCellValue(ocupaciones.get(i));
+                cell.setCellStyle(style2);
+                index++;
+            }
+
+            //autosize a las columnas
+            for (int j = 0; j < headers.length; j++) {
+                sheet.autoSizeColumn(j);
+            }
+
+            //create line chart
+            DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+            //data set agregar una sola serie llamada "Porcentaje Ocupacional"
+            for (int j = 1; j < index; j++) {
+                dataset.setValue(sheet.getRow(j).getCell(1).getNumericCellValue(), "Porcentaje Ocupacional", sheet.getRow(j).getCell(0).getStringCellValue());
+            }
+            JFreeChart jchart;
+            //si el mes inicio y fin son iguales, se crea un reporte por mes
+            if(mesInicio == mesFin && anioInicio == anioFin){
+                jchart = ChartFactory.createLineChart("Porcentaje Ocupacional " + mesInicio + "/" + anioInicio, "Dia", "Porcentaje Ocupacional", dataset);
+            }else{
+                jchart = ChartFactory.createLineChart("Porcentaje Ocupacional " + mesInicio + "/" + anioInicio + " - " + mesFin + "/" + anioFin, "Dia", "Porcentaje Ocupacional", dataset);
+            }
+
+            // background color white
+            jchart.setBackgroundPaint(Color.lightGray);
+
+            //get a reference to the plot for further customisation...
+            CategoryPlot plot = (CategoryPlot) jchart.getPlot();
+            //gray style
+            plot.setBackgroundPaint(Color.lightGray);
+            plot.setDomainGridlinePaint(Color.white);
+            plot.setRangeGridlinePaint(Color.white);
+
+            //font of the legend
+            LegendTitle legend = jchart.getLegend();
+            legend.setItemFont(new Font("Arial", Font.PLAIN, 12));
+
+            //font of the axis
+            CategoryAxis domainAxis = plot.getDomainAxis();
+            domainAxis.setLabelFont(new Font("Arial", Font.PLAIN, 12));
+            domainAxis.setTickLabelFont(new Font("Arial", Font.PLAIN, 12));
+            ValueAxis rangeAxis = plot.getRangeAxis();
+            rangeAxis.setLabelFont(new Font("Arial", Font.PLAIN, 12));
+            rangeAxis.setTickLabelFont(new Font("Arial", Font.PLAIN, 12));
+
+            //set the range axis to display integers only...
+            rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+            //disable bar outlines...
+            LineAndShapeRenderer renderer = (LineAndShapeRenderer) plot.getRenderer();
+            renderer.setBaseShapesVisible(true);
+            renderer.setDrawOutlines(true);
+            renderer.setUseFillPaint(true);
+            renderer.setBaseFillPaint(Color.white);
+            renderer.setSeriesStroke(0, new BasicStroke(3.0f));
+            renderer.setSeriesOutlineStroke(0, new BasicStroke(2.0f));
+            renderer.setSeriesShape(0, new Ellipse2D.Double(-5.0, -5.0, 10.0, 10.0));
+
+            //Rango del eje y , 5 mas que el maximo valor de porcentaje de ocupacion
+            rangeAxis.setRange(0, Collections.max(ocupaciones) + 5);
+
+            //mostrar etiqueta de cada dato en el grafico y agregar '%' al final posicion arriba
+            renderer.setBaseItemLabelGenerator(new StandardCategoryItemLabelGenerator("{2}%", new DecimalFormat("0")));
+            renderer.setBaseItemLabelsVisible(true);
+            renderer.setBasePositiveItemLabelPosition(new ItemLabelPosition(ItemLabelAnchor.OUTSIDE12, TextAnchor.BOTTOM_CENTER));
+            renderer.setItemLabelAnchorOffset(10.0);
+            
+            int my_picture_id;
+            try ( // Write the chart image to the output stream
+                    ByteArrayOutputStream chart_out = new ByteArrayOutputStream()) {
+                ChartUtilities.writeChartAsPNG(chart_out, jchart, 600, 400);
+                my_picture_id = workbook.addPicture(chart_out.toByteArray(), Workbook.PICTURE_TYPE_PNG);
+            }
+
+            // Create the drawing patriarch.  This is the top level container for all shapes including cell comments.
+            XSSFDrawing drawing2 = sheet.createDrawingPatriarch();
+            //add a picture shape
+            ClientAnchor my_anchor = new XSSFClientAnchor();
+            my_anchor.setCol1(0);
+            my_anchor.setRow1(index + 2);
+            XSSFPicture my_picture = drawing2.createPicture(my_anchor, my_picture_id);
+            // Call resize method, which resizes the image
+            my_picture.resize();
+
+            try {
+                //guardar archivo solictar ruta
+                //get document folder
+                String userDocuments = System.getProperty("user.home") + "/Documents";
+
+                //fix slashes
+                userDocuments = userDocuments.replace("\\", "/");
+
+                String ruta = userDocuments + "/MediClass/Reportes";
+                // Definir el arreglo de nombres de los meses
+                String[] nombresMeses = {"ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO",
+                    "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"};
+
+                // Supongamos que mesInicio y mesFin son variables enteras que representan los meses (1 para enero, 2 para febrero, etc.)
+
+                // Convertir mesInicio a su nombre correspondiente
+                String nombreMesInicio = nombresMeses[mesInicio - 1];
+
+                // Convertir mesFin a su nombre correspondiente
+                String nombreMesFin = nombresMeses[mesFin - 1];
+
+                // Concatenar los nombres de los meses en la ruta
+                if (mesInicio == mesFin && anioInicio == anioFin) {
+                    ruta = ruta + "/Rerporte_Porcentaje_Ocupacional_" + nombreMesInicio + "_" + anioInicio;
+                } else {
+                    ruta = ruta + "/Rerporte_Porcentaje_Ocupacional_" + nombreMesInicio + "_" + anioInicio + "_a_" + nombreMesFin + "_" + anioFin;
+                }
+
+                try (FileOutputStream fileOut = new FileOutputStream(ruta + ".xlsx")) {
+                    workbook.write(fileOut);
+                }
+
+                //cerrar workbook
+                workbook.close();
+
+                try {
+                    Desktop.getDesktop().open(new File(ruta + ".xlsx"));
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(null, ex);
+                }
+
+            } catch (HeadlessException | IOException e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+
+        } catch (SQLException | IOException e) {
+            throw new RuntimeException(e);
+        }
+    }//GEN-LAST:event_JmenuReporteOcupacionalMouseClicked
+
+        /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
@@ -900,31 +1938,41 @@ public class Home extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar BarraSuperior;
-    private javax.swing.JTextField JBusqueda;
+    private javax.swing.JTextField JBusqueda_Medicamento;
+    private javax.swing.JTextField JBusqueda_Paciente;
+    private javax.swing.JTextField JBusqueda_doctor;
+    private javax.swing.JTable JTable_CarritoMedicamentos;
     private javax.swing.JLabel JlabelBackground;
     private javax.swing.JMenu JmenuActualizar;
     private javax.swing.JMenu JmenuReporte;
+    private javax.swing.JMenu JmenuReporteDoctores;
     private javax.swing.JMenu JmenuReporteMensual;
+    private javax.swing.JMenu JmenuReporteOcupacional;
     private javax.swing.JMenu JmenuSalir;
     private javax.swing.JPanel JpaneForm;
     private javax.swing.JMenu JverTablaRegistros;
+    private javax.swing.JButton jButtonAgregarMedicamento;
     private javax.swing.JButton jButtonRegistrar;
     private com.toedter.calendar.JCalendar jCalendar1;
     private javax.swing.JTextField jCategoria;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel jLabelFecha;
+    private javax.swing.JLabel jLabelLogo;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JTextField jNombreMedicamento;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jcantidadRegistro;
-    private javax.swing.JComboBox<String> jcomboMedicamentos;
+    private javax.swing.JComboBox<String> jcombo_Doctor;
+    private javax.swing.JComboBox<String> jcombo_Medicamento;
+    private javax.swing.JComboBox<String> jcombo_Paciente;
     // End of variables declaration//GEN-END:variables
 
+    //START METHODS
     private void comprobarCarpetaApp() {
         //get document folder
         String userDocuments = System.getProperty("user.home") + "/Documents";
@@ -957,5 +2005,126 @@ public class Home extends javax.swing.JFrame {
             }
         }
 
+    }
+    private void cargarMedicamentos() {
+        //agregar nombres de medicamentos desde la base de datos
+        jcombo_Medicamento.removeAllItems();
+        try {
+            try (Connection cn = conexion.getConexion()) {
+                PreparedStatement pst = cn.prepareStatement("select nombre from medicamentos order by nombre");
+                ResultSet rs = pst.executeQuery();
+                
+                //jcomboMedicamentos.addItem("Seleccione un medicamento");
+                while (rs.next()) {
+                    jcombo_Medicamento.addItem(rs.getString("nombre"));
+                }
+            }
+        } catch (SQLException e) {
+
+        }
+    }
+
+    private void buscarMedicamento() {
+        //buscar palabras parecidas a la que se escribe en el campo de busqueda
+        String buscar = JBusqueda_Medicamento.getText();
+        if (buscar.equals("")) {
+            cargarMedicamentos();
+        } else {
+            String sql = "SELECT nombre FROM medicamentos WHERE nombre LIKE '%" + buscar + "%'";
+            try {
+                busqueda_similar_sql(sql, jcombo_Medicamento);
+            } catch (SQLException e) {
+            }
+        }
+    }
+
+    private void cargarDoctores(){
+        //agregar nombres de doctores desde la base de datos
+        jcombo_Doctor.removeAllItems();
+        try {
+            try (Connection cn = conexion.getConexion()) {
+                PreparedStatement pst = cn.prepareStatement("select nombre from doctores order by nombre");
+                ResultSet rs = pst.executeQuery();
+                
+                //jcomboMedicamentos.addItem("Seleccione un medicamento");
+                while (rs.next()) {
+                    jcombo_Doctor.addItem(rs.getString("nombre"));
+                }
+            }
+
+        } catch (SQLException e) {
+
+        }
+    }
+
+    private void buscarDoctor(){
+        //buscar palabras parecidas a la que se escribe en el campo de busqueda
+        String buscar = JBusqueda_doctor.getText();
+
+        if (buscar.equals("")) {
+            cargarDoctores();
+        } else {
+            String sql = "SELECT nombre FROM doctores WHERE nombre LIKE '%" + buscar + "%'";
+            try {
+                busqueda_similar_sql(sql, jcombo_Doctor);
+            } catch (SQLException e) {
+                System.out.println("Error al buscar doctor");
+            }
+        }
+    }
+
+    private void busqueda_similar_sql(String sql, JComboBox<String> jCombo) throws SQLException {
+        try (Connection cn = conexion.getConexion()) {
+            Statement st = cn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            if (rs.next()) {
+                try {
+                    jCombo.removeAllItems();
+                } catch (Exception e) {
+                    System.out.println("Error al limpiar el combobox");
+                }
+                do {
+                    jCombo.addItem(rs.getString("nombre"));
+                } while (rs.next());
+            } else {
+                jCombo.removeAllItems();
+                jCombo.addItem("!No existe, Crealo!");
+                jCombo.addItem("Click para crearlo");
+            }
+        }
+    }
+
+    private void cargarPacientes(){
+        //agregar nombres de pacientes desde la base de datos
+        jcombo_Paciente.removeAllItems();
+        try {
+            try (Connection cn = conexion.getConexion()) {
+                PreparedStatement pst = cn.prepareStatement("select nombre from pacientes order by nombre");
+                ResultSet rs = pst.executeQuery();
+                
+                while (rs.next()) {
+                    jcombo_Paciente.addItem(rs.getString("nombre"));
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error al cargar pacientes");
+        }
+    }
+
+    private void buscarPaciente(){
+        //buscar palabras parecidas a la que se escribe en el campo de busqueda
+        String buscar = JBusqueda_Paciente.getText();
+
+        if (buscar.equals("")) {
+            cargarPacientes();
+        } else {
+            String sql = "SELECT nombre FROM pacientes WHERE nombre LIKE '%" + buscar + "%'";
+            try {
+                busqueda_similar_sql(sql, jcombo_Paciente);
+            } catch (SQLException e) {
+                System.out.println("Error al buscar paciente");
+            }
+        }
     }
 }

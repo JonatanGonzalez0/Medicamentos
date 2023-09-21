@@ -12,6 +12,10 @@ import java.util.Date;
 import javax.swing.JLabel;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.Toolkit;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
+import java.security.Principal;
+import java.text.ParseException;
 import javax.swing.ImageIcon;
 
 public class BaseRegistros extends javax.swing.JFrame {
@@ -50,6 +54,10 @@ public class BaseRegistros extends javax.swing.JFrame {
         jDateChooserEnd = new com.toedter.calendar.JDateChooser();
         jDateChooserinit = new com.toedter.calendar.JDateChooser();
         jButtonAplicarFiltro = new javax.swing.JButton();
+        jdateChooserEdit = new com.toedter.calendar.JDateChooser();
+        jcantidadRegistro = new javax.swing.JTextField();
+        JlabelFecha1 = new javax.swing.JLabel();
+        JbuttonEditar = new javax.swing.JButton();
         JLabelBackground = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -72,7 +80,7 @@ public class BaseRegistros extends javax.swing.JFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean [] {
                 false, true, false, false, true
@@ -135,7 +143,7 @@ public class BaseRegistros extends javax.swing.JFrame {
         JTableBaseDatos.getColumnModel().getColumn(3).setCellRenderer( leftRenderer );
         JTableBaseDatos.getColumnModel().getColumn(4).setCellRenderer( centerRenderer );
 
-        getContentPane().add(JscrollTablaBase, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 178, 1076, 457));
+        getContentPane().add(JscrollTablaBase, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 180, 1076, 457));
 
         JFilterCategory.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -149,7 +157,7 @@ public class BaseRegistros extends javax.swing.JFrame {
         getContentPane().add(Jlabel_filter, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 96, 160, -1));
 
         JbuttonEliminar.setBackground(new java.awt.Color(255, 102, 102));
-        JbuttonEliminar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        JbuttonEliminar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         JbuttonEliminar.setForeground(new java.awt.Color(255, 255, 255));
         JbuttonEliminar.setText("Eliminar");
         JbuttonEliminar.addActionListener(new java.awt.event.ActionListener() {
@@ -157,21 +165,21 @@ public class BaseRegistros extends javax.swing.JFrame {
                 JbuttonEliminarActionPerformed(evt);
             }
         });
-        getContentPane().add(JbuttonEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1104, 668, 102, 50));
+        getContentPane().add(JbuttonEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1210, 660, 102, 50));
 
-        JlabelID.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        JlabelID.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         JlabelID.setForeground(java.awt.SystemColor.textHighlight);
-        getContentPane().add(JlabelID, new org.netbeans.lib.awtextra.AbsoluteConstraints(166, 653, 24, 28));
+        getContentPane().add(JlabelID, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 650, 110, 28));
 
-        JlabelFecha.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        JlabelFecha.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         JlabelFecha.setForeground(java.awt.SystemColor.textHighlight);
         JlabelFecha.setText("Fecha registro");
-        getContentPane().add(JlabelFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(227, 653, 140, 36));
+        getContentPane().add(JlabelFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 640, 140, 36));
 
         JlabelData.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         JlabelData.setForeground(java.awt.SystemColor.textHighlight);
         JlabelData.setText("Nombre Medicamento");
-        getContentPane().add(JlabelData, new org.netbeans.lib.awtextra.AbsoluteConstraints(227, 707, 630, 36));
+        getContentPane().add(JlabelData, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 700, 660, 36));
 
         Jlabel_filter1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         Jlabel_filter1.setText("Filtrar por fecha");
@@ -198,6 +206,28 @@ public class BaseRegistros extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jButtonAplicarFiltro, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 133, 85, 24));
+        getContentPane().add(jdateChooserEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 650, 190, 30));
+
+        jcantidadRegistro.setBackground(new java.awt.Color(0, 153, 153));
+        jcantidadRegistro.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        jcantidadRegistro.setForeground(new java.awt.Color(255, 255, 255));
+        getContentPane().add(jcantidadRegistro, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 690, 190, 40));
+
+        JlabelFecha1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        JlabelFecha1.setForeground(java.awt.SystemColor.textHighlight);
+        JlabelFecha1.setText("Cantidad");
+        getContentPane().add(JlabelFecha1, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 650, 130, 36));
+
+        JbuttonEditar.setBackground(new java.awt.Color(51, 51, 255));
+        JbuttonEditar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        JbuttonEditar.setForeground(new java.awt.Color(255, 255, 255));
+        JbuttonEditar.setText("Editar");
+        JbuttonEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JbuttonEditarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(JbuttonEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1070, 660, 106, 50));
         getContentPane().add(JLabelBackground, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1366, 768));
 
         pack();
@@ -209,15 +239,32 @@ public class BaseRegistros extends javax.swing.JFrame {
         int fila = JTableBaseDatos.rowAtPoint(evt.getPoint());
 
         if (fila > -1) {
-            JlabelID.setText(JTableBaseDatos.getValueAt(fila, 0).toString());
+            JlabelID.setText("Id: "+JTableBaseDatos.getValueAt(fila, 0).toString());
 
             //fecha
-            JlabelFecha.setText("Fecha : " + JTableBaseDatos.getValueAt(fila, 1).toString());
-            //nombre categoria cantidad
+            JlabelFecha.setText("Fecha registro: ");
+            //extraer fecha de la tabla
+            String fecha = JTableBaseDatos.getValueAt(fila, 1).toString();
+            //convertir fecha a formato de jdatechooser
+            SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+            Date fechaDate = null;
+            try {
+                fechaDate = formato.parse(fecha);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, ex);
+            }
+            jdateChooserEdit.setDate(fechaDate);
+
+            //nombre
             String nombre = JTableBaseDatos.getValueAt(fila, 2).toString();
             String categoria = JTableBaseDatos.getValueAt(fila, 3).toString();
+            JlabelData.setText("Nombre Medicamento: "+nombre + " Categoria: " + categoria);
+
+            //cantidad
             String cantidad = JTableBaseDatos.getValueAt(fila, 4).toString();
-            JlabelData.setText("Nombre : " + nombre + " Categoria : " + categoria + " Cantidad : " + cantidad);
+            jcantidadRegistro.setText(cantidad);
+
+
         }
 
     }//GEN-LAST:event_JTableBaseDatosMouseClicked
@@ -228,7 +275,7 @@ public class BaseRegistros extends javax.swing.JFrame {
         if (fila == -1) {
             JOptionPane.showMessageDialog(null, "Debe seleccionar una fila");
         } else {
-            int id = Integer.parseInt(JlabelID.getText());
+            int id = Integer.parseInt(JTableBaseDatos.getValueAt(fila, 0).toString());
             String sql = "DELETE FROM registro WHERE id = " + id;
             try {
                 Connection con = conexion.getConexion();
@@ -390,6 +437,64 @@ public class BaseRegistros extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jButtonAplicarFiltroMouseClicked
 
+    private void JbuttonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JbuttonEditarActionPerformed
+        // TODO add your handling code here:
+        //code edit registro
+
+        int fila = JTableBaseDatos.getSelectedRow();
+
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar una fila");
+        } else {
+            int id = Integer.parseInt(JTableBaseDatos.getValueAt(fila, 0).toString());
+            String cantidad = jcantidadRegistro.getText();
+
+            //validar que cantidad sea un numero
+            try {
+                //si cantidad tiene / hacer split y dividir 2 decimales
+                if (cantidad.contains("/")) {
+                    String[] cantidadSplit = cantidad.split("/");
+                    int numerador = Integer.parseInt(cantidadSplit[0]);
+                    int denominador = Integer.parseInt(cantidadSplit[1]);
+                    double cantidadDouble = (double) numerador / denominador;
+                    cantidad = String.format("%.2f", cantidadDouble);
+                }else {
+                    //validar que cantidad sea un numero 2 decimales
+                    double cantidadDouble = Double.parseDouble(cantidad);
+                    cantidad = String.format("%.2f", cantidadDouble);
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "La cantidad debe ser un numero");
+                return;
+            }
+
+
+            //obtener fecha del jcalendar y enviar a sql
+            Date fecha = jdateChooserEdit.getDate();
+            long d = fecha.getTime();
+            java.sql.Date fechaSql = new java.sql.Date(d);
+            
+            //update registro in database
+            try {
+                Connection con = conexion.getConexion();
+                PreparedStatement ps = con.prepareStatement("UPDATE registro SET fecha = ?, cantidad = ? WHERE id = ?");
+                ps.setDate(1, fechaSql);
+                ps.setString(2, cantidad);
+                ps.setInt(3, id);
+                ps.executeUpdate();
+                con.close();
+                JOptionPane.showMessageDialog(null, "Registro editado");
+                mostrarDatos();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+
+
+        }
+
+        
+    }//GEN-LAST:event_JbuttonEditarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -430,9 +535,11 @@ public class BaseRegistros extends javax.swing.JFrame {
     public javax.swing.JComboBox<String> JFilterCategory;
     private javax.swing.JLabel JLabelBackground;
     public javax.swing.JTable JTableBaseDatos;
+    private javax.swing.JButton JbuttonEditar;
     private javax.swing.JButton JbuttonEliminar;
     private javax.swing.JLabel JlabelData;
     private javax.swing.JLabel JlabelFecha;
+    private javax.swing.JLabel JlabelFecha1;
     private javax.swing.JLabel JlabelID;
     private javax.swing.JLabel JlabelTitle;
     private javax.swing.JLabel Jlabel_filter;
@@ -443,6 +550,8 @@ public class BaseRegistros extends javax.swing.JFrame {
     private javax.swing.JButton jButtonAplicarFiltro;
     private com.toedter.calendar.JDateChooser jDateChooserEnd;
     private com.toedter.calendar.JDateChooser jDateChooserinit;
+    private javax.swing.JTextField jcantidadRegistro;
+    private com.toedter.calendar.JDateChooser jdateChooserEdit;
     // End of variables declaration//GEN-END:variables
 
     private void limpiar() {
@@ -488,7 +597,7 @@ public class BaseRegistros extends javax.swing.JFrame {
                 fila[1] = fechaString;
                 fila[2] = rs.getString("nombre");
                 fila[3] = rs.getString("categoria");
-                fila[4] = rs.getInt("cantidad");
+                fila[4] = rs.getDouble("cantidad");
                 modelo.addRow(fila);
             }
 
@@ -517,6 +626,20 @@ public class BaseRegistros extends javax.swing.JFrame {
                     JFilterCategory.addItem(rs.getString("categoria"));
                 }
             }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+
+    }
+
+    private void actualizarmesRegistroenBaseDatos(String idInico, String idFin) {
+        //update mes de registro en base de datos
+        try {
+            Connection con = conexion.getConexion();
+            Statement st = con.createStatement();
+            String sql = "UPDATE registro SET fecha = DATE_ADD('fecha', INTERVAL -1 MONTH) WHERE id BETWEEN " + idInico + " AND " + idFin + ";";
+            st.executeUpdate(sql);
+            con.close();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex);
         }

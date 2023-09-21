@@ -8,6 +8,7 @@ package App;
 import java.sql.Connection;
 import javax.swing.JOptionPane;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 
 /**
@@ -17,14 +18,17 @@ import java.sql.DriverManager;
 public class conexion {
     
     public static Connection getConexion(){
-        Connection conexion = null;
-        
-        try {
-            conexion = DriverManager.getConnection("jdbc:mysql:// localhost:3306/farmacia", "root","Ne59481739#");
-            //JOptionPane.showMessageDialog(null, "Conexion exitosa");
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error de conexion");
-        }
-        return conexion;
+    Connection conexion = null;
+    
+   
+    try {        
+        conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/farmacia", "root", "Ne59481739#");
+        //JOptionPane.showMessageDialog(null, "Conexion exitosa");
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error de conexion: " + e.getMessage());
+        e.printStackTrace();
     }
+    return conexion;
+}
+
 }
