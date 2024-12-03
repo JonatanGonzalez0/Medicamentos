@@ -7,6 +7,12 @@
     <Property name="iconImage" type="java.awt.Image" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
       <Connection code="Toolkit.getDefaultToolkit().getImage(getClass().getResource(&quot;/images/IconMediClass.png&quot;))" type="code"/>
     </Property>
+    <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+      <Dimension value="[1366, 750]"/>
+    </Property>
+    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+      <Dimension value="[1366, 750]"/>
+    </Property>
     <Property name="resizable" type="boolean" value="false"/>
   </Properties>
   <SyntheticProperties>
@@ -42,7 +48,7 @@
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="540" y="20" width="-1" height="57"/>
+          <AbsoluteConstraints x="540" y="0" width="-1" height="57"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -52,7 +58,7 @@
       </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="130" y="180" width="1076" height="457"/>
+          <AbsoluteConstraints x="76" y="180" width="1230" height="457"/>
         </Constraint>
       </Constraints>
 
@@ -63,10 +69,10 @@
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
               <Table columnCount="5" rowCount="1">
                 <Column editable="false" title="ID" type="java.lang.Integer"/>
-                <Column editable="true" title="Fecha" type="java.lang.String"/>
-                <Column editable="false" title="Nombre" type="java.lang.String"/>
-                <Column editable="false" title="Categoria" type="java.lang.String"/>
-                <Column editable="true" title="Cantidad" type="java.lang.Double"/>
+                <Column editable="false" title="Fecha" type="java.lang.String"/>
+                <Column editable="false" title="Paciente" type="java.lang.String"/>
+                <Column editable="false" title="Doctor" type="java.lang.String"/>
+                <Column editable="false" title="Enfermero" type="java.lang.String"/>
               </Table>
             </Property>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor" postCode="//style table&#xa;        JTableBaseDatos.getTableHeader().setFont(new java.awt.Font(&quot;Arial Black&quot;, 1, 14));&#xa;        JTableBaseDatos.getTableHeader().setForeground(new java.awt.Color(0, 153, 153));&#xa;        JTableBaseDatos.getTableHeader().setOpaque(false);&#xa;        JTableBaseDatos.getTableHeader().setBackground(new java.awt.Color(255, 255, 255));&#xa;        JTableBaseDatos.getTableHeader().setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 153, 153)));&#xa;        JTableBaseDatos.setRowHeight(25);&#xa;&#xa;        JTableBaseDatos.setFont(new java.awt.Font(&quot;Arial&quot;, 0, 14));&#xa;        JTableBaseDatos.setForeground(new java.awt.Color(51, 51, 51));&#xa;        JTableBaseDatos.setSelectionBackground(new java.awt.Color(0, 153, 153));&#xa;        JTableBaseDatos.setSelectionForeground(new java.awt.Color(255, 255, 255));&#xa;        JTableBaseDatos.setGridColor(new java.awt.Color(0, 153, 153));&#xa;        JTableBaseDatos.setShowVerticalLines(false);&#xa;        JTableBaseDatos.setShowHorizontalLines(false);&#xa;        JTableBaseDatos.setShowGrid(true);&#xa;&#xa;        //center header table&#xa;        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();&#xa;        centerRenderer.setHorizontalAlignment( JLabel.CENTER );&#xa;        JTableBaseDatos.getColumnModel().getColumn(0).setCellRenderer( centerRenderer );&#xa;        JTableBaseDatos.getColumnModel().getColumn(1).setCellRenderer( centerRenderer );&#xa;        JTableBaseDatos.getColumnModel().getColumn(2).setCellRenderer( centerRenderer );&#xa;        JTableBaseDatos.getColumnModel().getColumn(3).setCellRenderer( centerRenderer );&#xa;        JTableBaseDatos.getColumnModel().getColumn(4).setCellRenderer( centerRenderer );&#xa;        //center table data&#xa;&#xa;        DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();&#xa;        leftRenderer.setHorizontalAlignment( JLabel.LEFT );&#xa;        JTableBaseDatos.getColumnModel().getColumn(0).setCellRenderer( centerRenderer );&#xa;        JTableBaseDatos.getColumnModel().getColumn(1).setCellRenderer( centerRenderer );&#xa;        JTableBaseDatos.getColumnModel().getColumn(2).setCellRenderer( leftRenderer );&#xa;        JTableBaseDatos.getColumnModel().getColumn(3).setCellRenderer( leftRenderer );&#xa;        JTableBaseDatos.getColumnModel().getColumn(4).setCellRenderer( centerRenderer );">
@@ -76,7 +82,7 @@
                   <Editor/>
                   <Renderer/>
                 </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                <Column maxWidth="250" minWidth="150" prefWidth="150" resizable="true">
                   <Title/>
                   <Editor/>
                   <Renderer/>
@@ -91,7 +97,7 @@
                   <Editor/>
                   <Renderer/>
                 </Column>
-                <Column maxWidth="150" minWidth="50" prefWidth="150" resizable="true">
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                   <Title/>
                   <Editor/>
                   <Renderer/>
@@ -111,35 +117,16 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JComboBox" name="JFilterCategory">
-      <Properties>
-        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="0"/>
-        </Property>
-      </Properties>
-      <Events>
-        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="JFilterCategoryItemStateChanged"/>
-      </Events>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
-      </AuxValues>
-      <Constraints>
-        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="813" y="133" width="237" height="31"/>
-        </Constraint>
-      </Constraints>
-    </Component>
     <Component class="javax.swing.JLabel" name="Jlabel_filter">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Dialog" size="14" style="1"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Filtrar por categoria"/>
+        <Property name="text" type="java.lang.String" value="Buscar por paciente"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="850" y="96" width="160" height="-1"/>
+          <AbsoluteConstraints x="160" y="80" width="160" height="-1"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -161,7 +148,7 @@
       </Events>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="1210" y="660" width="102" height="50"/>
+          <AbsoluteConstraints x="1190" y="660" width="102" height="50"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -180,38 +167,6 @@
         </Constraint>
       </Constraints>
     </Component>
-    <Component class="javax.swing.JLabel" name="JlabelFecha">
-      <Properties>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Segoe UI" size="18" style="1"/>
-        </Property>
-        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="d7" green="78" id="Text Highlight" palette="2" red="0" type="palette"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="Fecha registro"/>
-      </Properties>
-      <Constraints>
-        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="130" y="640" width="140" height="36"/>
-        </Constraint>
-      </Constraints>
-    </Component>
-    <Component class="javax.swing.JLabel" name="JlabelData">
-      <Properties>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Segoe UI" size="14" style="1"/>
-        </Property>
-        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="d7" green="78" id="Text Highlight" palette="2" red="0" type="palette"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="Nombre Medicamento"/>
-      </Properties>
-      <Constraints>
-        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="120" y="700" width="660" height="36"/>
-        </Constraint>
-      </Constraints>
-    </Component>
     <Component class="javax.swing.JLabel" name="Jlabel_filter1">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -221,7 +176,7 @@
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="130" y="96" width="116" height="-1"/>
+          <AbsoluteConstraints x="520" y="80" width="116" height="-1"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -234,7 +189,7 @@
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="278" y="133" width="16" height="-1"/>
+          <AbsoluteConstraints x="670" y="110" width="16" height="-1"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -253,7 +208,7 @@
     <Component class="com.toedter.calendar.JDateChooser" name="jDateChooserEnd">
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="306" y="135" width="136" height="-1"/>
+          <AbsoluteConstraints x="700" y="110" width="136" height="-1"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -263,7 +218,7 @@
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="130" y="135" width="136" height="-1"/>
+          <AbsoluteConstraints x="520" y="110" width="136" height="-1"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -278,55 +233,14 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Aplicar"/>
+        <Property name="text" type="java.lang.String" value="Buscar"/>
       </Properties>
       <Events>
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jButtonAplicarFiltroMouseClicked"/>
       </Events>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="460" y="133" width="85" height="24"/>
-        </Constraint>
-      </Constraints>
-    </Component>
-    <Component class="com.toedter.calendar.JDateChooser" name="jdateChooserEdit">
-      <Constraints>
-        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="280" y="650" width="190" height="30"/>
-        </Constraint>
-      </Constraints>
-    </Component>
-    <Component class="javax.swing.JTextField" name="jcantidadRegistro">
-      <Properties>
-        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="99" green="99" red="0" type="rgb"/>
-        </Property>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Segoe UI" size="20" style="1"/>
-        </Property>
-        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="ff" green="ff" red="ff" type="rgb"/>
-        </Property>
-      </Properties>
-      <Constraints>
-        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="810" y="690" width="190" height="40"/>
-        </Constraint>
-      </Constraints>
-    </Component>
-    <Component class="javax.swing.JLabel" name="JlabelFecha1">
-      <Properties>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Segoe UI" size="24" style="1"/>
-        </Property>
-        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="d7" green="78" id="Text Highlight" palette="2" red="0" type="palette"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="Cantidad"/>
-      </Properties>
-      <Constraints>
-        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="810" y="650" width="130" height="36"/>
+          <AbsoluteConstraints x="850" y="110" width="85" height="24"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -341,21 +255,42 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Editar"/>
+        <Property name="text" type="java.lang.String" value="Imprimir"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JbuttonEditarActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JbuttonImprimirActionPerformed"/>
       </Events>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="1070" y="660" width="106" height="50"/>
+          <AbsoluteConstraints x="1010" y="660" width="106" height="50"/>
+        </Constraint>
+      </Constraints>
+    </Component>
+    <Component class="javax.swing.JTextField" name="JBusqueda_Paciente">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="99" green="33" red="0" type="rgb"/>
+        </Property>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Dialog" size="18" style="1"/>
+        </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+        </Property>
+      </Properties>
+      <Events>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="JBusqueda_PacienteKeyReleased"/>
+      </Events>
+      <Constraints>
+        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+          <AbsoluteConstraints x="150" y="110" width="340" height="30"/>
         </Constraint>
       </Constraints>
     </Component>
     <Component class="javax.swing.JLabel" name="JLabelBackground">
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="0" y="0" width="1366" height="768"/>
+          <AbsoluteConstraints x="0" y="0" width="1366" height="750"/>
         </Constraint>
       </Constraints>
     </Component>

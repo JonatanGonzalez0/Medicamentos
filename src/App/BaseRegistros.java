@@ -12,18 +12,28 @@ import java.util.Date;
 import javax.swing.JLabel;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.Toolkit;
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
-import java.security.Principal;
-import java.text.ParseException;
+import java.io.FileNotFoundException;
+import java.net.MalformedURLException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
 public class BaseRegistros extends javax.swing.JFrame {
-
+    
+    public ArrayList<Registro> list_registros = new ArrayList<>();
+    public ArrayList<Integer> list_id_registros = new ArrayList<>();
+    public Integer id_registro =0;
+    
+    
     public BaseRegistros() {
         initComponents();
+        
+        jDateChooserEnd.setDate(new Date());
+        jDateChooserinit.setDate(new Date());
+
         mostrarDatos();
-        actualizarCategorias();
         //jlabel background
         Image background = new ImageIcon(this.getClass().getResource("/images/background3.jpg")).getImage();
 
@@ -42,48 +52,45 @@ public class BaseRegistros extends javax.swing.JFrame {
         JlabelTitle = new javax.swing.JLabel();
         JscrollTablaBase = new javax.swing.JScrollPane();
         JTableBaseDatos = new javax.swing.JTable();
-        JFilterCategory = new javax.swing.JComboBox<>();
         Jlabel_filter = new javax.swing.JLabel();
         JbuttonEliminar = new javax.swing.JButton();
         JlabelID = new javax.swing.JLabel();
-        JlabelFecha = new javax.swing.JLabel();
-        JlabelData = new javax.swing.JLabel();
         Jlabel_filter1 = new javax.swing.JLabel();
         Jlabel_filter2 = new javax.swing.JLabel();
         Jlabel_filter3 = new javax.swing.JLabel();
         jDateChooserEnd = new com.toedter.calendar.JDateChooser();
         jDateChooserinit = new com.toedter.calendar.JDateChooser();
         jButtonAplicarFiltro = new javax.swing.JButton();
-        jdateChooserEdit = new com.toedter.calendar.JDateChooser();
-        jcantidadRegistro = new javax.swing.JTextField();
-        JlabelFecha1 = new javax.swing.JLabel();
         JbuttonEditar = new javax.swing.JButton();
+        JBusqueda_Paciente = new javax.swing.JTextField();
         JLabelBackground = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Base de Registros");
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/IconMediClass.png")));
+        setMinimumSize(new java.awt.Dimension(1366, 750));
+        setPreferredSize(new java.awt.Dimension(1366, 750));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         JlabelTitle.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
         JlabelTitle.setForeground(java.awt.SystemColor.textHighlight);
         JlabelTitle.setText("BASE DE REGISTROS");
-        getContentPane().add(JlabelTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 20, -1, 57));
+        getContentPane().add(JlabelTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 0, -1, 57));
 
         JTableBaseDatos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null}
             },
             new String [] {
-                "ID", "Fecha", "Nombre", "Categoria", "Cantidad"
+                "ID", "Fecha", "Paciente", "Doctor", "Enfermero"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, true, false, false, true
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -104,9 +111,9 @@ public class BaseRegistros extends javax.swing.JFrame {
             JTableBaseDatos.getColumnModel().getColumn(0).setMinWidth(50);
             JTableBaseDatos.getColumnModel().getColumn(0).setPreferredWidth(100);
             JTableBaseDatos.getColumnModel().getColumn(0).setMaxWidth(100);
-            JTableBaseDatos.getColumnModel().getColumn(4).setMinWidth(50);
-            JTableBaseDatos.getColumnModel().getColumn(4).setPreferredWidth(150);
-            JTableBaseDatos.getColumnModel().getColumn(4).setMaxWidth(150);
+            JTableBaseDatos.getColumnModel().getColumn(1).setMinWidth(150);
+            JTableBaseDatos.getColumnModel().getColumn(1).setPreferredWidth(150);
+            JTableBaseDatos.getColumnModel().getColumn(1).setMaxWidth(250);
         }
         //style table
         JTableBaseDatos.getTableHeader().setFont(new java.awt.Font("Arial Black", 1, 14));
@@ -143,18 +150,11 @@ public class BaseRegistros extends javax.swing.JFrame {
         JTableBaseDatos.getColumnModel().getColumn(3).setCellRenderer( leftRenderer );
         JTableBaseDatos.getColumnModel().getColumn(4).setCellRenderer( centerRenderer );
 
-        getContentPane().add(JscrollTablaBase, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 180, 1076, 457));
-
-        JFilterCategory.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                JFilterCategoryItemStateChanged(evt);
-            }
-        });
-        getContentPane().add(JFilterCategory, new org.netbeans.lib.awtextra.AbsoluteConstraints(813, 133, 237, 31));
+        getContentPane().add(JscrollTablaBase, new org.netbeans.lib.awtextra.AbsoluteConstraints(76, 180, 1230, 457));
 
         Jlabel_filter.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        Jlabel_filter.setText("Filtrar por categoria");
-        getContentPane().add(Jlabel_filter, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 96, 160, -1));
+        Jlabel_filter.setText("Buscar por paciente");
+        getContentPane().add(Jlabel_filter, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 80, 160, -1));
 
         JbuttonEliminar.setBackground(new java.awt.Color(255, 102, 102));
         JbuttonEliminar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -165,70 +165,59 @@ public class BaseRegistros extends javax.swing.JFrame {
                 JbuttonEliminarActionPerformed(evt);
             }
         });
-        getContentPane().add(JbuttonEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1210, 660, 102, 50));
+        getContentPane().add(JbuttonEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1190, 660, 102, 50));
 
         JlabelID.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         JlabelID.setForeground(java.awt.SystemColor.textHighlight);
         getContentPane().add(JlabelID, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 650, 110, 28));
 
-        JlabelFecha.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        JlabelFecha.setForeground(java.awt.SystemColor.textHighlight);
-        JlabelFecha.setText("Fecha registro");
-        getContentPane().add(JlabelFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 640, 140, 36));
-
-        JlabelData.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        JlabelData.setForeground(java.awt.SystemColor.textHighlight);
-        JlabelData.setText("Nombre Medicamento");
-        getContentPane().add(JlabelData, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 700, 660, 36));
-
         Jlabel_filter1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         Jlabel_filter1.setText("Filtrar por fecha");
-        getContentPane().add(Jlabel_filter1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 96, 116, -1));
+        getContentPane().add(Jlabel_filter1, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 80, 116, -1));
 
         Jlabel_filter2.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         Jlabel_filter2.setText("A");
-        getContentPane().add(Jlabel_filter2, new org.netbeans.lib.awtextra.AbsoluteConstraints(278, 133, 16, -1));
+        getContentPane().add(Jlabel_filter2, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 110, 16, -1));
 
         Jlabel_filter3.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         getContentPane().add(Jlabel_filter3, new org.netbeans.lib.awtextra.AbsoluteConstraints(557, 105, 36, -1));
-        getContentPane().add(jDateChooserEnd, new org.netbeans.lib.awtextra.AbsoluteConstraints(306, 135, 136, -1));
+        getContentPane().add(jDateChooserEnd, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 110, 136, -1));
 
         jDateChooserinit.setToolTipText("Seleccione la fecha de inicio");
-        getContentPane().add(jDateChooserinit, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 135, 136, -1));
+        getContentPane().add(jDateChooserinit, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 110, 136, -1));
 
         jButtonAplicarFiltro.setBackground(new java.awt.Color(0, 102, 153));
         jButtonAplicarFiltro.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButtonAplicarFiltro.setForeground(new java.awt.Color(255, 255, 255));
-        jButtonAplicarFiltro.setText("Aplicar");
+        jButtonAplicarFiltro.setText("Buscar");
         jButtonAplicarFiltro.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jButtonAplicarFiltroMouseClicked(evt);
             }
         });
-        getContentPane().add(jButtonAplicarFiltro, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 133, 85, 24));
-        getContentPane().add(jdateChooserEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 650, 190, 30));
-
-        jcantidadRegistro.setBackground(new java.awt.Color(0, 153, 153));
-        jcantidadRegistro.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        jcantidadRegistro.setForeground(new java.awt.Color(255, 255, 255));
-        getContentPane().add(jcantidadRegistro, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 690, 190, 40));
-
-        JlabelFecha1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        JlabelFecha1.setForeground(java.awt.SystemColor.textHighlight);
-        JlabelFecha1.setText("Cantidad");
-        getContentPane().add(JlabelFecha1, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 650, 130, 36));
+        getContentPane().add(jButtonAplicarFiltro, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 110, 85, 24));
 
         JbuttonEditar.setBackground(new java.awt.Color(51, 51, 255));
         JbuttonEditar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         JbuttonEditar.setForeground(new java.awt.Color(255, 255, 255));
-        JbuttonEditar.setText("Editar");
+        JbuttonEditar.setText("Imprimir");
         JbuttonEditar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JbuttonEditarActionPerformed(evt);
+                JbuttonImprimirActionPerformed(evt);
             }
         });
-        getContentPane().add(JbuttonEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1070, 660, 106, 50));
-        getContentPane().add(JLabelBackground, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1366, 768));
+        getContentPane().add(JbuttonEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1010, 660, 106, 50));
+
+        JBusqueda_Paciente.setBackground(new java.awt.Color(0, 51, 153));
+        JBusqueda_Paciente.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        JBusqueda_Paciente.setForeground(new java.awt.Color(255, 255, 255));
+        JBusqueda_Paciente.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                JBusqueda_PacienteKeyReleased(evt);
+            }
+        });
+        getContentPane().add(JBusqueda_Paciente, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 110, 340, 30));
+        getContentPane().add(JLabelBackground, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1366, 750));
 
         pack();
         setLocationRelativeTo(null);
@@ -239,47 +228,55 @@ public class BaseRegistros extends javax.swing.JFrame {
         int fila = JTableBaseDatos.rowAtPoint(evt.getPoint());
 
         if (fila > -1) {
-            JlabelID.setText("Id: "+JTableBaseDatos.getValueAt(fila, 0).toString());
-
-            //fecha
-            JlabelFecha.setText("Fecha registro: ");
-            //extraer fecha de la tabla
-            String fecha = JTableBaseDatos.getValueAt(fila, 1).toString();
-            //convertir fecha a formato de jdatechooser
-            SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-            Date fechaDate = null;
-            try {
-                fechaDate = formato.parse(fecha);
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(null, ex);
-            }
-            jdateChooserEdit.setDate(fechaDate);
-
-            //nombre
-            String nombre = JTableBaseDatos.getValueAt(fila, 2).toString();
-            String categoria = JTableBaseDatos.getValueAt(fila, 3).toString();
-            JlabelData.setText("Nombre Medicamento: "+nombre + " Categoria: " + categoria);
-
-            //cantidad
-            String cantidad = JTableBaseDatos.getValueAt(fila, 4).toString();
-            jcantidadRegistro.setText(cantidad);
-
-
+            id_registro = Integer.valueOf(JTableBaseDatos.getValueAt(fila, 0).toString());
         }
 
     }//GEN-LAST:event_JTableBaseDatosMouseClicked
 
     private void JbuttonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JbuttonEliminarActionPerformed
         // TODO add your handling code here:
+
+        // mostrar mensaje de confirmacion para eliminar registro
+        if (JOptionPane.showConfirmDialog(null, "¿Desea eliminar el registro seleccionado?", "eliminar registro", JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION) {
+            return;
+        }
+      
         int fila = JTableBaseDatos.getSelectedRow();
         if (fila == -1) {
             JOptionPane.showMessageDialog(null, "Debe seleccionar una fila");
         } else {
             int id = Integer.parseInt(JTableBaseDatos.getValueAt(fila, 0).toString());
-            String sql = "DELETE FROM registro WHERE id = " + id;
+
+            // comprobar si en detalle_registro hay detalles asociados al registro y eliminarlos antes de eliminar el registro
             try {
                 Connection con = conexion.getConexion();
-                PreparedStatement ps = con.prepareStatement(sql);
+                Statement st = con.createStatement();
+                ResultSet rs = st.executeQuery("SELECT id_detalle_registro FROM detalle_registro WHERE id_registro = " + id);
+                ArrayList<Integer> ids_detalle = new ArrayList<>();
+                while (rs.next()) {
+                    ids_detalle.add(rs.getInt("id_detalle_registro"));
+                }
+                con.close();
+                // eliminar detalles
+                for (Integer id_detalle : ids_detalle) {
+                    try {
+                        Connection con2 = conexion.getConexion();
+                        PreparedStatement ps = con2.prepareStatement("DELETE FROM detalle_registro WHERE id_detalle_registro = " + id_detalle);
+                        ps.executeUpdate();
+                        con2.close();
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, ex);
+                    }
+                }
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, ex);
+            }
+
+            // eliminar registro
+
+            try {
+                Connection con = conexion.getConexion();
+                PreparedStatement ps = con.prepareStatement("DELETE FROM registro WHERE id = " + id);
                 ps.executeUpdate();
                 JOptionPane.showMessageDialog(null, "Registro eliminado");
                 limpiar();
@@ -294,206 +291,28 @@ public class BaseRegistros extends javax.swing.JFrame {
 
     }//GEN-LAST:event_JbuttonEliminarActionPerformed
 
-    private void JFilterCategoryItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_JFilterCategoryItemStateChanged
-        // TODO add your handling code here:
-        String categoria = JFilterCategory.getSelectedItem().toString();
-        if (categoria.equals("Todas")) {
-            mostrarDatos();
-        } else {
-            String sql = "";
-            if (jDateChooserinit.getDate() != null && jDateChooserEnd.getDate() != null) {
-                String fechaInicio = jDateChooserinit.getDate().toString();
-                String fechaFin = jDateChooserEnd.getDate().toString();
-
-                Date fechaInit = jDateChooserinit.getDate();
-                long d = fechaInit.getTime();
-                java.sql.Date fechaInicioSql = new java.sql.Date(d);
-
-                Date fechaEnd = jDateChooserEnd.getDate();
-                long d2 = fechaEnd.getTime();
-                java.sql.Date fechaFinSql = new java.sql.Date(d2);
-                sql =  "SELECT * FROM registro WHERE categoria = '" + categoria + "' AND fecha BETWEEN '" + fechaInicioSql + "' AND '" + fechaFinSql + "' ORDER BY fecha ASC";
-            } else {
-                sql = "SELECT * FROM registro WHERE categoria = '" + categoria + "' ORDER BY fecha ASC";
-            }
-
-            DefaultTableModel modelo = (DefaultTableModel) JTableBaseDatos.getModel();
-            //limpiar tabla
-            modelo.setRowCount(0);
-            //obtener datos de la base de datos
-            try {
-                Connection con = conexion.getConexion();
-                Statement st = con.createStatement();
-                ResultSet rs = st.executeQuery(sql);
-                while (rs.next()) {
-                    Object[] fila = new Object[5];
-                    fila[0] = rs.getInt("id");
-
-                    //date fecha to string
-                    Date fecha = rs.getDate("fecha");
-                    SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-                    String fechaString = formato.format(fecha);
-                    fila[1] = fechaString;
-
-                    fila[2] = rs.getString("nombre");
-                    fila[3] = rs.getString("categoria");
-                    fila[4] = rs.getInt("cantidad");
-                    modelo.addRow(fila);
-                }
-                con.close();
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(null, ex);
-            }
-        }
-    }//GEN-LAST:event_JFilterCategoryItemStateChanged
-
     private void jButtonAplicarFiltroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAplicarFiltroMouseClicked
         // TODO add your handling code here:
-        String fechaInicio = "";
-        String fechaFin = "";
-        java.sql.Date fechaInicioSql = null;
-        java.sql.Date fechaFinSql = null;
-        //si jdatechooser no esta vacio
-        if (jDateChooserinit.getDate() != null && jDateChooserEnd.getDate() != null) {
-
-            fechaInicio = jDateChooserinit.getDate().toString();
-            fechaFin = jDateChooserEnd.getDate().toString();
-
-            Date fechaInit = jDateChooserinit.getDate();
-            long d = fechaInit.getTime();
-            fechaInicioSql = new java.sql.Date(d);
-
-            Date fechaEnd = jDateChooserEnd.getDate();
-            long d2 = fechaEnd.getTime();
-            fechaFinSql = new java.sql.Date(d2);
-        }
-        //si alguna de las dos fechas esta vacio
-        if (fechaInicio.equals("") || fechaFin.equals("")) {
-            mostrarDatos();
-            return;
-        }
-        //if categoria is all
-        if (JFilterCategory.getSelectedItem().toString().equals("Todas")) {
-            String sql = "SELECT * FROM registro WHERE fecha BETWEEN '" + fechaInicioSql + "' AND '" + fechaFinSql + "' ORDER BY fecha ASC;";
-            DefaultTableModel modelo = (DefaultTableModel) JTableBaseDatos.getModel();
-            //limpiar tabla
-            modelo.setRowCount(0);
-            //obtener datos de la base de datos
-            try {
-                Connection con = conexion.getConexion();
-                Statement st = con.createStatement();
-                ResultSet rs = st.executeQuery(sql);
-                while (rs.next()) {
-                    Object[] fila = new Object[5];
-                    fila[0] = rs.getInt("id");
-
-                    //date fecha to string
-                    Date fecha = rs.getDate("fecha");
-                    SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-                    String fechaString = formato.format(fecha);
-                    fila[1] = fechaString;
-
-                    fila[2] = rs.getString("nombre");
-                    fila[3] = rs.getString("categoria");
-                    fila[4] = rs.getInt("cantidad");
-                    modelo.addRow(fila);
-                }
-                con.close();
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(null, ex);
-            }
-        } else {
-            String categoria = JFilterCategory.getSelectedItem().toString();
-            String sql = "SELECT * FROM registro WHERE fecha BETWEEN '" + fechaInicio + "' AND '" + fechaFin + "' AND categoria = '" + categoria + "' ORDER BY fecha ASC;";
-            DefaultTableModel modelo = (DefaultTableModel) JTableBaseDatos.getModel();
-            //limpiar tabla
-            modelo.setRowCount(0);
-            //obtener datos de la base de datos
-            try {
-                Connection con = conexion.getConexion();
-                Statement st = con.createStatement();
-                ResultSet rs = st.executeQuery(sql);
-                while (rs.next()) {
-                    Object[] fila = new Object[5];
-                    fila[0] = rs.getInt("id");
-
-                    //date fecha to string
-                    Date fecha = rs.getDate("fecha");
-                    SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-                    String fechaString = formato.format(fecha);
-                    fila[1] = fechaString;
-
-                    fila[2] = rs.getString("nombre");
-                    fila[3] = rs.getString("categoria");
-                    fila[4] = rs.getInt("cantidad");
-                    modelo.addRow(fila);
-                }
-                con.close();
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(null, ex);
-            }
-        }
-
+        mostrarDatos();
 
     }//GEN-LAST:event_jButtonAplicarFiltroMouseClicked
 
-    private void JbuttonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JbuttonEditarActionPerformed
+    private void JbuttonImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JbuttonImprimirActionPerformed
         // TODO add your handling code here:
-        //code edit registro
-
-        int fila = JTableBaseDatos.getSelectedRow();
-
-        if (fila == -1) {
-            JOptionPane.showMessageDialog(null, "Debe seleccionar una fila");
-        } else {
-            int id = Integer.parseInt(JTableBaseDatos.getValueAt(fila, 0).toString());
-            String cantidad = jcantidadRegistro.getText();
-
-            //validar que cantidad sea un numero
-            try {
-                //si cantidad tiene / hacer split y dividir 2 decimales
-                if (cantidad.contains("/")) {
-                    String[] cantidadSplit = cantidad.split("/");
-                    int numerador = Integer.parseInt(cantidadSplit[0]);
-                    int denominador = Integer.parseInt(cantidadSplit[1]);
-                    double cantidadDouble = (double) numerador / denominador;
-                    cantidad = String.format("%.2f", cantidadDouble);
-                }else {
-                    //validar que cantidad sea un numero 2 decimales
-                    double cantidadDouble = Double.parseDouble(cantidad);
-                    cantidad = String.format("%.2f", cantidadDouble);
-                }
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "La cantidad debe ser un numero");
-                return;
-            }
-
-
-            //obtener fecha del jcalendar y enviar a sql
-            Date fecha = jdateChooserEdit.getDate();
-            long d = fecha.getTime();
-            java.sql.Date fechaSql = new java.sql.Date(d);
-            
-            //update registro in database
-            try {
-                Connection con = conexion.getConexion();
-                PreparedStatement ps = con.prepareStatement("UPDATE registro SET fecha = ?, cantidad = ? WHERE id = ?");
-                ps.setDate(1, fechaSql);
-                ps.setString(2, cantidad);
-                ps.setInt(3, id);
-                ps.executeUpdate();
-                con.close();
-                JOptionPane.showMessageDialog(null, "Registro editado");
-                mostrarDatos();
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, e);
-            }
-
-
+        Registro registro = new Registro(id_registro);
+        try {
+            registro.imprimir();
+        } catch (FileNotFoundException | MalformedURLException ex) {
+            Logger.getLogger(BaseRegistros.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         
-    }//GEN-LAST:event_JbuttonEditarActionPerformed
+    }//GEN-LAST:event_JbuttonImprimirActionPerformed
+
+    private void JBusqueda_PacienteKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_JBusqueda_PacienteKeyReleased
+        // TODO add your handling code here:
+        mostrarDatos();
+        
+    }//GEN-LAST:event_JBusqueda_PacienteKeyReleased
 
     /**
      * @param args the command line arguments
@@ -532,14 +351,11 @@ public class BaseRegistros extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JComboBox<String> JFilterCategory;
+    private javax.swing.JTextField JBusqueda_Paciente;
     private javax.swing.JLabel JLabelBackground;
     public javax.swing.JTable JTableBaseDatos;
     private javax.swing.JButton JbuttonEditar;
     private javax.swing.JButton JbuttonEliminar;
-    private javax.swing.JLabel JlabelData;
-    private javax.swing.JLabel JlabelFecha;
-    private javax.swing.JLabel JlabelFecha1;
     private javax.swing.JLabel JlabelID;
     private javax.swing.JLabel JlabelTitle;
     private javax.swing.JLabel Jlabel_filter;
@@ -550,88 +366,32 @@ public class BaseRegistros extends javax.swing.JFrame {
     private javax.swing.JButton jButtonAplicarFiltro;
     private com.toedter.calendar.JDateChooser jDateChooserEnd;
     private com.toedter.calendar.JDateChooser jDateChooserinit;
-    private javax.swing.JTextField jcantidadRegistro;
-    private com.toedter.calendar.JDateChooser jdateChooserEdit;
     // End of variables declaration//GEN-END:variables
 
     private void limpiar() {
         JlabelID.setText("");
-        JlabelFecha.setText("");
-        JlabelData.setText("");
     }
 
     private void mostrarDatos() {
         DefaultTableModel modelo = (DefaultTableModel) JTableBaseDatos.getModel();
         //limpiar tabla
         modelo.setRowCount(0);
-        //obtener datos de la base de datos
-        try {
-            Connection con = conexion.getConexion();
-            Statement st = con.createStatement();
-            String sql = "";
+        getInfoRegistros();
 
-            if (jDateChooserinit.getDate() != null && jDateChooserEnd.getDate() != null) {
-                Date fechaInit = jDateChooserinit.getDate();
-                long d = fechaInit.getTime();
-                java.sql.Date fechaInicioSql = new java.sql.Date(d);
-
-                Date fechaEnd = jDateChooserEnd.getDate();
-                long d2 = fechaEnd.getTime();
-                java.sql.Date fechaFinSql = new java.sql.Date(d2);
-
-                //order by date
-                sql = "SELECT * FROM registro WHERE fecha BETWEEN '" + fechaInicioSql + "' AND '" + fechaFinSql + "' ORDER BY fecha ASC;";
-
-            }else {
-                sql = "SELECT * FROM registro ORDER BY fecha ASC;";
-            }
-
-            ResultSet rs = st.executeQuery(sql);
-            while (rs.next()) {
-                Object[] fila = new Object[5];
-                fila[0] = rs.getInt("id");
-                //date fecha to string
-                Date fecha = rs.getDate("fecha");
-                SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-                String fechaString = formato.format(fecha);
-                fila[1] = fechaString;
-                fila[2] = rs.getString("nombre");
-                fila[3] = rs.getString("categoria");
-                fila[4] = rs.getDouble("cantidad");
-                modelo.addRow(fila);
-            }
-
-            con.close();
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex);
-        }
-    }
-
-    private void actualizarCategorias() {
-        //si combo solo tiene Todas, agregar categorias
-        try {
-            Connection con = conexion.getConexion();
-            Statement st = con.createStatement();
-            if (JFilterCategory.getItemCount() == 0) {
-                ResultSet rs = st.executeQuery("SELECT DISTINCT categoria FROM registro ORDER BY categoria ASC;");
-                JFilterCategory.addItem("Todas");
-                while (rs.next()) {
-                    JFilterCategory.addItem(rs.getString("categoria"));
-                }
-            } else if (JFilterCategory.getItemCount() > 1) {
-                JFilterCategory.removeAllItems();
-                ResultSet rs = st.executeQuery("SELECT DISTINCT categoria FROM registro ORDER BY categoria ASC;");
-                JFilterCategory.addItem("Todas");
-                while (rs.next()) {
-                    JFilterCategory.addItem(rs.getString("categoria"));
-                }
-            }
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex);
+        // agregar datos a la tabla de registros= id | fecha | paciente | doctor | enfermero
+        for (Registro registro : list_registros) {
+            Object[] fila = new Object[5];
+            fila[0] = registro.id;
+            // fila[1] = registro.fecha;
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            fila[1] = sdf.format(registro.fecha);
+            fila[2] = registro.nombre_paciente;
+            fila[3] = registro.nombre_doctor;
+            fila[4] = registro.nombre_enfermero;
+            modelo.addRow(fila);
         }
 
     }
-
     private void actualizarmesRegistroenBaseDatos(String idInico, String idFin) {
         //update mes de registro en base de datos
         try {
@@ -645,4 +405,79 @@ public class BaseRegistros extends javax.swing.JFrame {
         }
 
     }
+
+    private void getInfoRegistros() {
+        String fechaInicio = "";
+        String fechaFin = "";
+        java.sql.Date fechaInitSql = null;
+        java.sql.Date fechaFinSql = null;
+
+        if (jDateChooserinit.getDate() != null && jDateChooserEnd.getDate() != null) {
+            fechaInicio = jDateChooserinit.getDate().toString();
+            fechaFin = jDateChooserEnd.getDate().toString();
+
+            Date fechaInit = jDateChooserinit.getDate();
+            long d = fechaInit.getTime();
+            fechaInitSql = new java.sql.Date(d);
+
+            Date fechaEnd = jDateChooserEnd.getDate();
+            long d2 = fechaEnd.getTime();
+            fechaFinSql = new java.sql.Date(d2);
+
+            // validar que la fecha de inicio sea menor o igual a la fecha de fin
+            //  fechas iguales si deben poder operarse, mostro el mensaje y no deberia si son iguales
+            if (fechaInitSql.compareTo(fechaFinSql) > 1) {
+                JOptionPane.showMessageDialog(null, "La fecha de inicio debe ser menor o igual a la fecha de fin");
+                return;
+            }
+        }
+        String paciente = JBusqueda_Paciente.getText();
+
+        // obtener registros con filtro de fecha y donde el paciente sea parecido a lo ingresado en el campo de busqueda 
+        try {
+            Connection con = conexion.getConexion();
+            PreparedStatement ps;
+            String sql = "SELECT registro.id, registro.fecha, pacientes.nombre AS nombre_paciente, doctores.nombre AS nombre_doctor, enfermeros.nombre AS nombre_enfermero FROM registro LEFT JOIN pacientes ON registro.id_paciente = pacientes.id_paciente LEFT JOIN doctores ON registro.id_doctor = doctores.id_doctor LEFT JOIN enfermeros ON registro.id_enfermero = enfermeros.id_enfermero WHERE 1=1";
+
+            if (!fechaInicio.equals("") && !fechaFin.equals("")) {
+                sql += " AND registro.fecha BETWEEN ? AND ?";
+            }
+
+            if (!paciente.equals("")) {
+                sql += " AND pacientes.nombre LIKE ?";
+            }
+
+            ps = con.prepareStatement(sql);
+
+            int paramIndex = 1;
+
+            if (!fechaInicio.equals("") && !fechaFin.equals("")) {
+                ps.setDate(paramIndex++, fechaInitSql);
+                ps.setDate(paramIndex++, fechaFinSql);
+            }
+
+            if (!paciente.equals("")) {
+                ps.setString(paramIndex++, "%" + paciente + "%");
+            }
+
+            ResultSet rs = ps.executeQuery();
+            list_registros.clear();
+            while (rs.next()) {
+                Registro registro = new Registro(rs.getInt("id"));
+                list_registros.add(registro);
+            }
+            con.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+
+        sortById();
+    }
+
+    private void sortById() {
+        // ordenar registros por id
+        list_registros.sort((r1, r2) -> r1.id - r2.id);
+    }
+
+
 }

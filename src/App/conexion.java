@@ -22,11 +22,10 @@ public class conexion {
     
    
     try {        
-        conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/farmacia", "root", "Ne59481739#");
-        //JOptionPane.showMessageDialog(null, "Conexion exitosa");
+//        conexion = DriverManager.getConnection("jdbc:mysql://26.183.76.152:3306/farmacia", "remote", "Ne59481739#");
+        conexion = DriverManager.getConnection("jdbc:mysql://localhost/farmacia", "root", "Ne59481739#");
     } catch (SQLException e) {
         JOptionPane.showMessageDialog(null, "Error de conexion: " + e.getMessage());
-        e.printStackTrace();
     }
     return conexion;
 }

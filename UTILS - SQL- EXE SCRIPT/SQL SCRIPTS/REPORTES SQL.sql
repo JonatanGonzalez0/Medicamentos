@@ -1,0 +1,64 @@
+SELECT * FROM farmacia.registro order by id desc;
+
+-- MODIFICAR FECHA A UN REGISTRO CON ID
+UPDATE farmacia.registro
+SET fecha = '2023-12-29'
+WHERE id >= 31478 AND id <= 31480;
+
+-- BUSCAR MEDICAMENTO EN REGISTROS
+SELECT *
+FROM farmacia.registro
+WHERE nombre = 'Actinium 600 mg-oxcarbazepina';
+
+-- ACTUALIZAR NOMBRE DE MEDICAMENTO
+UPDATE farmacia.registro
+SET nombre = 'Tableta oxcarbazepina'
+WHERE nombre = 'Actinium 600 mg-oxcarbazepina';
+
+-- BORRAR ERRORES AL INGRESAR NO EXISTENTE
+DELETE FROM farmacia.registro
+WHERE nombre = '!No existe, Créalo!';
+
+-- REPORTE AGRUPADO POR MES , SEMESTRAL Y POR CATEGORIA
+SELECT
+  nombre,
+  CASE WHEN CEILING(SUM(CASE WHEN EXTRACT(MONTH FROM fecha) = 7 THEN cantidad ELSE 0 END)) = 0 THEN '' ELSE CEILING(SUM(CASE WHEN EXTRACT(MONTH FROM fecha) = 7 THEN cantidad ELSE 0 END)) END AS julio,
+  CASE WHEN CEILING(SUM(CASE WHEN EXTRACT(MONTH FROM fecha) = 8 THEN cantidad ELSE 0 END)) = 0 THEN '' ELSE CEILING(SUM(CASE WHEN EXTRACT(MONTH FROM fecha) = 8 THEN cantidad ELSE 0 END)) END AS agosto,
+  CASE WHEN CEILING(SUM(CASE WHEN EXTRACT(MONTH FROM fecha) = 9 THEN cantidad ELSE 0 END)) = 0 THEN '' ELSE CEILING(SUM(CASE WHEN EXTRACT(MONTH FROM fecha) = 9 THEN cantidad ELSE 0 END)) END AS septiembre,
+  CASE WHEN CEILING(SUM(CASE WHEN EXTRACT(MONTH FROM fecha) = 10 THEN cantidad ELSE 0 END)) = 0 THEN '' ELSE CEILING(SUM(CASE WHEN EXTRACT(MONTH FROM fecha) = 10 THEN cantidad ELSE 0 END)) END AS octubre,
+  CASE WHEN CEILING(SUM(CASE WHEN EXTRACT(MONTH FROM fecha) = 11 THEN cantidad ELSE 0 END)) = 0 THEN '' ELSE CEILING(SUM(CASE WHEN EXTRACT(MONTH FROM fecha) = 11 THEN cantidad ELSE 0 END)) END AS noviembre,
+  CASE WHEN CEILING(SUM(CASE WHEN EXTRACT(MONTH FROM fecha) = 12 THEN cantidad ELSE 0 END)) = 0 THEN '' ELSE CEILING(SUM(CASE WHEN EXTRACT(MONTH FROM fecha) = 12 THEN cantidad ELSE 0 END)) END AS diciembre
+FROM
+  farmacia.registro
+WHERE
+  fecha BETWEEN '2023-07-01' AND '2023-12-31'
+  AND categoria = 'Vitaminas '
+GROUP BY
+  nombre;
+  
+  -- ACUMULADO MEDICAMENTOS SIN FILTROS POR MESES
+  SELECT
+  nombre,
+  SUM(CASE WHEN EXTRACT(MONTH FROM fecha) = 7 THEN cantidad ELSE 0 END) AS julio,
+  SUM(CASE WHEN EXTRACT(MONTH FROM fecha) = 8 THEN cantidad ELSE 0 END) AS agosto,
+  SUM(CASE WHEN EXTRACT(MONTH FROM fecha) = 9 THEN cantidad ELSE 0 END) AS septiembre,
+  SUM(CASE WHEN EXTRACT(MONTH FROM fecha) = 10 THEN cantidad ELSE 0 END) AS octubre,
+  SUM(CASE WHEN EXTRACT(MONTH FROM fecha) = 11 THEN cantidad ELSE 0 END) AS noviembre,
+  SUM(CASE WHEN EXTRACT(MONTH FROM fecha) = 12 THEN cantidad ELSE 0 END) AS diciembre,
+  SUM(cantidad) AS total
+FROM
+  farmacia.registro
+WHERE
+  fecha BETWEEN '2023-07-01' AND '2023-12-31'
+GROUP BY
+  nombre;
+  
+  SELECT
+  EXTRACT(MONTH FROM fecha) AS mes,
+  SUM(cantidad) AS cantidad
+FROM
+  farmacia.registro
+WHERE
+  fecha BETWEEN '2023-07-01' AND '2023-12-31'
+GROUP BY
+  EXTRACT(MONTH FROM fecha);

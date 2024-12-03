@@ -1,5 +1,6 @@
 package App;
 
+import java.awt.HeadlessException;
 import java.awt.Image;
 import javax.swing.JOptionPane;
 import java.sql.PreparedStatement;
@@ -10,12 +11,16 @@ import java.sql.ResultSet;
 import javax.swing.JLabel;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.Toolkit;
+import java.sql.SQLException;
 import javax.swing.ImageIcon;
 
 public class BaseDatosMedicamentos extends javax.swing.JFrame {
-
+    public Integer id_medicamento;
+    
     public BaseDatosMedicamentos() {
         initComponents();
+        mostrarDatos();
+        cargarCategorias();
         //jlabel background
         Image background = new ImageIcon(this.getClass().getResource("/images/background3.jpg")).getImage();
 
@@ -42,16 +47,16 @@ public class BaseDatosMedicamentos extends javax.swing.JFrame {
         JbuttonEditar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         JlabelID = new javax.swing.JLabel();
         txtFieldCategoriaForm = new javax.swing.JTextField();
+        txtFielGenericoForm = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
         txtFielNombreForm = new javax.swing.JTextField();
         JLabelBackground = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Base de Datos");
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/IconMediClass.png")));
-        setPreferredSize(new java.awt.Dimension(910, 768));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -62,17 +67,17 @@ public class BaseDatosMedicamentos extends javax.swing.JFrame {
 
         JTableBaseDatos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null}
+                {null, null, null, null}
             },
             new String [] {
-                "ID", "Nombre", "Categoria"
+                "ID", "Nombre", "Genérico", "Categoria"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, true, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -93,9 +98,6 @@ public class BaseDatosMedicamentos extends javax.swing.JFrame {
             JTableBaseDatos.getColumnModel().getColumn(0).setMinWidth(50);
             JTableBaseDatos.getColumnModel().getColumn(0).setPreferredWidth(100);
             JTableBaseDatos.getColumnModel().getColumn(0).setMaxWidth(100);
-            JTableBaseDatos.getColumnModel().getColumn(2).setMinWidth(150);
-            JTableBaseDatos.getColumnModel().getColumn(2).setPreferredWidth(300);
-            JTableBaseDatos.getColumnModel().getColumn(2).setMaxWidth(300);
         }
         //style table
         JTableBaseDatos.getTableHeader().setFont(new java.awt.Font("Arial Black", 1, 14));
@@ -168,18 +170,13 @@ public class BaseDatosMedicamentos extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel2.setForeground(java.awt.SystemColor.textHighlight);
-        jLabel2.setText("Nombre");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 600, -1, -1));
+        jLabel2.setText("Generico");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 680, 90, -1));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel3.setForeground(java.awt.SystemColor.textHighlight);
         jLabel3.setText("Categoria");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 600, -1, -1));
-
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel4.setForeground(java.awt.SystemColor.textHighlight);
-        jLabel4.setText("Id");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 630, 23, -1));
 
         JlabelID.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         JlabelID.setForeground(new java.awt.Color(51, 51, 51));
@@ -188,7 +185,18 @@ public class BaseDatosMedicamentos extends javax.swing.JFrame {
         txtFieldCategoriaForm.setBackground(new java.awt.Color(0, 153, 153));
         txtFieldCategoriaForm.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         txtFieldCategoriaForm.setForeground(new java.awt.Color(255, 255, 255));
+        txtFieldCategoriaForm.setEnabled(false);
         getContentPane().add(txtFieldCategoriaForm, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 630, 334, -1));
+
+        txtFielGenericoForm.setBackground(new java.awt.Color(0, 153, 153));
+        txtFielGenericoForm.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        txtFielGenericoForm.setForeground(new java.awt.Color(255, 255, 255));
+        getContentPane().add(txtFielGenericoForm, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 710, 334, -1));
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel6.setForeground(java.awt.SystemColor.textHighlight);
+        jLabel6.setText("Nombre");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 600, -1, -1));
 
         txtFielNombreForm.setBackground(new java.awt.Color(0, 153, 153));
         txtFielNombreForm.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -205,11 +213,10 @@ public class BaseDatosMedicamentos extends javax.swing.JFrame {
         int fila = JTableBaseDatos.rowAtPoint(evt.getPoint());
 
         if (fila > -1) {
-            JlabelID.setText(JTableBaseDatos.getValueAt(fila, 0).toString());
+            id_medicamento = Integer.valueOf(JTableBaseDatos.getValueAt(fila, 0).toString());
             txtFielNombreForm.setText(JTableBaseDatos.getValueAt(fila, 1).toString());
-            String categoria = JTableBaseDatos.getValueAt(fila, 2).toString();
-
-            txtFieldCategoriaForm.setText(categoria);
+            txtFielGenericoForm.setText(JTableBaseDatos.getValueAt(fila, 2).toString());        
+            txtFieldCategoriaForm.setText(JTableBaseDatos.getValueAt(fila, 3).toString());
         }
 
     }//GEN-LAST:event_JTableBaseDatosMouseClicked
@@ -218,25 +225,58 @@ public class BaseDatosMedicamentos extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (txtFielNombreForm == null || txtFielNombreForm.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Debe ingresar un nombre");
+        } else if(txtFieldCategoriaForm == null || txtFieldCategoriaForm.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Debe ingresar una categoria");
+        }else {
+            String categoria = txtFieldCategoriaForm.getText();
+            int id = id_medicamento;
+            String generico = txtFielGenericoForm.getText();
+            String  nombre= txtFielNombreForm.getText();
+            String sql = "UPDATE medicamentos SET nombre = '" + nombre + "', categoria = '" + categoria +"', generico = '" + generico + "' WHERE id = " + id;
+            try {
+                try (Connection con = conexion.getConexion()) {
+                    PreparedStatement ps = con.prepareStatement(sql);
+                    ps.executeUpdate();
+                    JOptionPane.showMessageDialog(null, "Medicamento actualizado");
+                    limpiar();
+                    mostrarDatos();
+                }
+            } catch (HeadlessException | SQLException ex) {
+                JOptionPane.showMessageDialog(null, ex);
+            }
+        }
+    }//GEN-LAST:event_JbuttonEditarActionPerformed
+
+    private void JFilterCategoryItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_JFilterCategoryItemStateChanged
+        // TODO add your handling code here:
+        String categoria = JFilterCategory.getSelectedItem().toString();
+        if (categoria.equals("Todas")) {
+            mostrarDatos();
+            
         } else {
-            String categoria = "";
-            categoria = txtFieldCategoriaForm.getText();
-            int id = Integer.parseInt(JlabelID.getText());
-            String nombre = txtFielNombreForm.getText();
-            String sql = "UPDATE medicamentos SET nombre = '" + nombre + "', categoria = '" + categoria + "' WHERE id = " + id;
+            String sql = "SELECT * FROM medicamentos WHERE categoria = '" + categoria + "' ORDER BY nombre ASC";
+            DefaultTableModel modelo = (DefaultTableModel) JTableBaseDatos.getModel();
+            //limpiar tabla
+            modelo.setRowCount(0);
+            //obtener datos de la base de datos
             try {
                 Connection con = conexion.getConexion();
-                PreparedStatement ps = con.prepareStatement(sql);
-                ps.executeUpdate();
-                JOptionPane.showMessageDialog(null, "Medicamento actualizado");
-                limpiar();
-                mostrarDatos();
+                Statement st = con.createStatement();
+                ResultSet rs = st.executeQuery(sql);
+                while (rs.next()) {
+                    Object[] fila = new Object[4];
+                    fila[0] = rs.getInt("id");
+                    fila[1] = rs.getString("nombre");
+                    fila[2] = rs.getString("generico");
+                    fila[3] = rs.getString("categoria");
+                    modelo.addRow(fila);
+                }
                 con.close();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, ex);
             }
         }
-    }//GEN-LAST:event_JbuttonEditarActionPerformed
+    }//GEN-LAST:event_JFilterCategoryItemStateChanged
 
     private void JbuttonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JbuttonEliminarActionPerformed
         // TODO add your handling code here:
@@ -244,7 +284,7 @@ public class BaseDatosMedicamentos extends javax.swing.JFrame {
         if (fila == -1) {
             JOptionPane.showMessageDialog(null, "Debe seleccionar una fila");
         } else {
-            int id = Integer.parseInt(JlabelID.getText());
+            int id = id_medicamento;
             String sql = "DELETE FROM medicamentos WHERE id = " + id;
             try {
                 Connection con = conexion.getConexion();
@@ -259,38 +299,7 @@ public class BaseDatosMedicamentos extends javax.swing.JFrame {
             }
         }
 
-
     }//GEN-LAST:event_JbuttonEliminarActionPerformed
-
-    private void JFilterCategoryItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_JFilterCategoryItemStateChanged
-        // TODO add your handling code here:
-        String categoria = JFilterCategory.getSelectedItem().toString();
-        if (categoria.equals("Todas")) {
-            mostrarDatos();
-            
-        } else {
-            String sql = "SELECT * FROM medicamentos WHERE categoria = '" + categoria + "'";
-            DefaultTableModel modelo = (DefaultTableModel) JTableBaseDatos.getModel();
-            //limpiar tabla
-            modelo.setRowCount(0);
-            //obtener datos de la base de datos
-            try {
-                Connection con = conexion.getConexion();
-                Statement st = con.createStatement();
-                ResultSet rs = st.executeQuery(sql);
-                while (rs.next()) {
-                    Object[] fila = new Object[3];
-                    fila[0] = rs.getInt("id");
-                    fila[1] = rs.getString("nombre");
-                    fila[2] = rs.getString("categoria");
-                    modelo.addRow(fila);
-                }
-                con.close();
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(null, ex);
-            }
-        }
-    }//GEN-LAST:event_JFilterCategoryItemStateChanged
 
     /**
      * @param args the command line arguments
@@ -338,14 +347,17 @@ public class BaseDatosMedicamentos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JTextField txtFielGenericoForm;
     private javax.swing.JTextField txtFielNombreForm;
     private javax.swing.JTextField txtFieldCategoriaForm;
     // End of variables declaration//GEN-END:variables
 
     private void limpiar() {
         JlabelID.setText("");
+        txtFielGenericoForm.setText("");
+        txtFieldCategoriaForm.setText("");
         txtFielNombreForm.setText("");
         
     }
@@ -358,12 +370,13 @@ public class BaseDatosMedicamentos extends javax.swing.JFrame {
         try {
             Connection con = conexion.getConexion();
             Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery("SELECT * FROM medicamentos");
+            ResultSet rs = st.executeQuery("SELECT * FROM medicamentos ORDER BY nombre ASC");
             while (rs.next()) {
-                Object[] fila = new Object[3];
+                Object[] fila = new Object[4];
                 fila[0] = rs.getInt("id");
                 fila[1] = rs.getString("nombre");
-                fila[2] = rs.getString("categoria");
+                fila[2] = rs.getString("generico");
+                fila[3] = rs.getString("categoria");
                 modelo.addRow(fila);
             }
 
@@ -380,7 +393,7 @@ public class BaseDatosMedicamentos extends javax.swing.JFrame {
             Statement st = con.createStatement();
             if (JFilterCategory.getItemCount() == 1) {
                 //obtener categorias de la base de datos
-                ResultSet rs2 = st.executeQuery("SELECT DISTINCT categoria FROM medicamentos");
+                ResultSet rs2 = st.executeQuery("SELECT DISTINCT categoria FROM medicamentos ORDER BY categoria ASC");
                 while (rs2.next()) {
                     JFilterCategory.addItem(rs2.getString("categoria"));
                 }

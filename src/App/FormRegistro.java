@@ -31,6 +31,7 @@ public class FormRegistro extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        JLabelBackground = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         JtextFieldNombre = new javax.swing.JTextField();
@@ -40,7 +41,8 @@ public class FormRegistro extends javax.swing.JFrame {
         jComboBoxCategoria = new javax.swing.JComboBox<>();
         JTextCrearCategoria = new javax.swing.JTextField();
         JlabelNuevaCat = new javax.swing.JLabel();
-        JLabelBackground = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        JtextFieldNombreGenerico = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Formulario Registro Medicamento");
@@ -56,12 +58,12 @@ public class FormRegistro extends javax.swing.JFrame {
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, -1, 64));
 
         JtextFieldNombre.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jPanel1.add(JtextFieldNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(14, 204, 440, 34));
+        jPanel1.add(JtextFieldNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, 440, 34));
 
         jLabel4.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         jLabel4.setForeground(java.awt.SystemColor.textHighlight);
-        jLabel4.setText("Nombre");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(14, 154, -1, -1));
+        jLabel4.setText("Nombre genérico");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 210, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         jLabel5.setForeground(java.awt.SystemColor.textHighlight);
@@ -94,23 +96,39 @@ public class FormRegistro extends javax.swing.JFrame {
         JlabelNuevaCat.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jPanel1.add(JlabelNuevaCat, new org.netbeans.lib.awtextra.AbsoluteConstraints(111, 475, 129, 23));
 
+        jLabel6.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        jLabel6.setForeground(java.awt.SystemColor.textHighlight);
+        jLabel6.setText("Nombre medicamento");
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, -1, -1));
+
+        JtextFieldNombreGenerico.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jPanel1.add(JtextFieldNombreGenerico, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, 440, 34));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(79, 79, 79)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(1, 1, 1)
-                .addComponent(JLabelBackground, javax.swing.GroupLayout.PREFERRED_SIZE, 640, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(78, 78, 78))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(JLabelBackground)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(26, 26, 26)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 738, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addComponent(JLabelBackground, javax.swing.GroupLayout.PREFERRED_SIZE, 770, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 738, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(JLabelBackground)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
 
         pack();
@@ -121,6 +139,7 @@ public class FormRegistro extends javax.swing.JFrame {
         // TODO add your handling code here:
 
         String nombre = JtextFieldNombre.getText();
+        String generico = JtextFieldNombreGenerico.getText();
         String categoria = "";
         
         categoria = JTextCrearCategoria.getText();
@@ -129,15 +148,15 @@ public class FormRegistro extends javax.swing.JFrame {
             //registrar en la base de datos
             try {
                 Connection con = conexion.getConexion();
-                PreparedStatement ps = con.prepareStatement("INSERT INTO medicamentos (nombre, categoria) VALUES (?,?)");
+                PreparedStatement ps = con.prepareStatement("INSERT INTO medicamentos (nombre, categoria, generico) VALUES (?,?,?)");
                 ps.setString(1, nombre);
                 ps.setString(2, categoria);
+                ps.setString(3, generico);
                 ps.executeUpdate();
                 JOptionPane.showMessageDialog(null, "Medicamento registrado");
                 con.close();
                 JtextFieldNombre.setText("");
-
-                
+ 
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, e);
             }
@@ -205,10 +224,12 @@ public class FormRegistro extends javax.swing.JFrame {
     private javax.swing.JButton JbuttonRegistrarMedicamento;
     private javax.swing.JLabel JlabelNuevaCat;
     public javax.swing.JTextField JtextFieldNombre;
+    public javax.swing.JTextField JtextFieldNombreGenerico;
     public javax.swing.JComboBox<String> jComboBoxCategoria;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 
